@@ -1311,7 +1311,15 @@
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Food_Order__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Menu</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Order_Item__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

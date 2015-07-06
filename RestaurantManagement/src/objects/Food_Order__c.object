@@ -81,19 +81,6 @@
         <type>AutoNumber</type>
     </fields>
     <fields>
-        <fullName>OrderItem__c</fullName>
-        <externalId>false</externalId>
-        <label>Order Item</label>
-        <referenceTo>Order_Item__c</referenceTo>
-        <relationshipLabel>Food Orders</relationshipLabel>
-        <relationshipName>Food_Orders</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
         <label>Status</label>
@@ -107,10 +94,6 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Accepted</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Ready</fullName>
                 <default>false</default>
             </picklistValues>
@@ -119,7 +102,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Completed</fullName>
+                <fullName>Paid</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -149,11 +132,16 @@
         <type>Currency</type>
     </fields>
     <label>Food Order</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Food Order Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Food Orders</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

@@ -21,21 +21,8 @@
         <name>OrderId__c</name>
     </fields>
     <fields>
-        <label><!-- Order Item --></label>
-        <name>OrderItem__c</name>
-        <relationshipLabel><!-- Food Orders --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
-        <picklistValues>
-            <masterLabel>Accepted</masterLabel>
-            <translation><!-- Accepted --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Completed</masterLabel>
-            <translation><!-- Completed --></translation>
-        </picklistValues>
         <picklistValues>
             <masterLabel>Delivered</masterLabel>
             <translation><!-- Delivered --></translation>
@@ -43,6 +30,10 @@
         <picklistValues>
             <masterLabel>New</masterLabel>
             <translation><!-- New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid</masterLabel>
+            <translation><!-- Paid --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Pending</masterLabel>

@@ -7,4 +7,6 @@
     <tab>Raw_Material__c</tab>
     <tab>Purchase__c</tab>
     <tab>Menu</tab>
+    <tab>Order_Item__c</tab>
+    <tab>Food_Order__c</tab>
 </CustomApplication>

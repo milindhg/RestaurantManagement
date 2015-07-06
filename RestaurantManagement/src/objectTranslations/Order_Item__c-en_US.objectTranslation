@@ -14,6 +14,11 @@
         <relationshipLabel><!-- Order Items --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Food Order --></label>
+        <name>Food_Order__c</name>
+        <relationshipLabel><!-- Order Items --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Price --></label>
         <name>Price__c</name>
         <relationshipLabel><!-- Order Items --></relationshipLabel>

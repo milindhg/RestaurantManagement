@@ -119,14 +119,36 @@ background: #abb1b8;
     
     $j = jQuery.noConflict();
     
-    function increaseQuant(){
-       $j('#output').html(function(i, val) { return val*1+1 });
-        }
     
-    function decreaseQuant(){
-        alert(document.getElementById('output').getAttribute('text'));
-        $j('#output').html(function(i, val) { return val*1-1 });
-        }
+    function increaseQuant(event){
+        //var parentId = $(this).closest('div').prop('id');
+        wTile = event.target.parentNode;
+        //var quantity= wTile.getElementByName('quantity')[0];
+        alert(wTile.id);
+        //alert(parentNode.text);
+        //window.parent.document.getElementById('quantity').(function(i, val) { return val*1+1 });
+        
+        // alert(parentId);
+        //parentDoc= this.parent;
+        //parentDoc.getElementById('#quantity').html(function(i, val) { return val*1+1 });
+        //alert('incraese');
+        //alert($j(this).children("div[quantity]").val());
+        //$j(this).children("div[quantity]").html(function(i, val) { return val*1+1 });
+        //$j(this).children('#quantity').html(function(i, val) { return val*1+1 });
+        // $j(this).getElementById('#quantity').html(function(i, val) { return val*1+1 });
+        //$j(this).parent( '#quantity' ).html(function(i, val) { return val*1+1 });
+        //$j('#quantity').html(function(i, val) { return val*1+1 });
+        
+    }
+    
+    function decreaseQuant(event){
+        if($j('#quantity').text()!=0){
+          $j('#quantity').html(function(i, val) { return val*1-1 });
+          }else{
+             alert('Quantity of a menu item cannot be less than zero');
+              }
+        
+    }
     function Alert(){
         
         $j('#collapseOne').collapse('toggle');
@@ -135,6 +157,7 @@ background: #abb1b8;
         $j('#close_cart').toggle();
         
     }
+   
     
     
     
@@ -185,18 +208,24 @@ background: #abb1b8;
                                                                                 <apex:outputText value="{!item.name}" style="color:maroon"/><br/><br/>
                                                                                 <apex:outputText value="{!item.typ}" style="color:maroon"/><br/><br/>
                                                                                 <!--<apex:outputText value="{!item.description}" style="color:white"/>-->
-                                                                                <apex:outputLink onclick="increaseQuant();"
+                                                                                <apex:outputLink onclick="increaseQuant(event);"
                                                                                                  id="upBtn">
                                                                                     <apex:image value="/s.gif" alt="Up" styleClass="upArrowIcon"
                                                                                                 title="Up" />
                                                                                 </apex:outputLink>
-                                                                                <div id="output">10</div>
-                                                                                <!--<apex:outputPanel id="quantity">10</apex:outputPanel>-->
-                                                                                <apex:outputLink onclick="decreaseQuant();"
+                                                                                <div id="quantity">10</div>
+                                                                                
+                                                                                <apex:outputLink onclick="decreaseQuant(event);"
                                                                                                  id="downBtn">
                                                                                     <apex:image value="/s.gif" alt="Down" styleClass="downArrowIcon"
                                                                                                 title="Down" />
                                                                                 </apex:outputLink>
+                                                                                
+                                                                                
+                                                                            </div>
+                                                                            <div>
+                                                                                
+                                                                                
                                                                                 <apex:commandButton value="ADD"/>
                                                                             </div>
                                                                             

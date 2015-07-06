@@ -70,6 +70,20 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>Food_Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Food Order</label>
+        <referenceTo>Food_Order__c</referenceTo>
+        <relationshipLabel>Order Items</relationshipLabel>
+        <relationshipName>Order_Items</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
         <fullName>Price__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>Price of Individual Line Item</description>
@@ -139,6 +153,11 @@
         <type>Currency</type>
     </fields>
     <label>Order Item</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Order Item Name</label>
         <trackHistory>false</trackHistory>

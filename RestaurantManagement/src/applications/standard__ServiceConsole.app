@@ -167,12 +167,20 @@
     <tab>Raw_Material__c</tab>
     <tab>Purchase__c</tab>
     <tab>Menu</tab>
+    <tab>Order_Item__c</tab>
+    <tab>Food_Order__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>Food_Item__c</tab>
         </mapping>
         <mapping>
+            <tab>Food_Order__c</tab>
+        </mapping>
+        <mapping>
             <tab>Menu</tab>
+        </mapping>
+        <mapping>
+            <tab>Order_Item__c</tab>
         </mapping>
         <mapping>
             <tab>Purchase__c</tab>
