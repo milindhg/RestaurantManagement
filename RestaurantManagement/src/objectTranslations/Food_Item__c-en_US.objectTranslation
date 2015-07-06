@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Food Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Food Items</value>
+    </caseValues>
+    <fields>
+        <label><!-- Category --></label>
+        <name>Category__c</name>
+        <picklistValues>
+            <masterLabel>Appetizer</masterLabel>
+            <translation><!-- Appetizer --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dessert</masterLabel>
+            <translation><!-- Dessert --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Entree</masterLabel>
+            <translation><!-- Entree --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Preparation Time --></label>
+        <name>Prep_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Disbaled</masterLabel>
+            <translation><!-- Disbaled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Enabled</masterLabel>
+            <translation><!-- Enabled --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Non-Vegetarian</masterLabel>
+            <translation><!-- Non-Vegetarian --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vegan</masterLabel>
+            <translation><!-- Vegan --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vegetarian</masterLabel>
+            <translation><!-- Vegetarian --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

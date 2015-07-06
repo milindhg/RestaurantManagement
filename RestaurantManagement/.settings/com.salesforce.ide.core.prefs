@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+endpointApiVersion=33.0
+endpointEnvironment=Production/Developer Edition
+endpointServer=www.salesforce.com
+httpsProtocol=true
+ideVersion=33.0
+keependpoint=false
+metadataFormatVersion=33.0
+namespacePrefix=
+packageName=unpackaged
+preferToolingDeployment=true
+projectIdentifier=IDE3106988192364842747
+readTimeout=400
+username=resto@persistent.com
