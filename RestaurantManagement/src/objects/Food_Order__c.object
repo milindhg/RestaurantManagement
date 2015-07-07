@@ -56,7 +56,7 @@
     <fields>
         <fullName>DeliveryTime__c</fullName>
         <externalId>false</externalId>
-        <label>DeliveryTime</label>
+        <label>Delivery Time</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -67,7 +67,7 @@
     <fields>
         <fullName>OrderDateTime__c</fullName>
         <externalId>false</externalId>
-        <label>OrderDateTime</label>
+        <label>Order Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
@@ -76,7 +76,7 @@
         <fullName>OrderId__c</fullName>
         <displayFormat>O-{00000000}</displayFormat>
         <externalId>false</externalId>
-        <label>OrderId</label>
+        <label>Order Id</label>
         <trackTrending>false</trackTrending>
         <type>AutoNumber</type>
     </fields>
@@ -87,14 +87,10 @@
         <picklist>
             <picklistValues>
                 <fullName>New</fullName>
-                <default>false</default>
+                <default>true</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Pending</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Ready</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -113,7 +109,7 @@
     <fields>
         <fullName>TableNumber__c</fullName>
         <externalId>false</externalId>
-        <label>TableNumber</label>
+        <label>Table Number</label>
         <precision>18</precision>
         <required>true</required>
         <scale>0</scale>
@@ -124,10 +120,10 @@
     <fields>
         <fullName>TotalPrice__c</fullName>
         <externalId>false</externalId>
-        <label>TotalPrice</label>
+        <label>Total Price</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>

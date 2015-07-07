@@ -1,4 +1,4 @@
-public class MenuItemListController {
+global class MenuItemListController {
     
     
     
@@ -9,13 +9,47 @@ public class MenuItemListController {
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Prep_Time__c,Status__c,Type__c   From Food_Item__c]){
+            for(Food_Item__c item : [Select Name, Category__c, Description__c,Prep_Time__c,Status__c,Type__c  From Food_Item__c]){
                 ItemList.add(new DisplayMenuItems(item));
             }
         }
         
         return ItemList;
     }
+    
+    @RemoteAction 
+    WebService static String createOrderItem(String item, String quant){
+        Decimal table_number=1;
+        System.debug(item);
+        System.debug(quant);
+        Food_Order__c order = new Food_Order__c();
+        order.TableNumber__c=table_number;
+       insert order;
+        
+        List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
+            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
+                                     where f.TableNumber__c=:table_number];
+            String item_name= item;
+        List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
+                                        f.Prep_Time__c, f.OwnerId, f.Name, f.LastViewedDate, 
+                                        f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+                                        f.IsDeleted, f.Id, f.Description__c, f.CreatedDate, f.CreatedById, 
+                                        f.Category__c From Food_Item__c f where f.Name=:item_name];
+        
+        Order_Item__c orderitem = new Order_Item__c();
+        orderitem.Name= item;
+        orderitem.Food_Item__c= food_items[0].Id;
+        orderitem.Food_Order__c= orders[0].Id;
+        orderitem.Quantity__c= decimal.valueOf(quant);
+        orderitem.Status__c='New';
+        insert orderitem;
+        return orders[0].name;
+        
+    }
+    
+    
     
     public class DisplayMenuItems{
         private Food_Item__c availableItems;

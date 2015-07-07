@@ -9,15 +9,15 @@
         <value>Food Orders</value>
     </caseValues>
     <fields>
-        <label><!-- DeliveryTime --></label>
+        <label><!-- Delivery Time --></label>
         <name>DeliveryTime__c</name>
     </fields>
     <fields>
-        <label><!-- OrderDateTime --></label>
+        <label><!-- Order Date --></label>
         <name>OrderDateTime__c</name>
     </fields>
     <fields>
-        <label><!-- OrderId --></label>
+        <label><!-- Order Id --></label>
         <name>OrderId__c</name>
     </fields>
     <fields>
@@ -39,18 +39,21 @@
             <masterLabel>Pending</masterLabel>
             <translation><!-- Pending --></translation>
         </picklistValues>
-        <picklistValues>
-            <masterLabel>Ready</masterLabel>
-            <translation><!-- Ready --></translation>
-        </picklistValues>
     </fields>
     <fields>
-        <label><!-- TableNumber --></label>
+        <label><!-- Table Number --></label>
         <name>TableNumber__c</name>
     </fields>
     <fields>
-        <label><!-- TotalPrice --></label>
+        <label><!-- Total Price --></label>
         <name>TotalPrice__c</name>
     </fields>
+    <layouts>
+        <layout>Food Order Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

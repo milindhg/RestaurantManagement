@@ -1,0 +1,76 @@
+<apex:page sidebar="false" showHeader="false">
+
+ <head>
+
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+    <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+    <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+    <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+    <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+    <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+    <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+    <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+    <apex:stylesheet value="https://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"  />
+    
+    <apex:includeScript value="{!$Resource.cometd}"/>
+    <apex:includeScript value="{!$Resource.jquery}"/>
+    <apex:includeScript value="{!$Resource.json2}"/>
+    <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+  
+   
+ </head>    
+
+        
+        
+ <script type="text/javascript">
+   (function($){
+     $(document).ready(function() {
+      
+       // Connect to the CometD endpoint
+       $.cometd.init({
+         url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+         requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+       });
+ 
+      // Subscribe to a topic. JSON-encoded update will be returned in the callback
+      $.cometd.subscribe('/topic/PlaceOrder', function(message) {
+            
+             $('#tbody').append(
+                '<tr><td>'  + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")   + 
+                '</td><td>' + JSON.stringify(message.data.sobject.Name).replace(/\"/g, "") + 
+                '</td><td>' + JSON.stringify(message.data.sobject.Status__c).replace(/\"/g, "") + 
+                '</td><td><button type="button" class="btn">Send</button></td></tr>');   
+            });
+    });
+  })(jQuery)
+  
+  function disconnect() {
+    $.cometd.disconnect();
+  }
+
+   window.onbeforeunload = disconnect;
+ </script>
+
+ <body>
+    <div class="row">
+         <div class="col-xs-8">
+           <div class="table-responsive">
+              <table class="table table-hover table-bordered">
+                 <thead>
+                   <tr>
+                    <th id="id_name" scope="col">Id</th>
+                    <th id="name"    scope="col">Name</th>
+                    <th id="status"  scope="col">Status</th>
+                    <th id="status"  scope="col">Button</th>
+                   </tr>
+                 </thead>
+                 <tbody id="tbody">
+                   
+                 </tbody>
+              </table>
+           </div>
+         </div>
+      </div>
+ </body>
+
+</apex:page>

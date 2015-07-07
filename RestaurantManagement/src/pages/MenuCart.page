@@ -107,270 +107,27 @@ background: #abb1b8;
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
         <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
-        <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
-        <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
-        <apex:stylesheet value="https://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"  />
         
         
         
     </head>
     <script type="text/javascript">
-    //sforce.connection.sessionId = "{!$Api.Session_ID}";
-    sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
+    
     $j = jQuery.noConflict();
-    (function($) {
-        $.widget( "mobile.spinbox", {
-            options: {
-                // All widget options
-                dmin: false,
-                dmax: false,
-                step: false,
-                theme: false,
-                mini: null,
-                repButton: true,
-                version: "1.4.4-2014091500",
-                initSelector: "input[data-role='spinbox']",
-                clickEvent: "vclick",
-                type: "horizontal", // or vertical
-            },
-            _sbox_run: function () {
-                var w = this,
-                    timer = 150;
-                
-                if ( w.g.cnt > 10 ) { timer = 100; }
-                if ( w.g.cnt > 30 ) { timer = 50; }
-                if ( w.g.cnt > 60 ) { timer = 20; }
-                
-                w.g.didRun = true;
-                w._offset( this, w.g.delta );
-                w.g.cnt++;
-                w.runButton = setTimeout( function() { w._sbox_run(); }, timer );
-            },
-            _offset: function( obj, direction ) {
-                var tmp,
-                    w = this,
-                    o = this.options;
-                
-                if ( !w.disabled ) {
-                    if ( direction < 1 ) {
-                        tmp = parseInt( w.d.input.val(), 10 ) - o.step;
-                        if ( tmp >= o.dmin ) { 
-                            w.d.input.val( tmp ).trigger( "change" );
-                        }
-                    } else {
-                        tmp = parseInt( w.d.input.val(), 10 ) + o.step;
-                        if ( tmp <= o.dmax ) { 
-                            w.d.input.val( tmp ).trigger( "change" );
-                        }
-                    }
-                }
-            },
-            _create: function() {
-                var w = this,
-                    o = $.extend( this.options, this.element.data( "options" ) ),
-                    d = {
-                        input: this.element,
-                        inputWrap: this.element.parent()
-                    },
-                    touch = ( typeof window.ontouchstart !== "undefined" ),
-                    drag =  {
-                        eStart : (touch ? "touchstart" : "mousedown")+".spinbox",
-                        eMove  : (touch ? "touchmove" : "mousemove")+".spinbox",
-                        eEnd   : (touch ? "touchend" : "mouseup")+".spinbox",
-                        eEndA  : (touch ? 
-                                  "mouseup.spinbox touchend.spinbox touchcancel.spinbox touchmove.spinbox" :
-                                  "mouseup.spinbox"
-                                 ),
-                        move   : false,
-                        start  : false,
-                        end    : false,
-                        pos    : false,
-                        target : false,
-                        delta  : false,
-                        tmp    : false,
-                        cnt    : 0
-                    };
-                
-                w.d = d;
-                w.g = drag;
-                
-                o.theme = ( ( o.theme === false ) ?
-                           $.mobile.getInheritedTheme( this.element, "a" ) :
-                           o.theme
-                          );
-                
-                if ( w.d.input.prop( "disabled" ) ) {
-                    o.disabled = true;
-                }
-                
-                if ( o.dmin === false ) { 
-                    o.dmin = ( typeof w.d.input.attr( "min" ) !== "undefined" ) ?
-                        parseInt( w.d.input.attr( "min" ), 10 ) :
-                    Number.MAX_VALUE * -1;
-                }
-                if ( o.dmax === false ) { 
-                    o.dmax = ( typeof w.d.input.attr( "max" ) !== "undefined" ) ?
-                        parseInt(w.d.input.attr( "max" ), 10 ) :
-                    Number.MAX_VALUE;
-                }
-                if ( o.step === false) {
-                    o.step = ( typeof w.d.input.attr( "step") !== "undefined" ) ?
-                        parseInt( w.d.input.attr( "step" ), 10 ) :
-                    1;
-                }
-                
-                o.mini = ( o.mini === null ? 
-                          ( w.d.input.data("mini") ? true : false ) :
-                          o.mini );
-                
-                
-                w.d.wrap = $( "<div>", {
-                    "data-role": "controlgroup",
-                    "data-type": o.type,
-                    "data-mini": o.mini,
-                    "data-theme": o.theme
-                } )
-                .insertBefore( w.d.inputWrap )
-                .append( w.d.inputWrap );
-                
-                w.d.inputWrap.addClass( "ui-btn" );
-                w.d.input.css( { textAlign: "center" } );
-                
-                if ( o.type !== "vertical" ) {
-                    w.d.inputWrap.css( { 
-                        padding: o.mini ? "1px 0" : "4px 0 3px" 
-                    } );
-                    w.d.input.css( { 
-                        width: o.mini ? "40px" : "50px" 
-                    } );
-                } else {
-                    w.d.wrap.css( { 
-                        width: "auto"
-                    } );
-                    w.d.inputWrap.css( {
-                        padding: 0
-                    } );
-                }
-                
-                w.d.up = $( "<div>", {
-                    "class": "ui-btn ui-icon-plus ui-btn-icon-notext"
-                }).html( "&nbsp;" );
-                
-                w.d.down = $( "<div>", {
-                    "class": "ui-btn ui-icon-minus ui-btn-icon-notext"
-                }).html( "&nbsp;" );
-                
-                if ( o.type !== "vertical" ) {
-                    w.d.wrap.prepend( w.d.down ).append( w.d.up );
-                } else {
-                    w.d.wrap.prepend( w.d.up ).append( w.d.down );
-                }
-                
-                w.d.wrap.controlgroup();
-                
-                if ( o.repButton === false ) {
-                    w.d.up.on( o.clickEvent, function(e) { 
-                        e.preventDefault();
-                        w._offset( e.currentTarget, 1 ); 
-                    });
-                    w.d.down.on( o.clickEvent, function(e) {
-                        e.preventDefault();
-                        w._offset( e.currentTarget, -1 );
-                    });
-                } else {
-                    w.d.up.on( w.g.eStart, function(e) {
-                        w.d.input.blur();
-                        w._offset( e.currentTarget, 1 );
-                        w.g.move = true;
-                        w.g.cnt = 0;
-                        w.g.delta = 1;
-                        if ( !w.runButton ) {
-                            w.g.target = e.currentTarget;
-                            w.runButton = setTimeout( function() { w._sbox_run(); }, 500 );
-                        }
-                    });
-                    w.d.down.on(w.g.eStart, function(e) {
-                        w.d.input.blur();
-                        w._offset( e.currentTarget, -1 );
-                        w.g.move = true;
-                        w.g.cnt = 0;
-                        w.g.delta = -1;
-                        if ( !w.runButton ) {
-                            w.g.target = e.currentTarget;
-                            w.runButton = setTimeout( function() { w._sbox_run(); }, 500 );
-                        }
-                    });
-                    w.d.up.on(w.g.eEndA, function(e) {
-                        if ( w.g.move ) {
-                            e.preventDefault();
-                            clearTimeout( w.runButton );
-                            w.runButton = false;
-                            w.g.move = false;
-                        }
-                    });
-                    w.d.down.on(w.g.eEndA, function(e) {
-                        if ( w.g.move ) {
-                            e.preventDefault();
-                            clearTimeout( w.runButton );
-                            w.runButton = false;
-                            w.g.move = false;
-                        }
-                    });
-                }
-                
-                if ( typeof $.event.special.mousewheel !== "undefined" ) { 
-                    // Mousewheel operation, if plugin is loaded
-                    w.d.input.on( "mousewheel", function(e,d) {
-                        e.preventDefault();
-                        w._offset( e.currentTarget, ( d < 0 ? -1 : 1 ) );
-                    });
-                }
-                
-                if ( o.disabled ) {
-                    w.disable();
-                }
-                
-            },
-            disable: function(){
-                // Disable the element
-                var dis = this.d,
-                    cname = "ui-state-disabled";
-                
-                dis.input.attr( "disabled", true ).blur();
-                dis.inputWrap.addClass( cname );
-                dis.up.addClass( cname );
-                dis.down.addClass( cname );
-                this.options.disabled = true;
-            },
-            enable: function(){
-                // Enable the element
-                var dis = this.d,
-                    cname = "ui-state-disabled";
-                
-                dis.input.attr( "disabled", false );
-                dis.inputWrap.removeClass( cname );
-                dis.up.removeClass( cname );
-                dis.down.removeClass( cname );
-                this.options.disabled = false;
-            }
-        });
-    })( jQuery );
     
     
     function increaseQuant(event){
         alert(event.id);
         var name= event.id;
         alert(name);
-        var value = document.getElementById('Donut').getAttribute('value');
-        alert(value.text());
-        //$j('#name').getAttribute('value');
+        $j('#name').getAttribute('value');
         //var parentId = $(this).closest('div').prop('id');
         // wTile = event.target.parentNode;
-        //var quantity= wTile.getElementById('quantity');
+        //var quantity= wTile.getElementByName('quantity')[0];
         //alert(wTile.id);
         //alert(parentNode.text);
         //window.parent.document.getElementById('quantity').(function(i, val) { return val*1+1 });
@@ -388,38 +145,12 @@ background: #abb1b8;
         
     }
     
-    function AddOrder(event,name){
-        
-        var item = event.target.parentNode;
-        alert(item.id);
-        // var name= item.getElementById('item_name')[0].value;
-        alert(name);
-        var quantity = item.getElementsByTagName('input')[0].value;
-        //var __sfdcSessionId = '{!GETSESSIONID()}';
-        //var orders[];
-        //var order = new sforce.SObject("Food_Orders__c");
-        //order.TableNumber__c = 1;
-        //orders.push(order);
-        
-        
-        var result = sforce.apex.execute(
-          "MenuItemListController",  //class name    
-          "createOrderItem",  //method name        
-          {item : name,    // method parameter
-           quant:quantity
-          });
-        
-        alert(result);
-    }
-    
-    
-    
     function decreaseQuant(event){
         if($j('#quantity').text()!=0){
-            $j('#quantity').html(function(i, val) { return val*1-1 });
-        }else{
-            alert('Quantity of a menu item cannot be less than zero');
-        }
+          $j('#quantity').html(function(i, val) { return val*1-1 });
+          }else{
+             alert('Quantity of a menu item cannot be less than zero');
+              }
         
     }
     function Alert(){
@@ -430,7 +161,7 @@ background: #abb1b8;
         $j('#close_cart').toggle();
         
     }
-    
+   
     
     
     
@@ -449,6 +180,7 @@ background: #abb1b8;
                 <div data-role="main" class="ui-content">
                     
                     <div class="panel-group" id="accordion">
+                        <!-- Menu Accordian Div -->
                         <div class="panel panel-default">
                             <a id="menu_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                 <p id="menu_link" class="pull-left">Menu <img src="{!$Resource.menu1}" width="30px"/></p>
@@ -478,19 +210,28 @@ background: #abb1b8;
                                                                                 <apex:image value="{!$Resource.appetizer4}" width="120px" height="120px" />
                                                                             </div>
                                                                             <div id="desc" class="desc">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/><br/><br/>
+                                                                                <apex:outputText value="{!item.name}" style="color:maroon"/><br/><br/>
                                                                                 <apex:outputText value="{!item.typ}" style="color:maroon"/><br/><br/>
+                                                                                <!--<apex:outputText value="{!item.description}" style="color:white"/>-->
+                                                                                <apex:outputLink onclick="increaseQuant({!item.name});"
+                                                                                                 id="upBtn">
+                                                                                    <apex:image value="/s.gif" alt="Up" styleClass="upArrowIcon"
+                                                                                                title="Up" />
+                                                                                </apex:outputLink>
+                                                                                <div id="{!item.name}">10</div>
                                                                                 
-                                                                                <label for="spin">Qty</label>
+                                                                                <apex:outputLink onclick="decreaseQuant(event);"
+                                                                                                 id="downBtn">
+                                                                                    <apex:image value="/s.gif" alt="Down" styleClass="downArrowIcon"
+                                                                                                title="Down" />
+                                                                                </apex:outputLink>
                                                                                 
-                                                                                <input type="text" data-role="spinbox" name="spin" id="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />
+                                                                                
+                                                                            </div>
+                                                                            <div>
                                                                                 
                                                                                 
-                                                                                
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADDN </a>
-                                                                                <apex:commandButton value="ADD" reRender="">
-                                                                                    <apex:param name="item_name" value="{!item.name}"/>
-                                                                                </apex:commandButton>
+                                                                                <apex:commandButton value="ADD"/>
                                                                             </div>
                                                                             
                                                                             
@@ -631,6 +372,8 @@ background: #abb1b8;
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Shooping Cart Accordian Div -->
                         <div class="panel panel-default">
                             <a id="view_cart_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                                 <p id="view_cart_link" class="pull-left">View Cart <img src="{!$Resource.cart}" width="30px"/></p>
@@ -638,13 +381,28 @@ background: #abb1b8;
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="container">
-                                        <div class="row">
+                                        <div class="row accepted_items">
+                                            Placeholder for div - accepted_items
+                                            <div class="row current_bill">
+                                                Placeholder for div - current_bill
+                                            </div>
+                                        </div>
+                                        <div class="row placed_items">
+                                            Placeholder for div - placed_items
+                                        </div>
+                                        <div class="row active_cart">
+                                            Placeholder for div - active_cart
+                                            <div class="row expected_bill">
+                                                Placeholder for div - expected_bill
+                                            </div>
                                             <div class="col-sm-6 col-md-6 col-lg-4"> 
                                                 <div class="panel panel-default">
                                                     <div class="panel-body text-center">
                                                         <div class="cardimage">
-                                                            <apex:image value="{!$Resource.appetizer4}"/>
+                                                            <apex:image value="{!$Resource.appetizer4}" style="height:50px;width:50px;"/>
                                                         </div>
+                                                    Quantity:  
+                                                    Price: 
                                                     </div>
                                                 </div>
                                             </div>

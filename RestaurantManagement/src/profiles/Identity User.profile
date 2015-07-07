@@ -61,6 +61,14 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>Cart</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ChefListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MenuItemListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1216,6 +1224,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Order_Item__c.TableNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Order_Item__c.Total_Price__c</field>
         <readable>true</readable>
@@ -1451,7 +1464,15 @@
         <layout>WorkPerformanceCycle-Performance Cycle Layout - Summer %2715</layout>
     </layoutAssignments>
     <pageAccesses>
+        <apexPage>Chef_Pending_Orders</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>Menu</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>MenuCart</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <recordTypeVisibilities>

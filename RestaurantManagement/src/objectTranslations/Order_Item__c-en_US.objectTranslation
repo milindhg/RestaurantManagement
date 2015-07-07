@@ -35,6 +35,10 @@
             <translation><!-- Accepted --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>New</masterLabel>
+            <translation><!-- New --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>Pending</masterLabel>
             <translation><!-- Pending --></translation>
         </picklistValues>
@@ -46,6 +50,11 @@
             <masterLabel>Ready</masterLabel>
             <translation><!-- Ready --></translation>
         </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Table Number --></label>
+        <name>TableNumber__c</name>
+        <relationshipLabel><!-- Order Items (Food Order) --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- Total Price --></label>

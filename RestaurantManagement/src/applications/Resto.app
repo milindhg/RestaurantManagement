@@ -7,11 +7,11 @@
     <tab>standard-File</tab>
     <tab>Food_Item__c</tab>
     <tab>standard-Pricebook2</tab>
-    <tab>standard-report</tab>
-    <tab>standard-Dashboard</tab>
+    <tab>Food_Order__c</tab>
+    <tab>Order_Item__c</tab>
+    <tab>Menu</tab>
     <tab>Raw_Material__c</tab>
     <tab>Purchase__c</tab>
-    <tab>Menu</tab>
-    <tab>Order_Item__c</tab>
-    <tab>Food_Order__c</tab>
+    <tab>standard-report</tab>
+    <tab>standard-Dashboard</tab>
 </CustomApplication>
