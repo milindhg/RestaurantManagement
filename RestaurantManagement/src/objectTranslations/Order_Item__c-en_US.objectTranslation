@@ -9,6 +9,10 @@
         <value>Order Items</value>
     </caseValues>
     <fields>
+        <label><!-- Food Item Name --></label>
+        <name>Food_Item_Name__c</name>
+    </fields>
+    <fields>
         <label><!-- Food Item --></label>
         <name>Food_Item__c</name>
         <relationshipLabel><!-- Order Items --></relationshipLabel>
@@ -53,12 +57,15 @@
     </fields>
     <fields>
         <label><!-- Table Number --></label>
-        <name>TableNumber__c</name>
-        <relationshipLabel><!-- Order Items (Food Order) --></relationshipLabel>
+        <name>Table_Number__c</name>
     </fields>
     <fields>
         <label><!-- Total Price --></label>
         <name>Total_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
     </fields>
     <startsWith>Vowel</startsWith>
 </CustomObjectTranslation>

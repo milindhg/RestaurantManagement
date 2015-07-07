@@ -55,6 +55,18 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>Food_Item_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Food_Item__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Food Item Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Food_Item__c</fullName>
         <description>The food item ordered</description>
         <externalId>false</externalId>
@@ -117,6 +129,10 @@
         <label>Status</label>
         <picklist>
             <picklistValues>
+                <fullName>New</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Pending</fullName>
                 <default>false</default>
             </picklistValues>
@@ -132,10 +148,6 @@
                 <fullName>Picked Up</fullName>
                 <default>false</default>
             </picklistValues>
-            <picklistValues>
-                <fullName>New</fullName>
-                <default>false</default>
-            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <trackHistory>false</trackHistory>
@@ -143,17 +155,18 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>TableNumber__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Table_Number__c</fullName>
         <externalId>false</externalId>
+        <formula>Food_Order__r.TableNumber__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Table Number</label>
-        <referenceTo>Food_Order__c</referenceTo>
-        <relationshipLabel>Order Items (Food Order)</relationshipLabel>
-        <relationshipName>Order_Items1</relationshipName>
+        <precision>18</precision>
         <required>false</required>
+        <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Total_Price__c</fullName>
@@ -168,6 +181,23 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(  Food_Item__r.Category__c ,&apos;Appetizer&apos;), &apos;Appetizer&apos;,
+  IF(ISPICKVAL( Food_Item__r.Category__c ,&apos;Entree&apos;), &apos;Entree&apos;,
+    IF(ISPICKVAL( Food_Item__r.Category__c ,&apos;Dessert&apos;), &apos;Dessert&apos;, &apos;Entree&apos;)
+
+        )
+    )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <label>Order Item</label>
     <listViews>

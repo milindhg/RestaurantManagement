@@ -7,10 +7,10 @@
     <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
     <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
     <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
-    <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
-    <apex:stylesheet value="https://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"  />
+    <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
     
     <apex:includeScript value="{!$Resource.cometd}"/>
     <apex:includeScript value="{!$Resource.jquery}"/>
@@ -20,9 +20,24 @@
    
  </head>    
 
-        
-        
  <script type="text/javascript">
+   sforce.connection.sessionId = "{!$Api.Session_ID}";
+   
+   function accept(orderItemId, foodOrderId){
+       alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
+
+       var result1 = sforce.apex.execute("ChefListController",
+                                         "itemAcceptUpdate",
+                                        {orderId: orderItemId, foodOrder: foodOrderId
+                                        });
+                                        
+                                      
+   }
+   
+   function ready(order_item_id, food_order_id){
+         alert(order_item_id+", "+food_order_id);
+   }
+ 
    (function($){
      $(document).ready(function() {
       
@@ -33,13 +48,23 @@
        });
  
       // Subscribe to a topic. JSON-encoded update will be returned in the callback
-      $.cometd.subscribe('/topic/PlaceOrder', function(message) {
-            
+      $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
+             $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
+             
              $('#tbody').append(
-                '<tr><td>'  + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")   + 
-                '</td><td>' + JSON.stringify(message.data.sobject.Name).replace(/\"/g, "") + 
-                '</td><td>' + JSON.stringify(message.data.sobject.Status__c).replace(/\"/g, "") + 
-                '</td><td><button type="button" class="btn">Send</button></td></tr>');   
+                '<tr><td class="text-center">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+                
+                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
+                
+                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
+                
+                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
+                
+                '</td><td class="text-center"><button class="btn" onClick="accept(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
+                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');">Accept</button>' + 
+                             
+                '<button class="btn" onClick="ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
+                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');">Ready</button>' + '</td></tr>');   
             });
     });
   })(jQuery)
@@ -52,16 +77,22 @@
  </script>
 
  <body>
-    <div class="row">
-         <div class="col-xs-8">
+    <div id="content">
+      
+    </div>
+ 
+    <div class="container">
+      <div class="row">
+         <div class="col-sm-6 col-md-10 col-lg-12">
            <div class="table-responsive">
               <table class="table table-hover table-bordered">
                  <thead>
                    <tr>
-                    <th id="id_name" scope="col">Id</th>
-                    <th id="name"    scope="col">Name</th>
-                    <th id="status"  scope="col">Status</th>
-                    <th id="status"  scope="col">Button</th>
+                    <th id="table_no" class="text-center" scope="col">Table Number</th>
+                    <th id="dish_type" class="text-center" scope="col">Dish Type</th>
+                    <th id="dish_name" class="text-center" scope="col">Dish Name</th>
+                    <th id="qty" class="text-center" scope="col">Quantity</th>
+                    <th id="status" class="text-center" scope="col">Order Status</th>
                    </tr>
                  </thead>
                  <tbody id="tbody">
@@ -71,6 +102,7 @@
            </div>
          </div>
       </div>
+   </div>
  </body>
 
 </apex:page>

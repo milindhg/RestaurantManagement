@@ -60,6 +60,14 @@
         <apexClass>MenuItemListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>WaiterListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>tablecontroller</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
     <description>Permission Set generated for access to custom object Resto for the app Resto</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -1203,6 +1211,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Order_Item__c.Food_Item_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Order_Item__c.Price__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1213,12 +1226,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Order_Item__c.TableNumber__c</field>
+        <field>Order_Item__c.Table_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Order_Item__c.Total_Price__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Order_Item__c.Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1278,6 +1296,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Table__c.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Table__c.Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Task.ActivityDate</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1323,6 +1351,10 @@
         <apexPage>MenuCart</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>tables</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
     <recordTypeVisibilities>
         <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
         <visible>false</visible>
@@ -1353,6 +1385,10 @@
     </tabSettings>
     <tabSettings>
         <tab>Resto__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Table__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

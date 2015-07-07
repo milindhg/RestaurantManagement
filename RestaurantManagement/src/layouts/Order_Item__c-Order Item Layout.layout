@@ -35,8 +35,16 @@
                 <field>Food_Order__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TableNumber__c</field>
+                <behavior>Readonly</behavior>
+                <field>Table_Number__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Food_Item_Name__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>

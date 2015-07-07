@@ -9,7 +9,7 @@ global class MenuItemListController {
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Prep_Time__c,Status__c,Type__c  From Food_Item__c]){
+            for(Food_Item__c item : [Select Name, Category__c, Description__c,Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
                 ItemList.add(new DisplayMenuItems(item));
             }
         }
@@ -22,16 +22,25 @@ global class MenuItemListController {
         Decimal table_number=1;
         System.debug(item);
         System.debug(quant);
-        Food_Order__c order = new Food_Order__c();
-        order.TableNumber__c=table_number;
-       insert order;
+        List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
+            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
+                                     where f.TableNumber__c=:table_number and f.Status__c != 'Paid' ];
+        	
+        if(existingOrder.isEmpty()){
+          	Food_Order__c order = new Food_Order__c();
+            order.Status__c='New';
+        	order.TableNumber__c=table_number;
+       		insert order;  
+        }        	
         
         List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:table_number];
-            String item_name= item;
+                                     where f.TableNumber__c=:table_number and f.Status__c != 'Paid'];
+        String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
                                         f.Prep_Time__c, f.OwnerId, f.Name, f.LastViewedDate, 
                                         f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
@@ -39,6 +48,7 @@ global class MenuItemListController {
                                         f.Category__c From Food_Item__c f where f.Name=:item_name];
         
         Order_Item__c orderitem = new Order_Item__c();
+        
         orderitem.Name= item;
         orderitem.Food_Item__c= food_items[0].Id;
         orderitem.Food_Order__c= orders[0].Id;

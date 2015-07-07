@@ -1,0 +1,31 @@
+<apex:page standardController="Table__c" extensions="tablecontroller">
+<apex:form >
+<apex:outputPanel >
+<h1>Select your Location: </h1>
+</apex:outputPanel>
+<apex:inputField value="{!Table__c.Location__c}"/>
+<apex:param value="!Table__c.Location__c" name="location"/>    
+
+   
+<apex:pageBlock id="tablesrerender">
+<apex:pageBlockSection columns="1">
+<apex:pageBlockTable value="{!tables}" var="s">
+<apex:column value="{!s.name}" headerValue="Name"/>
+<apex:column value="{!s.TableNumber}" headerValue="TableNumber"/>
+<apex:column value="{!s.Status}" headerValue="Status"/>
+<apex:column value="{!s.Seats}" headerValue="Seats Available"/>
+<apex:column headerValue="Action">  
+  <apex:commandButton action="{!s.toready}" value="Ready" reRender="tablesrerender" >
+       <apex:param name="tablename" value="{!s.name}"/>    
+    </apex:commandButton>
+  <apex:commandButton action="{!s.tooccupied}" value="Occupied" reRender="tablesrerender"  >
+     <apex:param name="tablename" value="{!s.name}"/>    
+    </apex:commandButton>
+</apex:column>
+  
+</apex:pageBlockTable>
+    
+</apex:pageBlockSection>
+</apex:pageBlock>
+      </apex:form> 
+</apex:page>

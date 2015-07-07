@@ -14,4 +14,5 @@
     <tab>Purchase__c</tab>
     <tab>standard-report</tab>
     <tab>standard-Dashboard</tab>
+    <tab>Table__c</tab>
 </CustomApplication>

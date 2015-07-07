@@ -1,21 +1,29 @@
-public class ChefListController{
+global class ChefListController{
     public static final String ACCEPTED = 'Accepted';
     public static final String READY = 'Ready';
+    public static final String PENDING = 'Pending';
     
-    public void acceptItem(){
-        String orderItemName = ApexPages.CurrentPage().getParameters().get('orderItem');
-        Order_Item__c orderedItem = new Order_Item__c();
-        orderedItem = [SELECT status__c FROM Order_Item__c WHERE Name= :orderItemName];
+    @RemoteAction 
+    WebService static String itemAcceptUpdate(String orderItemId,String foodOrderId){
+        Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];
         orderedItem.status__c = ACCEPTED;
         update orderedItem;
-        ID foodOrderId = ApexPages.CurrentPage().getParameters().get('foodOrderID');
+        
+        system.debug(orderedItem.id);
+        Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE Id= :foodOrderId ];
+        foodOrder.status__c = PENDING;
+        update foodOrder;
+        
+        String idString = orderedItem.id+' '+foodOrder.Id;
+        return 'success';
+        
     }
     
-     public void itemReadyUpdate(){
+    
+    @RemoteAction
+    WebService static void itemReadyUpdate(String orderItemId){
          //Add code for notification push to waiter screen
-        String orderItemName = ApexPages.CurrentPage().getParameters().get('itemName');
-        Order_Item__c orderedItem = new Order_Item__c();
-        orderedItem = [SELECT status__c FROM Order_Item__c WHERE Name= :orderItemName];
+        Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];
         orderedItem.status__c = READY;
         update orderedItem;
     }

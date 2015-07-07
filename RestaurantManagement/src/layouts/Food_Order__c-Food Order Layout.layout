@@ -75,6 +75,14 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Food_Item__c.NAME</fields>
+        <fields>Food_Item__c.Type__c</fields>
+        <fields>Price__c</fields>
+        <fields>Quantity__c</fields>
+        <fields>Total_Price__c</fields>
+        <fields>Status__c</fields>
+        <fields>Table_Number__c</fields>
+        <fields>Type__c</fields>
         <relatedList>Order_Item__c.Food_Order__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

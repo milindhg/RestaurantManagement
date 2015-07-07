@@ -18,6 +18,14 @@ background: #abb1b8;
         text-shadow:none;
         }
         
+        .ui-btn-icon-left:after, .ui-btn-icon-right:after, .ui-btn-icon-top:after, .ui-btn-icon-bottom:after, .ui-btn-icon-notext:after{
+          content: "";
+   	position: relative; 
+  		display: block;
+   	width: 11px; 
+   	height: 11px; 
+        }
+        
         .col-sm-6{
         margin-top:10px;
         padding:0px;
@@ -71,6 +79,10 @@ background: #abb1b8;
         .panel-default >.panel-heading > .panel-title {
         color:white;
         }
+        #spin{
+        	width:20px !important;
+        	height:10px !important;
+        }
         
         #menu_btn, #view_cart_btn{
         background-image:none;
@@ -85,7 +97,20 @@ background: #abb1b8;
         color:white;
         text-shadow:none;
         }
+        #addorder{
+        padding:0px;
+        background-color:maroon !important;
+        color:white;
+        text-shadow:none;
+        }
         
+        #showdetail{
+        margin:auto;
+        padding:0px;
+        font-size:20px;
+        width:10px;
+        height:20px;
+        }
         
         #menu_link, #view_cart_link{
         text-align:left;
@@ -119,8 +144,8 @@ background: #abb1b8;
         
     </head>
     <script type="text/javascript">
-    //sforce.connection.sessionId = "{!$Api.Session_ID}";
-    sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
+    sforce.connection.sessionId = "{!$Api.Session_ID}";
+    //sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
     $j = jQuery.noConflict();
     (function($) {
         $.widget( "mobile.spinbox", {
@@ -360,54 +385,19 @@ background: #abb1b8;
         });
     })( jQuery );
     
-    
-    function increaseQuant(event){
-        alert(event.id);
-        var name= event.id;
-        alert(name);
-        var value = document.getElementById('Donut').getAttribute('value');
-        alert(value.text());
-        //$j('#name').getAttribute('value');
-        //var parentId = $(this).closest('div').prop('id');
-        // wTile = event.target.parentNode;
-        //var quantity= wTile.getElementById('quantity');
-        //alert(wTile.id);
-        //alert(parentNode.text);
-        //window.parent.document.getElementById('quantity').(function(i, val) { return val*1+1 });
-        
-        // alert(parentId);
-        //parentDoc= this.parent;
-        //parentDoc.getElementById('#quantity').html(function(i, val) { return val*1+1 });
-        //alert('incraese');
-        //alert($j(this).children("div[quantity]").val());
-        //$j(this).children("div[quantity]").html(function(i, val) { return val*1+1 });
-        //$j(this).children('#quantity').html(function(i, val) { return val*1+1 });
-        // $j(this).getElementById('#quantity').html(function(i, val) { return val*1+1 });
-        //$j(this).parent( '#quantity' ).html(function(i, val) { return val*1+1 });
-        //$j('#quantity').html(function(i, val) { return val*1+1 });
-        
-    }
-    
     function AddOrder(event,name){
         
         var item = event.target.parentNode;
         alert(item.id);
-        // var name= item.getElementById('item_name')[0].value;
+        
         alert(name);
         var quantity = item.getElementsByTagName('input')[0].value;
-        //var __sfdcSessionId = '{!GETSESSIONID()}';
-        //var orders[];
-        //var order = new sforce.SObject("Food_Orders__c");
-        //order.TableNumber__c = 1;
-        //orders.push(order);
-        
-        
         var result = sforce.apex.execute(
-          "MenuItemListController",  //class name    
-          "createOrderItem",  //method name        
-          {item : name,    // method parameter
-           quant:quantity
-          });
+            "MenuItemListController",  //class name    
+            "createOrderItem",  //method name        
+            {item : name,    // method parameter
+             quant:quantity
+            });
         
         alert(result);
     }
@@ -431,6 +421,30 @@ background: #abb1b8;
         
     }
     
+    function showDetail(event){
+        
+         var item = event.target.parentNode;
+        
+        var id= item.getElementsByTagName('p')[0].id;
+       
+        var desc = item.getElementsByTagName('p')[0].innerHTML;
+       
+        var tag = document.getElementById('item_desc');
+        tag.getElementsByTagName('p')[0].innerHTML= desc;
+        //$j( "#item_desc" ).popup({
+        //positionTo: "origin"
+            //});
+        //$j( "#item_desc" ).popup( "option", "positionTo", "origin" );
+        //$j("#item_desc").popup( 'reposition', 'positionTo: origin' );
+         
+        //$j( "#item_desc" ).popup( "open"{  
+      
+        //positionTo: "origin"  ); 
+        $j("#item_desc").popup("open", { 
+      
+    		 positionTo: 'origin'
+	});
+    }
     
     
     
@@ -460,9 +474,9 @@ background: #abb1b8;
                                             <div data-role="tabs" data-mini="true" data-position="fixed">
                                                 <div data-role="navbar"  data-iconpos="bottom" data-mini="true">
                                                     <ul>
-                                                        <li><a href="#one" data-icon="grid" data-theme="b" width="100px" data-ajax="false" class="ui-btn-active" style="background-color:maroon !important;">Appetizers</a></li>
-                                                        <li><a href="#two"  data-icon="grid" data-theme="b" data-ajax="false" style="background-color:maroon !important;">Entree</a></li>
-                                                        <li><a href="#three" data-icon="grid" data-theme="b" data-ajax="false" style="background-color:maroon !important;">Dessert</a></li>
+                                                        <li><a href="#one" data-icon="grid" data-theme="b" width="100px" data-ajax="false" class="ui-btn-active" >Appetizers</a></li>
+                                                        <li><a href="#two"  data-icon="grid" data-theme="b" data-ajax="false" >Entree</a></li>
+                                                        <li><a href="#three" data-icon="grid" data-theme="b" data-ajax="false" >Dessert</a></li>
                                                     </ul>
                                                 </div>
                                                 
@@ -476,33 +490,42 @@ background: #abb1b8;
                                                                         <div class="panel-body text-center" style="border: maroon 1px solid">
                                                                             <div class="cardimage">
                                                                                 <apex:image value="{!$Resource.appetizer4}" width="120px" height="120px" />
+                                                                                                                                                        <div>
+                                                                <a href="#" data-role="button" onClick="showDetail(event);" id="showdetail">i</a>
+                                                                                <!--<a href="#" data-role="link" onClick="showDetail(event);" id="addorder"><img src="{!$Resource.appetizer4}"/></a>-->
+                                                                                <p id="descp" style="display:none">
+                                                                                    {!item.description}
+                                                                                </p>
+                                                            </div>
                                                                             </div>
                                                                             <div id="desc" class="desc">
                                                                                 <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/><br/><br/>
                                                                                 <apex:outputText value="{!item.typ}" style="color:maroon"/><br/><br/>
-                                                                                
+                                                                            
+     																			
+
                                                                                 <label for="spin">Qty</label>
+                                                                     
+                                                                                <input type="text" data-role="spinbox" name="spin" id="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />                                  
+                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
                                                                                 
-                                                                                <input type="text" data-role="spinbox" name="spin" id="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />
-                                                                                
-                                                                                
-                                                                                
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADDN </a>
-                                                                                <apex:commandButton value="ADD" reRender="">
-                                                                                    <apex:param name="item_name" value="{!item.name}"/>
-                                                                                </apex:commandButton>
                                                                             </div>
-                                                                            
-                                                                            
+      
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </apex:form>
+                                                          
                                                         </apex:repeat> 
                                                     </div>  <!-- row -->
                                                     
                                                 </div>
-                                                
+                                                <div id="item_desc" data-role="popup" class="ui-content" >
+                                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                                                    <p>
+                                                        
+                                                    </p>
+                                                </div>
                                                 
                                                 
                                                 

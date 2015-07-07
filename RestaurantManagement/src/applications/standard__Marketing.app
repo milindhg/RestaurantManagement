@@ -14,4 +14,5 @@
     <tab>Menu</tab>
     <tab>Order_Item__c</tab>
     <tab>Food_Order__c</tab>
+    <tab>Table__c</tab>
 </CustomApplication>
