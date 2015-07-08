@@ -190,17 +190,14 @@ background: #abb1b8;
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="container">
-                                        
 
-                                            <div class="row expected_bill">
-                                                Placeholder for div - expected_bill
+                                            <div class="row billed_items">
+                                                <!-- Placeholder for div - billed_items -->
                                                 
-                                                <apex:pageBlock title="Placed Orders">
-                                              <apex:pageBlockTable id="cart" value="{!activeCartItems}" var="pitem">
+                                                <apex:pageBlock title="Billed Items">
+                                              <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
                                               
-                                              <apex:column >
-                                               <apex:image value="{!$Resource.appetizer4}"/>
-                                               </apex:column>
+                                             
                                            
                                                 <apex:column headerValue="Item Name">
                                                      <apex:outputText value="{!pitem.name}"/>
@@ -220,7 +217,7 @@ background: #abb1b8;
                                               <div class="col-sm-6 col-md-6 col-lg-4">
                                               </div>
                                               <div class="col-sm-6 col-md-6 col-lg-4">
-                                                 <apex:pageMessage id="total" rendered="true" title="Current Bill" severity="high">                                                      
+                                                 <apex:pageMessage id="currentBill" rendered="true" title="Current Bill" severity="high">                                                      
                                                       <apex:outputField value="{!FoodOrder.TotalPrice__c}" style="float:right;" />                                                     
                                                       
                                                  </apex:pageMessage>
@@ -230,16 +227,12 @@ background: #abb1b8;
                                             
                                             
                                         
-                                        <div class="row active_cart">
-                                            
+                                            <div class="row active_cart_items">
+                                                <!-- Placeholder for div - active_cart_items div -->
                                             <apex:form >
                                             <apex:pageBlock title="Cart">
-                                              <apex:pageBlockTable id="cart_table" value="{!orderItemsList}" var="pitem">
+                                              <apex:pageBlockTable id="cart_table" value="{!activeCartItems}" var="pitem">
                                               
-                                              <apex:column >
-                                               <apex:image value="{!$Resource.appetizer4}"/>
-                                               </apex:column>
-                                           
                                                 <apex:column headerValue="Item Name">
                                                      <apex:outputText value="{!pitem.name}"/>
                                                </apex:column>
@@ -250,15 +243,15 @@ background: #abb1b8;
                                            
                                                                                          
                                                <apex:column headerValue="Action">
-                                                   <apex:commandButton value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="cart_table, total">
+                                                   <apex:commandButton value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>   
                                                    
-                                                   <apex:commandButton value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="cart_table, total">
+                                                   <apex:commandButton value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton> 
                                                    
-                                                   <apex:commandButton value="Remove" action="{!onDelete}" rerender="cart_table, total">
+                                                   <apex:commandButton value="Remove" action="{!onDelete}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>           
                                                </apex:column>
@@ -269,34 +262,35 @@ background: #abb1b8;
                                                                                            
                                                  </apex:pageBlockTable> 
                                                 
-                                              <div class="col-sm-6 col-md-6 col-lg-4">                                                
+                                              <div class="col-sm-6 col-md-6 col-lg-4">  
+                                                    <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                         <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                                                   </apex:commandButton>                                        
                                               </div>
                                               <div class="col-sm-6 col-md-6 col-lg-4">                                             
                                               </div>
                                               <div class="col-sm-6 col-md-6 col-lg-4">
-                                                 <apex:pageMessage id="total" rendered="true" title="Total Estimated Bill" severity="high">                                                      
+                                                 <apex:pageMessage id="estimatedBill" rendered="true" title="Total Estimated Bill" severity="high">                                                      
                                                       <apex:outputField value="{!FoodOrder.TotalPriceEstimate__c}" style="float:right;" />                                                     
                                                       
                                                  </apex:pageMessage>
                                               </div>
 
+
+
                                                  </apex:pageBlock> 
+                                                 <apex:pageBlock id="payment">
+                                                    <apex:commandButton value="Pay now" action="{!payment}" rerender="cart, cart_table, currentBill, estimatedBill">    
+                                                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                                                          
+                                                   </apex:commandButton> 
+                                                </apex:pageBlock>
                                                 </apex:form>
+                                                
+                                                
+                                                
                                               </div>
 
 
-                                         <div class="row accepted_items">
-                                            Placeholder for div - accepted_items
-                                            
-                                            
-                                            
-                                            <div class="row current_bill">
-                                                Placeholder for div - current_bill
-                                            </div>
-                                        </div>
-                                        <div class="row placed_items">
-                                            Placeholder for div - placed_items
-                                        </div>
                                     </div>                                   
                                 </div>
                             </div>
