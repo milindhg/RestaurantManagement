@@ -1,16 +1,16 @@
-<apex:page sidebar="false" showHeader="false" controller="ChefListController">
+<apex:page sidebar="false" showHeader="false">
 
  <head>
 
      <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
-   <!-- <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" /> -->
-   <!--  <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" /> -->
-    <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
-    <!-- <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  /> -->
-    <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
-    <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
-    <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
-    <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
+     <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+     <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+     <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+     <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+     <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+     <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
     
     <apex:includeScript value="{!$Resource.cometd}"/>
     <apex:includeScript value="{!$Resource.jquery}"/>
@@ -62,9 +62,6 @@
              $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
              
              
-             
-              location.reload();
-             
              $('#tbody').append(
                 '<tr id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class="text-center">' 
                                + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
@@ -94,14 +91,7 @@
  </script>
 
  <body>
-    
-    
-    <apex:form >
-       <apex:commandButton value="Test" action="{!test}"></apex:commandButton>
-    </apex:form>
-    
-   
- 
+
     <div class="container">
       <div class="row">
          <div class="col-sm-6 col-md-10 col-lg-12">
@@ -124,11 +114,7 @@
          </div>
       </div>
    </div>
-    
-    
-    <div id="content1">
-      <apex:outputText value="{!stat}" ></apex:outputText>
-    </div>
+
  </body>
 
 </apex:page>

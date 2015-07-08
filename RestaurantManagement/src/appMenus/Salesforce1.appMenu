@@ -48,4 +48,8 @@
         <name>Menu</name>
         <type>CustomTab</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>WaiterPage</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>

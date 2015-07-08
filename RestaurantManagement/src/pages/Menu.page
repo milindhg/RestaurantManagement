@@ -60,13 +60,18 @@ background: #abb1b8;
         .desc{
         
         background-size:100%;
-        
-        
         margin:0px;
-        float:left;
         text-shadow:none;
-        
+        float:left;
+        width:200px;
         }
+      
+        #quantity_desc{
+        width:200px;
+        height:100px;
+        float:left;
+        }
+        
         .panel-default >.panel-heading {
         background-image:none;
         
@@ -74,7 +79,7 @@ background: #abb1b8;
         .panel-default >.panel-heading > .panel-title {
         color:white;
         }
-       
+        
         
         #menu_btn, #view_cart_btn{
         background-image:none;
@@ -119,7 +124,7 @@ background: #abb1b8;
         
     </style>
     <head>
-         <apex:includeScript value="{!$Resource.cometd}"/>
+        <apex:includeScript value="{!$Resource.cometd}"/>
         <apex:includeScript value="{!$Resource.jquery}"/>
         <apex:includeScript value="{!$Resource.json2}"/>
         <apex:includeScript value="{!$Resource.jquery_cometd}"/>
@@ -136,7 +141,7 @@ background: #abb1b8;
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         <apex:stylesheet value="https://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"  />
         
-       
+        
         
     </head>
     <script type="text/javascript">
@@ -146,21 +151,21 @@ background: #abb1b8;
     $j = jQuery.noConflict();
     
     $(document).ready(function() {
-
-       $.cometd.init({
-         url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
-         requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
-       });
- 
-       $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
-             //alert(JSON.stringify(message).replace(/\"/g, ""));
-          });
+       
+        $.cometd.init({
+            url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+        });
+        
+        $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
+            //alert(JSON.stringify(message).replace(/\"/g, ""));
+        });
     });
     
     
     (function($) {
-    
-      $.widget( "mobile.spinbox", {
+	       
+        $.widget( "mobile.spinbox", {
             options: {
                 // All widget options
                 dmin: false,
@@ -436,27 +441,27 @@ background: #abb1b8;
     
     function showDetail(event){
         
-         var item = event.target.parentNode;
+        var item = event.target.parentNode;
         
         var id= item.getElementsByTagName('p')[0].id;
-       
+        
         var desc = item.getElementsByTagName('p')[0].innerHTML;
-       
+        
         var tag = document.getElementById('item_desc');
         tag.getElementsByTagName('p')[0].innerHTML= desc;
         //$j( "#item_desc" ).popup({
         //positionTo: "origin"
-            //});
+        //});
         //$j( "#item_desc" ).popup( "option", "positionTo", "origin" );
         //$j("#item_desc").popup( 'reposition', 'positionTo: origin' );
-         
+        
         //$j( "#item_desc" ).popup( "open"{  
-      
+        
         //positionTo: "origin"  ); 
         $j("#item_desc").popup("open", { 
-      
-             positionTo: 'origin'
-    });
+            
+            positionTo: 'origin'
+        });
     }
     
     
@@ -464,9 +469,9 @@ background: #abb1b8;
     </script>
     <body>
         <apex:pageBlock >
-           <div id="content">
-           </div>
-           
+            <div id="content">
+            </div>
+            
             <div data-role="page" id="pageone">
                 <div data-role="header">
                     <h1>Place Order</h1>
@@ -503,34 +508,39 @@ background: #abb1b8;
                                                             <apex:form >
                                                                 <div class="col-sm-6 col-md-6 col-lg-4" > 
                                                                     <div class="panel panel-default" style="border: maroon 1px solid">
-                                                                        <div class="panel-body text-center" style="border: maroon 1px solid">
+                                                                        <div id="panel_body" class="panel-body text-center" style="border: maroon 1px solid">
                                                                             <div class="cardimage">
                                                                                 <apex:image value="{!$Resource.appetizer4}" width="120px" height="120px" />
-                                                                                                                                                        <div>
-                                                                <a href="#" data-role="button" onClick="showDetail(event);" id="showdetail">i</a>
-                                                                                <!--<a href="#" data-role="link" onClick="showDetail(event);" id="addorder"><img src="{!$Resource.appetizer4}"/></a>-->
-                                                                                <p id="descp" style="display:none">
-                                                                                    {!item.description}
-                                                                                </p>
-                                                            </div>
+                                                                                <div>
+                                                                                    <a href="#" data-role="button" onClick="showDetail(event);" id="showdetail">i</a>
+                                                                                    <!--<a href="#" data-role="link" onClick="showDetail(event);" id="addorder"><img src="{!$Resource.appetizer4}"/></a>-->
+                                                                                    <p id="descp" style="display:none">
+                                                                                        {!item.description}
+                                                                                    </p>
+                                                                                </div>
                                                                             </div>
                                                                             <div id="desc" class="desc">
                                                                                 <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/>
                                                                                 <br/><br/>
-																				
-                                                                                <label for="spin">Qty</label>
-                                                                                <div id="quantity_desc">
-         
-                                                                                <input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />                                  
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
-                                                                                </div>
+                                                                                <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')}" value="{!$Resource.veg}" width="20px"/>
+                                                                                <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')}" value="{!$Resource.vegan}" width="20px"/>
+                                                                                <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')}" value="{!$Resource.nonveg}" width="20px"/>
+                                                                            
                                                                             </div>
-      
+                                                                            <div id="quantity_desc">
+                                                                                <input type="text" id="spinEdit4" class="aSpinEdit" />
+                                                                                <label for="spin">Qty</label>
+                                                                                <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
+                                                                                <input type="number" min="0" max="10" value="1" id="quant" size="4"/>
+                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
+                                                                            
+                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </apex:form>
-                                                          
+                                                            
                                                         </apex:repeat> 
                                                     </div>  <!-- row -->
                                                     

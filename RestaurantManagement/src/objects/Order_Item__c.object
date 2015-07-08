@@ -56,6 +56,7 @@
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>Food_Item_Name__c</fullName>
+        <description>Required for PushTopics</description>
         <externalId>false</externalId>
         <formula>Food_Item__r.Name</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
@@ -94,6 +95,20 @@
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Item_Prep_Time__c</fullName>
+        <externalId>false</externalId>
+        <formula>Food_Item__r.Prep_Time__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Item Prep Time</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Price__c</fullName>
@@ -156,6 +171,7 @@
     </fields>
     <fields>
         <fullName>Table_Number__c</fullName>
+        <description>Required for PushTopics</description>
         <externalId>false</externalId>
         <formula>Food_Order__r.TableNumber__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
@@ -184,6 +200,7 @@
     </fields>
     <fields>
         <fullName>Type__c</fullName>
+        <description>Required for PushTopics</description>
         <externalId>false</externalId>
         <formula>IF(ISPICKVAL(  Food_Item__r.Category__c ,&apos;Appetizer&apos;), &apos;Appetizer&apos;,
   IF(ISPICKVAL( Food_Item__r.Category__c ,&apos;Entree&apos;), &apos;Entree&apos;,

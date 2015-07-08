@@ -1,22 +1,46 @@
 public class tablecontroller {
-
-    public tablecontroller() {
-	
-    }
-    public static String location = ApexPages.CurrentPage().getParameters().get('location');
+ public tablecontroller() {
+  }
+    public static String location;
     public static String tablename = ApexPages.CurrentPage().getParameters().get('tablename');
     public List<Displaytables> tables;
-    public static String Ready='Ready';
-    public static String Occupied='Occupied';
-  
-public List<Displaytables> gettables() {
+    public String selectedlocation;
+    public String getselectedlocation() {
+    return selectedlocation;
+}
+
+public void setselectedlocation(String recType) {
+    this.selectedlocation= recType;
+}
+     public List<SelectOption> getLocationdata()
+    {
+               List<SelectOption> LocationList= new List<SelectOption>();
+               for(Table__c t:[SELECT Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c])
+               {
+                LocationList.add(new SelectOption(t.Location__c,t.Location__c));
+               }
+       
+              return LocationList;
+    }
+    
+public List<Displaytables> gettables()
+{
  tables = new List<Displaytables>();
- for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c where Location__c=:'Indiana']) 
+ System.debug('selectedlocation');
+ for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c where Location__c=:location]) 
  {
  tables.add(new Displaytables(t));
- }
+ }    
 return tables;
+    
 }
+    
+public PageReference getTable() {
+    location = ApexPages.CurrentPage().getParameters().get('location');
+    System.debug('selectedlocation');
+    System.debug('location');
+    return null;
+ }
 
 public class Displaytables {
 private Table__c table;
@@ -38,13 +62,8 @@ get { return table.No_of_seats__c.intValue(); }
  public String TableNumber {
 get { return table.Table_Number__c; }
 }
-public void toready()
-  { 
-  }
 
-public void tooccupied()
-  { 
-  }
-
+    public void statuschange()
+  {   }
 }
 }

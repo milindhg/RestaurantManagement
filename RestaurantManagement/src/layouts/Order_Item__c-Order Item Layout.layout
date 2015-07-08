@@ -46,6 +46,10 @@
                 <behavior>Readonly</behavior>
                 <field>Food_Item_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Item_Prep_Time__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
