@@ -9,7 +9,7 @@ global class MenuItemListController {
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
+            for(Food_Item__c item : [Select Name, Category__c, Description__c,Diet__c, Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
                 ItemList.add(new DisplayMenuItems(item));
             }
         }
@@ -27,13 +27,13 @@ global class MenuItemListController {
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:table_number and f.Status__c != 'Paid' ];
-        	
+                
         if(existingOrder.isEmpty()){
-          	Food_Order__c order = new Food_Order__c();
+                Food_Order__c order = new Food_Order__c();
             order.Status__c='New';
-        	order.TableNumber__c=table_number;
-       		insert order;  
-        }        	
+                order.TableNumber__c=table_number;
+                insert order;  
+        }               
         
         List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
@@ -122,6 +122,10 @@ global class MenuItemListController {
         
         public String typ{
             get{return availableItems.Type__c;}
+        }
+        
+         public Object diet{
+            get{return availableItems.Diet__c;}
         }
         
     }

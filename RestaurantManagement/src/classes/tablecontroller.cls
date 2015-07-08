@@ -1,34 +1,20 @@
 public class tablecontroller {
 
+    public tablecontroller() {
+	
+    }
     public static String location = ApexPages.CurrentPage().getParameters().get('location');
-	List<Displaytables> tables;
+    public static String tablename = ApexPages.CurrentPage().getParameters().get('tablename');
+    public List<Displaytables> tables;
     public static String Ready='Ready';
     public static String Occupied='Occupied';
-    public static String tablename = ApexPages.CurrentPage().getParameters().get('tablename');
-    public tablecontroller(ApexPages.StandardController controller) {
-}
-   
-
-
-    public ApexPages.StandardSetController setCon {
-        get {
-            if(setCon == null) {
-                setCon = new ApexPages.StandardSetController(Database.getQueryLocator(
-                      [select Name from Table__c]));
-            }
-            return setCon;
-        }
-        set;
-    }
-    
-
+  
 public List<Displaytables> gettables() {
-
-tables = new List<Displaytables>();
-for(Table__c t : [
-SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c ]) {
-tables.add(new Displaytables(t));
-}
+ tables = new List<Displaytables>();
+ for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c where Location__c=:'Indiana']) 
+ {
+ tables.add(new Displaytables(t));
+ }
 return tables;
 }
 
@@ -52,17 +38,13 @@ get { return table.No_of_seats__c.intValue(); }
  public String TableNumber {
 get { return table.Table_Number__c; }
 }
-     public void toready()
-  {  Table__c  t = new Table__c();
-     t.Status__c = Ready;
-      update t;
+public void toready()
+  { 
   }
-    
+
 public void tooccupied()
-  {  Table__c  t = new Table__c();
-   
-     t.Status__c = Occupied;
-      update t;
+  { 
   }
+
 }
 }
