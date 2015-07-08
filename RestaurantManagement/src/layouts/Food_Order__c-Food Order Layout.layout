@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>TotalPrice__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>TotalPriceEstimate__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
