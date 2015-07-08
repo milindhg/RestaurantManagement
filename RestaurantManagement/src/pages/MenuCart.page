@@ -191,8 +191,46 @@ background: #abb1b8;
                                 <div class="panel-body">
                                     <div class="container">
                                         
+
+                                            <div class="row expected_bill">
+                                                Placeholder for div - expected_bill
+                                                
+                                                <apex:pageBlock title="Placed Orders">
+                                              <apex:pageBlockTable id="cart" value="{!activeCartItems}" var="pitem">
+                                              
+                                              <apex:column >
+                                               <apex:image value="{!$Resource.appetizer4}"/>
+                                               </apex:column>
+                                           
+                                                <apex:column headerValue="Item Name">
+                                                     <apex:outputText value="{!pitem.name}"/>
+                                               </apex:column>
+                                               
+                                                <apex:column headerValue="Quantity">
+                                                     <apex:outputText value="{!pitem.quantity}"/>
+                                               </apex:column>
+                                               
+                                               <apex:column headerValue="Total Price">
+                                                     <apex:outputText value="{!pitem.totalPrice}"/>
+                                               </apex:column>                                                                                              
+                                               
+                                              </apex:pageBlockTable>  
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                                 <apex:pageMessage id="total" rendered="true" title="Current Bill" severity="high">                                                      
+                                                      <apex:outputField value="{!FoodOrder.TotalPrice__c}" style="float:right;" />                                                     
+                                                      
+                                                 </apex:pageMessage>
+                                               </div>  
+                                              </apex:pageBlock> 
+                                            </div>
+                                            
+                                            
+                                        
                                         <div class="row active_cart">
-                                            Placeholder for div - active_cart
                                             
                                             <apex:form >
                                             <apex:pageBlock title="Cart">
@@ -228,74 +266,25 @@ background: #abb1b8;
                                                <apex:column headerValue="Total Price">
                                                      <apex:outputText value="{!pitem.totalPrice}"/>
                                                </apex:column>                                                                                          
-                                                             <apex:outputField value="{!FoodOrder.TotalPrice__c}"/>                              
+                                                                                           
                                                  </apex:pageBlockTable> 
                                                 
-                                                 <apex:pageMessage id="total" rendered="true" title="Total Bill" severity="high" detail="{!FoodOrder.TotalPrice__c}">
-                                                      <apex:param value="{!FoodOrder.TotalPrice__c}" />
+                                              <div class="col-sm-6 col-md-6 col-lg-4">                                                
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">                                             
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                                 <apex:pageMessage id="total" rendered="true" title="Total Estimated Bill" severity="high">                                                      
+                                                      <apex:outputField value="{!FoodOrder.TotalPriceEstimate__c}" style="float:right;" />                                                     
+                                                      
                                                  </apex:pageMessage>
-                                               
-                                               <apex:panelGrid rendered="true" title="Amount"  summary="{!FoodOrder.TotalPrice__c}" />
-                                                   <apex:panelGrid columns="1" style="float:right;">
-        <apex:outputField value="{!FoodOrder.TotalPrice__c}"/>
-        
-    </apex:panelGrid>
-                                             
+                                              </div>
+
                                                  </apex:pageBlock> 
                                                 </apex:form>
-                                                
-                                                
-                                                
-                                                
-                                                
-                                            <div class="row expected_bill">
-                                                Placeholder for div - expected_bill
-                                                
-                                                <apex:pageBlock title="Cart">
-                                              <apex:pageBlockTable id="cart_table" value="{!orderItemsList}" var="pitem">
-                                              
-                                              <apex:column >
-                                               <apex:image value="{!$Resource.appetizer4}"/>
-                                               </apex:column>
-                                           
-                                                <apex:column headerValue="Item Name">
-                                                     <apex:outputText value="{!pitem.name}"/>
-                                               </apex:column>
-                                               
-                                                <apex:column headerValue="Quantity">
-                                                     <apex:outputText value="{!pitem.quantity}"/>
-                                               </apex:column>
-                                               
-                                               <apex:column headerValue="Total Price">
-                                                     <apex:outputText value="{!pitem.totalPrice}"/>
-                                               </apex:column>                                                                                              
-                                               
-                                              </apex:pageBlockTable>  
-                                                 <apex:pageMessage rendered="true"  title="Total Bill" severity="high" detail="{!FoodOrder.TotalPrice__c}"></apex:pageMessage>
-                                              </apex:pageBlock> 
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-4"> 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body text-center">
-                                                        <div class="cardimage">
-                                                            <apex:image value="{!$Resource.appetizer4}" style="height:50px;width:50px;"/>
-                                                        </div>
-                                                    Quantity:  
-                                                    Price: 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-6 col-md-6 col-lg-4"> 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body text-center">
-                                                        <div class="cardimage">
-                                                            <apex:image value="{!$Resource.appetizer4}"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                              </div>
+
+
                                          <div class="row accepted_items">
                                             Placeholder for div - accepted_items
                                             
