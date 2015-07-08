@@ -3,10 +3,10 @@
 <apex:outputPanel >
 <h1>Select your Location: </h1>
 </apex:outputPanel>
-<apex:inputField value="{!Table__c.Location__c}"/>
-<apex:param value="!Table__c.Location__c" name="location"/>    
-
-   
+<apex:inputField value="{!Table__c.Location__c}" id="table_location">
+<apex:actionSupport event="onchange" reRender="tablesrerender"/>
+<apex:param value="this.value" name="location"/>    
+</apex:inputField>   
 <apex:pageBlock id="tablesrerender">
 <apex:pageBlockSection columns="1">
 <apex:pageBlockTable value="{!tables}" var="s">
@@ -14,12 +14,13 @@
 <apex:column value="{!s.TableNumber}" headerValue="TableNumber"/>
 <apex:column value="{!s.Status}" headerValue="Status"/>
 <apex:column value="{!s.Seats}" headerValue="Seats Available"/>
+<apex:column value="{!s.Locations}" headerValue="Locations"/>
 <apex:column headerValue="Action">  
   <apex:commandButton action="{!s.toready}" value="Ready" reRender="tablesrerender" >
-       <apex:param name="tablename" value="{!s.name}"/>    
+       <apex:param name="tablename" assignTo="{!CurrentStatusID}" value="{!s.name}"/>    
     </apex:commandButton>
   <apex:commandButton action="{!s.tooccupied}" value="Occupied" reRender="tablesrerender"  >
-     <apex:param name="tablename" value="{!s.name}"/>    
+     <apex:param name="tablename" assignTo="{!CurrentStatusID}" value="{!s.name}"/>    
     </apex:commandButton>
 </apex:column>
   

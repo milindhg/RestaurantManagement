@@ -18,13 +18,8 @@ background: #abb1b8;
         text-shadow:none;
         }
         
-        .ui-btn-icon-left:after, .ui-btn-icon-right:after, .ui-btn-icon-top:after, .ui-btn-icon-bottom:after, .ui-btn-icon-notext:after{
-          content: "";
-   	position: relative; 
-  		display: block;
-   	width: 11px; 
-   	height: 11px; 
-        }
+        
+        
         
         .col-sm-6{
         margin-top:10px;
@@ -79,10 +74,7 @@ background: #abb1b8;
         .panel-default >.panel-heading > .panel-title {
         color:white;
         }
-        #spin{
-        	width:20px !important;
-        	height:10px !important;
-        }
+       
         
         #menu_btn, #view_cart_btn{
         background-image:none;
@@ -123,10 +115,14 @@ background: #abb1b8;
         height:50px;
         padding:5px;
         margin:0px;
-        
         }
+        
     </style>
     <head>
+         <apex:includeScript value="{!$Resource.cometd}"/>
+        <apex:includeScript value="{!$Resource.jquery}"/>
+        <apex:includeScript value="{!$Resource.json2}"/>
+        <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
@@ -140,15 +136,31 @@ background: #abb1b8;
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         <apex:stylesheet value="https://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"  />
         
-        
+       
         
     </head>
     <script type="text/javascript">
     sforce.connection.sessionId = "{!$Api.Session_ID}";
     //sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
+    
     $j = jQuery.noConflict();
+    
+    $(document).ready(function() {
+
+       $.cometd.init({
+         url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+         requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+       });
+ 
+       $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
+             //alert(JSON.stringify(message).replace(/\"/g, ""));
+          });
+    });
+    
+    
     (function($) {
-        $.widget( "mobile.spinbox", {
+    
+      $.widget( "mobile.spinbox", {
             options: {
                 // All widget options
                 dmin: false,
@@ -383,6 +395,7 @@ background: #abb1b8;
                 this.options.disabled = false;
             }
         });
+        
     })( jQuery );
     
     function AddOrder(event,name){
@@ -442,8 +455,8 @@ background: #abb1b8;
         //positionTo: "origin"  ); 
         $j("#item_desc").popup("open", { 
       
-    		 positionTo: 'origin'
-	});
+             positionTo: 'origin'
+    });
     }
     
     
@@ -451,6 +464,9 @@ background: #abb1b8;
     </script>
     <body>
         <apex:pageBlock >
+           <div id="content">
+           </div>
+           
             <div data-role="page" id="pageone">
                 <div data-role="header">
                     <h1>Place Order</h1>
@@ -499,16 +515,15 @@ background: #abb1b8;
                                                             </div>
                                                                             </div>
                                                                             <div id="desc" class="desc">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/><br/><br/>
-                                                                                <apex:outputText value="{!item.typ}" style="color:maroon"/><br/><br/>
-                                                                            
-     																			
-
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/>
+                                                                                <br/><br/>
+																				
                                                                                 <label for="spin">Qty</label>
-                                                                     
-                                                                                <input type="text" data-role="spinbox" name="spin" id="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />                                  
+                                                                                <div id="quantity_desc">
+         
+                                                                                <input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" />                                  
                                                                                 <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
-                                                                                
+                                                                                </div>
                                                                             </div>
       
                                                                         </div>
