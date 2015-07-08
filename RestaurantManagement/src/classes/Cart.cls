@@ -1,5 +1,6 @@
 global with sharing class Cart{
 
+    public String foodOrderId = 'a0537000000RI9b';
     public Cart(){  }
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
@@ -15,7 +16,7 @@ global with sharing class Cart{
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
                         From Food_Order__c f 
-                        where f.id='a0537000000RI9b'];
+                        where f.id=:foodOrderId];
     }
                             
     public Cart(ApexPages.StandardController controller) {}
@@ -38,7 +39,7 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id]){
-            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready')
+            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
                 orderItemsList.add(new DisplayCart(item));
         }
         //fo = getFoodOrder();
@@ -62,7 +63,7 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id]){
-            if(item.Status__c == 'New' || item.Status__c == 'Pending')
+            if(item.Status__c == 'New')
                 activeCartItems.add(new DisplayCart(item));
         }
         //fo = getFoodOrder();
@@ -97,14 +98,30 @@ global with sharing class Cart{
      }
      
      public void onDelete() {
-           String id= system.CurrentPageReference().getParameters().get('id');
-  
-
-           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
-                                                      
-                   
-           delete orderItem;
-                             
+          String id= system.CurrentPageReference().getParameters().get('id');
+          Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
+          delete orderItem;                             
+     }
+     
+     public void placeOrder() {
+        String id= system.CurrentPageReference().getParameters().get('id');  
+        Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
+        fo.Status__c = 'Pending';
+        update fo;
+        
+        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
+        for(Order_Item__c o : orderItems){
+            o.Status__c = 'Pending';            
+        }
+        update orderItems;                                                                 
+     }
+     
+     public void payment() {
+        String id= system.CurrentPageReference().getParameters().get('id');  
+        Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
+        fo.Status__c = 'Paid';
+        update fo;
+                                                                               
      }
      
      public void paidStatusUpdate(){
