@@ -61,7 +61,7 @@
         <picklist>
             <picklistValues>
                 <fullName>California</fullName>
-                <default>true</default>
+                <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Indiana</fullName>
