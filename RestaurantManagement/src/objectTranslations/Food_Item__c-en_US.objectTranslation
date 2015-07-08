@@ -29,6 +29,10 @@
         <name>Description__c</name>
     </fields>
     <fields>
+        <label><!-- Diet --></label>
+        <name>Diet__c</name>
+    </fields>
+    <fields>
         <label><!-- Preparation Time --></label>
         <name>Prep_Time__c</name>
     </fields>

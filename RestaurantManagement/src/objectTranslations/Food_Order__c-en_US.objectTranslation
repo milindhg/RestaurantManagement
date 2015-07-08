@@ -45,6 +45,12 @@
         <name>TableNumber__c</name>
     </fields>
     <fields>
+        <help><!-- This is Expected Bill Amount to charge Customer if all order items are fulfilled. --></help>
+        <label><!-- Total Price Estimate --></label>
+        <name>TotalPriceEstimate__c</name>
+    </fields>
+    <fields>
+        <help><!-- This is Bill Amount to charge Customer. --></help>
         <label><!-- Total Price --></label>
         <name>TotalPrice__c</name>
     </fields>
