@@ -1,11 +1,14 @@
 /**
  * @author Milind Gokhale
+ * Creation Date: July 7, 2015
  * This trigger: updateOrderBill is for updating the order bill amounts in the Order table.
  * Basic Logic: Always keep the BillAmount and Expected Bill Amount in the Order table with the latest total amounts.
+ *              Whether the order items are inserted, updated or deleted.
+ * 
+ * Change 1. Added logic for maintaining expected bill amount along with the total bill (Total price) of the order.
  */
 
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
-    //for (Order_Item__c itemInLoop : Trigger.new) {
         Integer i = 0;
         String intTest;
         
@@ -33,6 +36,10 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         Id myFoodOrderId = myOrderItem.Food_Order__c;
         System.debug('My Order is: !!!!' + myFoodOrderId);
         
+        String[] types = new String[] {'Order_Item__c'};
+        Schema.DescribeSobjectResult[] results = Schema.describeSObjects(types);
+        System.debug('The results are: !!!!' + results);
+        
         //get all the orderItems associated with the parent Order of the currently operated orderItem.
         List<Order_Item__c> allOrderItems = [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                             o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
@@ -45,13 +52,20 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
              
         //Calculate the updated bill amounts by adding the bill amounts of all the Child Order Items
         Decimal newTotalPrice = 0;
+        Decimal newExpectedBill = 0;
         for(Order_Item__c item : allOrderItems)
         {
             if(item.Total_Price__c!=null)
             {
-                newTotalPrice += item.Total_Price__c;
+                newExpectedBill += item.Total_Price__c;
+                if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up')
+                {
+                    newTotalPrice += item.Total_Price__c;
+                }
             }
         }
+        //If the current operation on orderItem is delete, 
+        //then we don't want to include the total price of that orderitem in our new bill amounts.
         if(Trigger.isDelete)
             newTotalPrice -= myOrderItem.Total_Price__c;
         
@@ -67,8 +81,8 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         
         System.debug('My Order Current TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
         myFoodOrder.TotalPrice__c = newTotalPrice;
+        myFoodOrder.TotalPriceEstimate__c = newExpectedBill;
         update(myFoodOrder);
         System.debug('My Order New TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
         
-    //}
 }
