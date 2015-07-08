@@ -118,8 +118,22 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>TotalPrice__c</fullName>
+        <fullName>TotalPriceEstimate__c</fullName>
+        <description>This field will contain the summation of the total price of all the order items in this order. This is the expected bill to customer if all his cart items are accepted i.e. delivered.</description>
         <externalId>false</externalId>
+        <inlineHelpText>This is Expected Bill Amount to charge Customer if all order items are fulfilled.</inlineHelpText>
+        <label>Total Price Estimate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>TotalPrice__c</fullName>
+        <description>This field will contain the summation of the total price of all the order items which have status accepted and forward in this order, so that the customer is charged for the accepted order items only.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is Bill Amount to charge Customer.</inlineHelpText>
         <label>Total Price</label>
         <precision>18</precision>
         <required>false</required>
