@@ -58,7 +58,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
             if(item.Total_Price__c!=null)
             {
                 newExpectedBill += item.Total_Price__c;
-                if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up')
+                if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up' || item.Status__c == 'Pending')
                 {
                     newTotalPrice += item.Total_Price__c;
                 }
