@@ -3,6 +3,9 @@ global class MenuItemListController {
     
     
     public static List<DisplayMenuItems> ItemList;
+    //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
+    public static String Location='Ohio';
+    public static String table=ApexPages.currentPage().getParameters().get('tableid');
     
     public List<DisplayMenuItems> getMenuItems(){
         
@@ -19,19 +22,19 @@ global class MenuItemListController {
     
     @RemoteAction 
     WebService static String createOrderItem(String item, String quant){
-        Decimal table_number=1;
+        Decimal tableid= Decimal.valueOf(table);
         System.debug(item);
         System.debug(quant);
         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:table_number and f.Status__c != 'Paid' ];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' ];
                 
         if(existingOrder.isEmpty()){
                 Food_Order__c order = new Food_Order__c();
             order.Status__c='New';
-                order.TableNumber__c=table_number;
+                order.TableNumber__c=tableid;
                 insert order;  
         }               
         
@@ -39,7 +42,7 @@ global class MenuItemListController {
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:table_number and f.Status__c != 'Paid'];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid'];
         String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
                                         f.Prep_Time__c, f.OwnerId, f.Name, f.LastViewedDate, 

@@ -1,13 +1,24 @@
 <apex:page controller="tablecontroller">
+
+<head>
+  <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:stylesheet value="{!$Resource.customStyle}"  />
+</head>
+<div class="container">
+            <div class="page-header" id="pageHeader">
+                FRONT DESK MANAGER
+            </div>
 <apex:form >
 <apex:pageBlock >
-<apex:pageBlockSection columns="1">
+
 <apex:outputPanel >
-<h1>Select your Location: </h1>
+Select your Location: 
 <apex:selectList value="{!selectedlocation }" size="1" >
 <apex:selectOptions value="{!Locationdata}"/>
-<apex:actionSupport event="onchange" action="{!getTable}" reRender="tablesrerender">
-<apex:param name="location"  value="{!selectedlocation}"/>
+<apex:actionSupport event="onchange" reRender="tablesrerender">
 </apex:actionSupport>
 </apex:selectList>
 </apex:outputPanel>    
@@ -18,17 +29,18 @@
 <apex:column value="{!s.Seats}" headerValue="Seats Available"/>
 <apex:column value="{!s.Locations}" headerValue="Locations"/>
 <apex:column headerValue="Action">  
-  <apex:commandButton action="{!s.statuschange}" value="Ready" reRender="tablesrerender" >
+  <apex:commandButton action="{!updatestatus}" value="Change Status" reRender="tablesrerender" >
        <apex:param name="tablename" value="{!s.name}"/>    
     </apex:commandButton>
-  <apex:commandButton action="{!s.statuschange}" value="Occupied" reRender="tablesrerender"  >
-     <apex:param name="tablename" value="{!s.name}"/>    
-    </apex:commandButton>
 </apex:column>
-  
+    <apex:column >
+  <apex:commandButton action="https://c.na31.visual.force.com/apex/MenuNew?reqlocation={!selectedlocation }&tableid={!s.name}" value="Menu"  >
+ </apex:commandButton>
+        </apex:column>
+       
 </apex:pageBlockTable>
-    
-</apex:pageBlockSection>
+
 </apex:pageBlock>
-      </apex:form> 
+</apex:form> 
+ </div>
 </apex:page>

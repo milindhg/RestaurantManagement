@@ -193,7 +193,7 @@ background: #abb1b8;
 
                                             <div class="row billed_items">
                                                 <!-- Placeholder for div - billed_items -->
-                                                
+                                                <apex:form >
                                                 <apex:pageBlock title="Billed Items">
                                               <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
                                               
@@ -205,6 +205,20 @@ background: #abb1b8;
                                                
                                                 <apex:column headerValue="Quantity">
                                                      <apex:outputText value="{!pitem.quantity}"/>
+                                               </apex:column>
+                                               
+                                               <apex:column headerValue="Action">
+                                                   <apex:commandButton value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                                   </apex:commandButton>   
+                                                   
+                                                   <apex:commandButton value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                                   </apex:commandButton> 
+                                                   
+                                                   <apex:commandButton value="Remove" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                                   </apex:commandButton>           
                                                </apex:column>
                                                
                                                <apex:column headerValue="Total Price">
@@ -223,12 +237,14 @@ background: #abb1b8;
                                                  </apex:pageMessage>
                                                </div>  
                                               </apex:pageBlock> 
+                                              </apex:form>
                                             </div>
                                             
                                             
                                         
                                             <div class="row active_cart_items">
                                                 <!-- Placeholder for div - active_cart_items div -->
+                                                <!-- Make this div visible only when there is content inside. -->
                                             <apex:form >
                                             <apex:pageBlock title="Cart">
                                               <apex:pageBlockTable id="cart_table" value="{!activeCartItems}" var="pitem">
@@ -266,6 +282,9 @@ background: #abb1b8;
                                                     <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                                                    </apex:commandButton>                                        
+                                                    <apex:commandButton value="Reset Cart {! activeCartItems.size}" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                         <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                                                   </apex:commandButton>                                        
                                               </div>
                                               <div class="col-sm-6 col-md-6 col-lg-4">                                             
                                               </div>
@@ -276,21 +295,14 @@ background: #abb1b8;
                                                  </apex:pageMessage>
                                               </div>
 
-
-
-                                                 </apex:pageBlock> 
-                                                 <apex:pageBlock id="payment">
-                                                    <apex:commandButton value="Pay now" action="{!payment}" rerender="cart, cart_table, currentBill, estimatedBill">    
-                                                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                                                          
+                                            </apex:pageBlock> 
+                                                <apex:pageBlock id="payment">
+                                                    <apex:commandButton value="Pay now" action="{!paidStatusUpdate}" disabled="{!FoodOrder.Status__c != 'Delivered' }" rerender="cart, cart_table, currentBill, estimatedBill">    
+                                                            <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                                          
                                                    </apex:commandButton> 
                                                 </apex:pageBlock>
-                                                </apex:form>
-                                                
-                                                
-                                                
-                                              </div>
-
-
+                                        </apex:form>
+                                        </div>
                                     </div>                                   
                                 </div>
                             </div>

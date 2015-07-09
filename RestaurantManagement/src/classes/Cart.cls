@@ -5,6 +5,7 @@ global with sharing class Cart{
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
     
+    
     public static final String PAID = 'Paid';
     
     Food_Order__c fo = getFoodOrder();
@@ -38,7 +39,8 @@ global with sharing class Cart{
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
-                                    where o.Food_order__c=:fo.id]){
+                                    where o.Food_order__c=:fo.id
+                                    order by o.Status__c]){
             if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
                 orderItemsList.add(new DisplayCart(item));
         }
@@ -116,14 +118,16 @@ global with sharing class Cart{
         update orderItems;                                                                 
      }
      
-     public void payment() {
+     public void resetCart() {
         String id= system.CurrentPageReference().getParameters().get('id');  
         Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
-        fo.Status__c = 'Paid';
+        fo.Status__c = 'Pending';
         update fo;
-                                                                               
+        
+        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
+        delete orderItems;                                                                 
      }
-     
+
      public void paidStatusUpdate(){
          ID foodOrderId = ApexPages.CurrentPage().getParameters().get('foodOrderId');
          Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE ID=:foodOrderId];

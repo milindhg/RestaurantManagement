@@ -2,5 +2,4 @@
 <StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
     <cacheControl>Public</cacheControl>
     <contentType>image/jpeg</contentType>
-    <description>Suitable for Vegetarians</description>
 </StaticResource>

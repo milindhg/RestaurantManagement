@@ -8,7 +8,7 @@
 }
 
 thead {
-    background: peachpuff none repeat scroll 0 0;
+    background: maroon none repeat scroll 0 0;
 }
 
 #pickUpBtn {
@@ -17,6 +17,35 @@ thead {
     width: 100px;
 }
 
-.border {
-    border: 2px solid chocolate;
+.readyBtn {
+    background: greenyellow none repeat scroll 0 0;
+    font: bold 15px sans-serif;
+    width: 100px;
+    margin-left: 6px;
 }
+
+.acceptBtn{
+    background: coral none repeat scroll 0 0;
+    font: bold 15px sans-serif;
+    width: 100px;
+
+}
+
+th.borderBottom {
+    border-bottom-width:  0 !important;
+}
+ 
+.border {
+    border: 2px solid #ddd;
+}
+
+.fontStyleThead {
+  color:white;
+  text-shadow: none;
+}
+
+.fontStyleTr {
+  font-weight: bold;
+}
+
+

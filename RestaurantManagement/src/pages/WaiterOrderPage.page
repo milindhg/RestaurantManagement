@@ -43,7 +43,7 @@
                  $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
                  
                  $('#tbody').append(
-                    '<tr class = \"border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"text-center\">' 
+                    '<tr class = \"fontStyleTr border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"text-center\">' 
                                    + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
                     
                     '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
@@ -76,12 +76,12 @@
                     <div class="table-responsive">
                         <table class="border table table-hover table-bordered">
                             <thead>
-                                <tr class="border">
-                                    <th id="table_no" class="border text-center" scope="col">Table Number</th>
-                                    <th id="dish_type" class=" border text-center" scope="col">Dish Type</th>
-                                    <th id="dish_name" class="border text-center" scope="col">Dish Name</th>
-                                    <th id="qty" class="border text-center" scope="col">Quantity</th>
-                                    <th id="status" class="border text-center" scope="col">Order Status</th>
+                                <tr class="border fontStyleThead">
+                                    <th id="table_no" class="borderBottom text-center" scope="col">Table Number</th>
+                                    <th id="dish_type" class=" borderBottom text-center" scope="col">Dish Type</th>
+                                    <th id="dish_name" class="borderBottom text-center" scope="col">Dish Name</th>
+                                    <th id="qty" class="borderBottom text-center" scope="col">Quantity</th>
+                                    <th id="status" class="borderBottom text-center" scope="col">Order Status</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody">

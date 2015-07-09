@@ -60,15 +60,11 @@
         <label>Location</label>
         <picklist>
             <picklistValues>
-                <fullName>California</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Indiana</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Newyork</fullName>
+                <fullName>Virginia</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -105,10 +101,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Occupied</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Cleaning</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>

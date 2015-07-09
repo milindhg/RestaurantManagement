@@ -1,120 +1,127 @@
 <apex:page sidebar="false" showHeader="false">
 
- <head>
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+        <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+        <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:stylesheet value="{!$Resource.customStyle}"/>
+        <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+        <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
+        
+        <apex:includeScript value="{!$Resource.cometd}"/>
+        <apex:includeScript value="{!$Resource.jquery}"/>
+        <apex:includeScript value="{!$Resource.json2}"/>
+        <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+    </head>    
 
-     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
-     <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
-     <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
-     <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
-     <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
-     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
-     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
-     <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
-     <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
-    
-    <apex:includeScript value="{!$Resource.cometd}"/>
-    <apex:includeScript value="{!$Resource.jquery}"/>
-    <apex:includeScript value="{!$Resource.json2}"/>
-    <apex:includeScript value="{!$Resource.jquery_cometd}"/>
-  
- </head>    
+    <script type="text/javascript">
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        
+        function accept(orderItemId, foodOrderId){
+           alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
+        
+           var result = sforce.apex.execute("ChefListController",
+                                             "itemAcceptUpdate",
+                                             {orderItemId, foodOrderId
+                                             });
+                                             
+           document.getElementById("accept_"+orderItemId).disabled = true;
+           $('#orderStatus_'+orderItemId).text('Preparing');
+           $('#ready_'+orderItemId).removeAttr('disabled');
+       }
+        
+        function ready(orderItemId){
+             alert('Order Item Id: ' + orderItemId);
+             var result  = sforce.apex.execute("ChefListController",
+                                               "itemReadyUpdate",
+                                               {orderItemId
+                                               });
+            $('#orderStatus_'+orderItemId).text('Ready');
+            $('#'+orderItemId).remove();
 
- <script type="text/javascript">
-   sforce.connection.sessionId = "{!$Api.Session_ID}";
-   
-   function accept(orderItemId, foodOrderId){
-       alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
-
-       var result = sforce.apex.execute("ChefListController",
-                                         "itemAcceptUpdate",
-                                         {orderItemId, foodOrderId
-                                         });
-                                         
-                                         //alert(result);
-                                        
-       document.getElementById("accept_"+orderItemId).disabled = true;                    
-                                         
-                           
-   }
-   
-   function ready(orderItemId){
-         alert('Order Item Id: ' + orderItemId);
-         var result  = sforce.apex.execute("ChefListController",
-                                           "itemReadyUpdate",
-                                           {orderItemId
-                                           });
-                                           
-       $('#'+orderItemId).remove();
-                                                  
-   }
- 
-   (function($){
-     $(document).ready(function() {
-      
-       // Connect to the CometD endpoint
-       $.cometd.init({
-         url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
-         requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
-       });
- 
-      // Subscribe to a topic. JSON-encoded update will be returned in the callback
-      $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-             $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
-             
-             
-             $('#tbody').append(
-                '<tr id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class="text-center">' 
+        }
+        
+        (function($){
+         $(document).ready(function() {
+          
+           // Connect to the CometD endpoint
+           $.cometd.init({
+             url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+             requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+           });
+        
+          // Subscribe to a topic. JSON-encoded update will be returned in the callback
+          $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
+                $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
+                
+                $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
+                 
+                
+                $('#tbody').append(
+                '<tr class=\"fontStyleTr border\" id=\"' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\"><td class=\"text-center\">' 
                                + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
                 
-                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
+                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
                 
-                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
+                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
                 
-                '</td><td class="text-center">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
+                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
                 
-                '</td><td class="text-center">' +
-                      '<button id="accept_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '" class="btn" onClick="accept(\'' +
+                '</td><td id=\"orderStatus_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"border text-center\">Pending'+
+                '</td><td class=\"border text-center\">' +
+                      '<button id=\"accept_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
                              JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\'' +
-                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');">Accept</button>' + 
+                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Accept</button>' + 
                              
-                '<button class="btn" onClick="ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
-                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');">Ready</button>' + '</td></tr>');   
+                '<button disabled=\"disabled\" id=\"ready_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"readyBtn\" onClick=\"ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
+                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\" >Ready</button>' + '</td></tr>');   
             });
-    });
-  })(jQuery)
-  
-  function disconnect() {
-    $.cometd.disconnect();
-  }
+            
+          
+            
+        });
+        })(jQuery)
+        
+        function disconnect() {
+        $.cometd.disconnect();
+        }
+        
+        window.onbeforeunload = disconnect;
+    </script>
 
-   window.onbeforeunload = disconnect;
- </script>
-
- <body>
-
-    <div class="container">
-      <div class="row">
-         <div class="col-sm-6 col-md-10 col-lg-12">
-           <div class="table-responsive">
-              <table class="table table-hover table-bordered">
-                 <thead>
-                   <tr>
-                    <th id="table_no" class="text-center" scope="col">Table Number</th>
-                    <th id="dish_type" class="text-center" scope="col">Dish Type</th>
-                    <th id="dish_name" class="text-center" scope="col">Dish Name</th>
-                    <th id="qty" class="text-center" scope="col">Quantity</th>
-                    <th id="status" class="text-center" scope="col">Order Status</th>
-                   </tr>
-                 </thead>
-                 <tbody id="tbody">
-                   
-                 </tbody>
-              </table>
-           </div>
-         </div>
-      </div>
-   </div>
-
- </body>
+    <body>
+    
+        <div class="container">
+            <div class="page-header" id="pageHeader">
+                    Intern Cafe
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="border table table-hover table-bordered">
+                            <thead>
+                                <tr class="border fontStyleThead">
+                                    <th class="borderBottom text-center" scope="col">Table Number</th>
+                                    <th class="borderBottom text-center" scope="col">Dish Type</th>
+                                    <th class="borderBottom text-center" scope="col">Dish Name</th>
+                                    <th class="borderBottom text-center" scope="col">Quantity</th>
+                                    <th class="borderBottom text-center" scope="col">Item Status</th>
+                                    <th class="borderBottom text-center" scope="col">Action</th>
+                                </tr>
+                            </thead>
+                                <tbody id="tbody">
+                                
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </body>
 
 </apex:page>

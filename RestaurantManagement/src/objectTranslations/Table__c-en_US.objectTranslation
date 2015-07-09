@@ -12,20 +12,16 @@
         <label><!-- Location --></label>
         <name>Location__c</name>
         <picklistValues>
-            <masterLabel>California</masterLabel>
-            <translation><!-- California --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Indiana</masterLabel>
             <translation><!-- Indiana --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Newyork</masterLabel>
-            <translation><!-- Newyork --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Ohio</masterLabel>
             <translation><!-- Ohio --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Virginia</masterLabel>
+            <translation><!-- Virginia --></translation>
         </picklistValues>
     </fields>
     <fields>
@@ -35,10 +31,6 @@
     <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
-        <picklistValues>
-            <masterLabel>Cleaning</masterLabel>
-            <translation><!-- Cleaning --></translation>
-        </picklistValues>
         <picklistValues>
             <masterLabel>Occupied</masterLabel>
             <translation><!-- Occupied --></translation>

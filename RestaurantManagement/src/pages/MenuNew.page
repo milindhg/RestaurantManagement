@@ -12,23 +12,28 @@ margin-bottom: 10px;
 background: #abb1b8;
 
 }-->
-        .container1 {
+        #item_name{
+        text-align:left;
+        }
+        .card {
+        padding:0px;
     position: absolute;   
     -webkit-perspective: 1000;
     -moz-perspective: 1000;
 }
 .page1 {
-    width: 300px;
-    height: 300px;
-    background: red;
+    width: 100%;
+    height: 200px;
+    background: white;
     position: relative;
 }
 .page2 {
-    width: 300px;
-    height: 300px;
-    background: blue;
+    width: 100%;
+    height: 200px;
+    background: white;
     position: relative;
     display: none;
+        background-image:url('{!$Resource.salad}');background-repeat:no-repeat;background-size:100%;
 }
 
 .flip {
@@ -110,25 +115,30 @@ background: #abb1b8;
         
         
         .panel-body {
-        
-        
-        background-color:white !important;
-        padding:0px;
+        	background-color:white !important;
+        	text-align:left !important;
+        	padding:0px;
         }
         
         .cardimage{
+        padding:0px;
+        margin:0px;
+        width:100%;
         background-image:url('{!$Resource.salad}');background-repeat:no-repeat;background-size:100%;
+        top:0;
+        right:0;
         height:150px;
         
         }
         
-        .desc{
-        
-        background-size:100%;
-        margin:0px;
-        text-shadow:none;
-        float:left;
-        width:200px;
+        #content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
+        #desc{
+        padding:10px;
+        height:50%;
         }
         
         #quantity_desc{
@@ -137,9 +147,7 @@ background: #abb1b8;
         float:left;
         }
         
-        #desc2{
-        height:60px;
-        }
+       
         .panel-default >.panel-heading {
         background-image:none;
         
@@ -217,8 +225,10 @@ background: #abb1b8;
     //sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
     
     $j = jQuery.noConflict();
-    
+    $j('#spinEdit').spinedit();
     $(document).ready(function() {
+        
+        
         
         $.cometd.init({
             url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
@@ -230,9 +240,9 @@ background: #abb1b8;
         });
     });
     
-     $('#spinEdit').spinedit();
+    
     (function($) {
-       
+        
         $.widget( "mobile.spinbox", {
             options: {
                 // All widget options
@@ -532,8 +542,14 @@ background: #abb1b8;
         });
     }
     
-function flip() {
-    var page1 = $('.page1');
+function flip(event) {
+    
+    var item = event.target.parentNode;
+    //var page= 	item.getElementsByTagName('div')[0].id;
+    alert(item.id);
+    //var page = item.id;
+    //alert(page);
+    var page1 = $(item);
     var page2 = $('.page2');
     var toHide = page1.is(':visible') ? page1 : page2 ;
     var toShow = page2.is(':visible') ? page1 : page2 ;
@@ -585,39 +601,49 @@ function flip() {
                                                                 <div class="col-sm-6 col-md-6 col-lg-4" > 
                                                                     <div class="panel panel-default" >
                                                                         <div id="panel_body" class="panel-body text-center">
-                                                                            <div class="cardimage">
-                                                                                <!--<apex:image value="{!$Resource.}" width="120px" height="120px" />-->
-                                                                                <!--<div>
-<a href="#" data-role="button" onClick="showDetail(event);" id="showdetail">i</a>
-<!--<a href="#" data-role="link" onClick="showDetail(event);" id="addorder"><img src="{!$Resource.appetizer4}"/></a>-->
+                                                                            
                                                                                 
-                                                                                <!-- </div>-->
+                                                                                    
+                                                                                
+                                                                            <div class="cardimage">
                                                                             </div>
                                                                             <div id="desc2">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon"/>
-                                                                                <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')}" value="{!$Resource.veg}" width="20px"/>
-                                                                                <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')}" value="{!$Resource.vegan}" width="20px"/>
-                                                                                <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')}" value="{!$Resource.nonveg}" width="20px"/>
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon" />
+                                                                                <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
+                                                                                <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
+                                                                                <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
+
+                            												<div id="desc" style="padding:0px;margin:0px;height:40px;">
+                                                                                
                                                                                 
                                                                                 <p>
                                                                                     {!item.description}
                                                                                 </p>
+                                                                                <input type="text" id="spinEdit"/>
+                                                                                </div>
                                                                                 
-                                                                            </div>
+                                                                               </div>
+                                                                                <div id="price" style="float:left;">
+                                                                                     
+                                                                               
+                                                                                    <p style="float:left;padding-right:10px;">
+                                                                                      Price  
+                                                                                    </p><p id="price" style="float:left;padding-right:10px;" >$10</p>
+                                                                         </div>
+                       
                                                                             
-                                                                            <div id="desc" class="desc">
-                                                                                
-                                                                                <br/><br/>
-                                                                                
-                                                                            </div>
                                                                             <div id="quantity_desc">
                                                                                 
-                                                                                <label for="spin">Qty</label>
+                                                                                <label for="spin">Quantity</label>
                                                                                 <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
                                                                                 <input type="number" min="0" max="10" value="1" id="quant" size='4'/>
                                                                                 <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
-                                                                                
-                                                                            </div>
+                                                                              </div> 
+                                                                                    
+                                                                            
+                                                                                                                   
+                                                                            
+                                         
                                                                             
                                                                         </div>
                                                                     </div>
@@ -628,7 +654,6 @@ function flip() {
                                                     </div>  <!-- row -->
                                                     
                                                 </div>
-                                                <input type="text" id="spinEdit" />
                                                 <div id="item_desc" data-role="popup" class="ui-content" >
                                                     <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
                                                     <p>

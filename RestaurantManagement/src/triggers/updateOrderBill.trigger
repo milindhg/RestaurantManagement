@@ -6,6 +6,7 @@
  *              Whether the order items are inserted, updated or deleted.
  * 
  * Change 1. Added logic for maintaining expected bill amount along with the total bill (Total price) of the order.
+ * Change 2. Added logic for maintaining the order status as new if any of the order items are new.
  */
 
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
@@ -53,6 +54,8 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         //Calculate the updated bill amounts by adding the bill amounts of all the Child Order Items
         Decimal newTotalPrice = 0;
         Decimal newExpectedBill = 0;
+        Boolean orderStatusNewFlag = false;
+        
         for(Order_Item__c item : allOrderItems)
         {
             if(item.Total_Price__c!=null)
@@ -61,6 +64,10 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
                 if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up' || item.Status__c == 'Pending')
                 {
                     newTotalPrice += item.Total_Price__c;
+                }
+                if(item.Status__c == 'New' && orderStatusNewFlag==false)
+                {
+                    orderStatusNewFlag=true;
                 }
             }
         }
@@ -82,6 +89,10 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         System.debug('My Order Current TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
         myFoodOrder.TotalPrice__c = newTotalPrice;
         myFoodOrder.TotalPriceEstimate__c = newExpectedBill;
+        if(orderStatusNewFlag)
+        {
+            myFoodOrder.Status__c='New';
+        }
         update(myFoodOrder);
         System.debug('My Order New TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
         
