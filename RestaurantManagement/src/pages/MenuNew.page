@@ -11,7 +11,10 @@ margin-bottom: 10px;
 .demo-content.bg-alt{
 background: #abb1b8;
 
-}-->
+}-->	
+        body{
+        	background-color:black;
+        }
         #item_name{
         text-align:left;
         }
@@ -115,7 +118,7 @@ background: #abb1b8;
         
         
         .panel-body {
-        	background-color:grey !important;
+        	background-color:maroon !important;
         	text-align:left !important;
         	padding:0px;
         }
@@ -140,9 +143,12 @@ background: #abb1b8;
         padding:10px;
         height:50%;
         }
+        .panel-body > .text-center{
+        	background-color:grey;
+        }
         
         #quantity_desc{
-        width:200px;
+        width:100%;
         height:100px;
         float:left;
         }
@@ -596,7 +602,7 @@ function flip(event) {
                                                     </ul>
                                                 </div>
                                                 
-                                                <div id="one" class="container" style="background-color:grey">
+                                                <div id="one" class="container" style="background-color:maroon">
                                                     <div class="row">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
                                                             
@@ -618,13 +624,13 @@ function flip(event) {
                                                                          </div>
                 
                                                                             </div>
-                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon;font-weight:bold;font-size:16px;" />
+                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#424242;">
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon;font-weight:bold;font-size:19px;" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
 
-                            												<div id="desc" style="padding:0px;margin:0px;height:60px;">
+                            												<div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#424242;">
                                                                                 
                                                                                 
                                                                                 <p>
@@ -636,19 +642,13 @@ function flip(event) {
                                                                                </div>
                                                                                       
                                                                             
-                                                                            <div id="quantity_desc">
+                                                                            <div id="quantity_desc" style="background-color:#424242;background-size:100%;">
                                                                                 
-                                                                                <label for="spin">Quantity</label>
+                                                                                <label for="spin" style="color:white">Quantity</label>
                                                                                 <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
                                                                                 <input type="number" min="0" max="10" value="1" id="quant" size='4'/>
                                                                                 <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}');" id="addorder">ADD</a>
                                                                               </div> 
-                                                                                    
-                                                                            
-                                                                                                                   
-                                                                            
-                                         
-                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
