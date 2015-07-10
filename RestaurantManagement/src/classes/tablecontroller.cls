@@ -10,13 +10,13 @@ public class tablecontroller {
     public String getselectedlocation() {
         return selectedlocation;
     }
-	public void setselectedlocation(String recType) {
+        public void setselectedlocation(String recType) {
         this.selectedlocation= recType;
     }
       public void updatestatus()
     {        
-        	 List<Table__c> tb= [SELECT Name,Status__c FROM Table__c where Name=:tablename];
-     	     System.debug(tablename);
+                 List<Table__c> tb= [SELECT Name,Status__c FROM Table__c where Name=:tablename];
+             System.debug(tablename);
              for( Table__c t : tb )
              {if (t.Status__c=='Ready')
                 {
@@ -30,7 +30,7 @@ public class tablecontroller {
         }
     
     public List<SelectOption> getLocationdata()
-    {			
+    {                   
         List<Table__c> tb= [Select f.Location__c from Table__c f];
         
         Map<String,String> mp = new Map<String,String>();
@@ -54,7 +54,7 @@ public class tablecontroller {
     {
         tables = new List<Displaytables>();
         System.debug(selectedlocation);
-        for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c where Location__c=:selectedlocation]) 
+        for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c FROM Table__c where Location__c=:selectedlocation ORDER BY No_of_seats__c ]) 
         {
             tables.add(new Displaytables(t));
         }    

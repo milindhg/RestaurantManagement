@@ -17,24 +17,24 @@
         <label><!-- Location --></label>
         <name>Location__c</name>
         <picklistValues>
-            <masterLabel>Alabama </masterLabel>
-            <translation><!-- Alabama  --></translation>
+            <masterLabel>Alabama</masterLabel>
+            <translation><!-- Alabama --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Alaska </masterLabel>
-            <translation><!-- Alaska  --></translation>
+            <masterLabel>Alaska</masterLabel>
+            <translation><!-- Alaska --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Arizona </masterLabel>
-            <translation><!-- Arizona  --></translation>
+            <masterLabel>Arizona</masterLabel>
+            <translation><!-- Arizona --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Arkansas </masterLabel>
-            <translation><!-- Arkansas  --></translation>
+            <masterLabel>Arkansas</masterLabel>
+            <translation><!-- Arkansas --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>California </masterLabel>
-            <translation><!-- California  --></translation>
+            <masterLabel>California</masterLabel>
+            <translation><!-- California --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Colorado </masterLabel>
@@ -69,8 +69,8 @@
             <translation><!-- Illinois --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Indiana </masterLabel>
-            <translation><!-- Indiana  --></translation>
+            <masterLabel>Indiana</masterLabel>
+            <translation><!-- Indiana --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Iowa </masterLabel>
@@ -153,8 +153,8 @@
             <translation><!-- North Dakota  --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Ohio </masterLabel>
-            <translation><!-- Ohio  --></translation>
+            <masterLabel>Ohio</masterLabel>
+            <translation><!-- Ohio --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Oklahoma </masterLabel>

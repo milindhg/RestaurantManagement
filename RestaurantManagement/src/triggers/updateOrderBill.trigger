@@ -7,6 +7,7 @@
  * 
  * Change 1. Added logic for maintaining expected bill amount along with the total bill (Total price) of the order.
  * Change 2. Added logic for maintaining the order status as new if any of the order items are new.
+ * Change 3. Added fix for updating the total price exptected on deleting an item from the order items.
  */
 
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
@@ -73,8 +74,10 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         }
         //If the current operation on orderItem is delete, 
         //then we don't want to include the total price of that orderitem in our new bill amounts.
-        if(Trigger.isDelete)
+        if(Trigger.isDelete){
             newTotalPrice -= myOrderItem.Total_Price__c;
+            newExpectedBill -= myOrderItem.Total_Price__c;
+        }
         
         //Get the Food Order object and update it with the newly calculated bill amounts.
         Food_Order__c myFoodOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 

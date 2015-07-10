@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="Cart">
+<apex:page showheader="false" controller="Bill">
     <style type="text/css">
        
         h1{
@@ -155,7 +155,15 @@
                                                       
                                                  </apex:pageMessage>
                                                </div>  
-                                              </apex:pageBlock> 
+                                            
+                                                    <apex:commandLink styleClass="btn" value="Back to Cart" action="{!backToCart}" immediate="true">    
+                                                                   <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
+                                                   </apex:commandLink> 
+                                                    <apex:commandLink styleClass="btn" value="Done" action="{!paidStatusUpdate}" immediate="true">    
+                                                                   <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
+                                                   </apex:commandLink> 
+                                                </apex:pageBlock>
+                                                
                                               </apex:form>
                                             </div>
                                             

@@ -9,6 +9,18 @@
         <value>Order Items</value>
     </caseValues>
     <fields>
+        <label><!-- Delete Status --></label>
+        <name>Delete_Status__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
         <label><!-- Food Item Name --></label>
         <name>Food_Item_Name__c</name>
     </fields>

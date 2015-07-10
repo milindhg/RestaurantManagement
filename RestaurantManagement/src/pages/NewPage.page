@@ -1,0 +1,10 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: NewPage
+  <apex:form >
+  <apex:commandButton action="/apex/Bill" value="Go to Bill"/>
+  <apex:commandLink action="/apex/MenuCart" value="Go to Cart"/>
+  </apex:form>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

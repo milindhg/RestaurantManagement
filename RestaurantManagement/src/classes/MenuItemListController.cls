@@ -4,16 +4,23 @@ global class MenuItemListController {
     
     public static List<DisplayMenuItems> ItemList;
     //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
-    public static String Location='Ohio';
-    public static String table=ApexPages.currentPage().getParameters().get('tableid');
+    public static String selLocation;
+    //public static String table=ApexPages.currentPage().getParameters().get('tableid');
     
+    public MenuItemListController(){
+        selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
+        
+        System.debug(selLocation);
+    }
     public List<DisplayMenuItems> getMenuItems(){
         
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
             for(Food_Item__c item : [Select Name, Category__c, Description__c,Diet__c, Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
-                ItemList.add(new DisplayMenuItems(item));
+                List<PriceBook__c> price = [Select p.Price__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
+                System.debug(item.Name);
+                ItemList.add(new DisplayMenuItems(item,price[0].price__c));
             }
         }
         
@@ -21,7 +28,7 @@ global class MenuItemListController {
     }
     
     @RemoteAction 
-    WebService static String createOrderItem(String item, String quant){
+    WebService static String createOrderItem(String item, String quant, String table, String location){
         Decimal tableid= Decimal.valueOf(table);
         System.debug(item);
         System.debug(quant);
@@ -66,10 +73,12 @@ global class MenuItemListController {
     
     public class DisplayMenuItems{
         private Food_Item__c availableItems;
+        private Decimal pricetag;
         
         
-        public DisplayMenuItems(Food_Item__c item){
+        public DisplayMenuItems(Food_Item__c item, Decimal price){
             this.availableItems= item;
+            this.pricetag= price;
             
         }
         
@@ -110,7 +119,10 @@ global class MenuItemListController {
         public String category{
             get{return availableItems.Category__c;}
         }
-        
+		
+		public Decimal price{
+            get{return this.pricetag;}
+        }        
         public String description{
             get{return availableItems.Description__c;}
         }

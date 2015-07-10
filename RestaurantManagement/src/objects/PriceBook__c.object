@@ -72,23 +72,23 @@
         <label>Location</label>
         <picklist>
             <picklistValues>
-                <fullName>Alabama </fullName>
+                <fullName>Alabama</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Alaska </fullName>
+                <fullName>Alaska</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Arizona </fullName>
+                <fullName>Arizona</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Arkansas </fullName>
+                <fullName>Arkansas</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>California </fullName>
+                <fullName>California</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -124,7 +124,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Indiana </fullName>
+                <fullName>Indiana</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -208,7 +208,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Ohio </fullName>
+                <fullName>Ohio</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>

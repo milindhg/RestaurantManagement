@@ -134,6 +134,21 @@ global with sharing class Cart{
          foodOrder.status__c = PAID;
          update foodOrder;
      }
+     
+     public PageReference test() {
+         PageReference pageRef = Page.Bill;
+//        PageReference pageRef = new PageReference('/apex/Bill');
+        System.debug('PageRef------------------->'+pageRef);
+         pageRef.setRedirect(true);
+  //       pageRef.getParameters().put('msg','success');
+         return pageRef;
+         }
+     
+
+     
+     public Integer getCartSize(){
+         return activeCartItems.size();
+     }
     
 public class DisplayCart {
     private Order_Item__c cartItem;

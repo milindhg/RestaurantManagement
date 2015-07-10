@@ -56,7 +56,6 @@
         
           // Subscribe to a topic. JSON-encoded update will be returned in the callback
           $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-                $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
                 
                 $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
                  
@@ -79,6 +78,10 @@
                              
                 '<button disabled=\"disabled\" id=\"ready_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"readyBtn\" onClick=\"ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
                              JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\" >Ready</button>' + '</td></tr>');   
+                             
+                if(JSON.stringify(message.data.sobject.Delete_Status__c).replace(/\"/g, "") == 'Yes'){
+                   $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
+                }       
             });
             
           

@@ -16,4 +16,5 @@
     <tab>standard-Dashboard</tab>
     <tab>Table__c</tab>
     <tab>WaiterPage</tab>
+    <tab>Tables</tab>
 </CustomApplication>

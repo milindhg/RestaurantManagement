@@ -125,24 +125,6 @@ background: #abb1b8;
         var name= event.id;
         alert(name);
         $j('#name').getAttribute('value');
-        //var parentId = $(this).closest('div').prop('id');
-        // wTile = event.target.parentNode;
-        //var quantity= wTile.getElementByName('quantity')[0];
-        //alert(wTile.id);
-        //alert(parentNode.text);
-        //window.parent.document.getElementById('quantity').(function(i, val) { return val*1+1 });
-        
-        // alert(parentId);
-        //parentDoc= this.parent;
-        //parentDoc.getElementById('#quantity').html(function(i, val) { return val*1+1 });
-        //alert('incraese');
-        //alert($j(this).children("div[quantity]").val());
-        //$j(this).children("div[quantity]").html(function(i, val) { return val*1+1 });
-        //$j(this).children('#quantity').html(function(i, val) { return val*1+1 });
-        // $j(this).getElementById('#quantity').html(function(i, val) { return val*1+1 });
-        //$j(this).parent( '#quantity' ).html(function(i, val) { return val*1+1 });
-        //$j('#quantity').html(function(i, val) { return val*1+1 });
-        
     }
     
     function decreaseQuant(event){
@@ -151,8 +133,8 @@ background: #abb1b8;
           }else{
              alert('Quantity of a menu item cannot be less than zero');
               }
-        
     }
+    
     function Alert(){
         
         $j('#collapseOne').collapse('toggle');
@@ -246,6 +228,7 @@ background: #abb1b8;
                                                 <!-- Placeholder for div - active_cart_items div -->
                                                 <!-- Make this div visible only when there is content inside. -->
                                             <apex:form >
+                                            
                                             <apex:pageBlock title="Cart">
                                               <apex:pageBlockTable id="cart_table" value="{!activeCartItems}" var="pitem">
                                               
@@ -277,7 +260,6 @@ background: #abb1b8;
                                                </apex:column>                                                                                          
                                                                                            
                                                  </apex:pageBlockTable> 
-                                                
                                               <div class="col-sm-6 col-md-6 col-lg-4">  
                                                     <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
@@ -295,11 +277,11 @@ background: #abb1b8;
                                                  </apex:pageMessage>
                                               </div>
 
-                                            </apex:pageBlock> 
-                                                <apex:pageBlock id="payment">
-                                                    <apex:commandButton value="Pay now" action="{!paidStatusUpdate}" disabled="{!FoodOrder.Status__c != 'Delivered' }" rerender="cart, cart_table, currentBill, estimatedBill">    
-                                                            <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                                          
-                                                   </apex:commandButton> 
+                                                      
+                                                    <apex:commandLink styleClass="btn" action="{! test}" value="Pay now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />    
+                                                 
+            
+                                                                                                         
                                                 </apex:pageBlock>
                                         </apex:form>
                                         </div>
@@ -311,8 +293,10 @@ background: #abb1b8;
                     </div>
                 </div>
                 
-            </div>  
+            </div>
+              
         </apex:pageBlock>
+        
     </body>
     
     

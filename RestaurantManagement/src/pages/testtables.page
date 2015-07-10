@@ -1,46 +1,67 @@
-<apex:page controller="tablecontroller">
+<apex:page controller="tablecontroller" sidebar="false" showHeader="false">
 
-<head>
-  <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+        <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+        <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         <apex:stylesheet value="{!$Resource.customStyle}"  />
-</head>
-<div class="container">
+        <apex:includeScript value="{!$Resource.jquery}"/>
+        <style type="text/css">
+            thead{
+                color:white;
+                text-shadow: none;
+                }
+            tr {
+                border: 2px solid #ddd;
+                font-weight: bold;
+            }
+            td,th {
+                text-align:center;
+                border: 2px solid #ddd;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
             <div class="page-header" id="pageHeader">
-                FRONT DESK MANAGER
+            Intern Cafe
             </div>
-<apex:form >
-<apex:pageBlock >
-
-<apex:outputPanel >
-Select your Location: 
-<apex:selectList value="{!selectedlocation }" size="1" >
-<apex:selectOptions value="{!Locationdata}"/>
-<apex:actionSupport event="onchange" reRender="tablesrerender">
-</apex:actionSupport>
-</apex:selectList>
-</apex:outputPanel>    
-<apex:pageBlockTable value="{!tables}" var="s" id="tablesrerender">
-<apex:column value="{!s.name}" headerValue="Name"/>
-<apex:column value="{!s.TableNumber}" headerValue="TableNumber"/>
-<apex:column value="{!s.Status}" headerValue="Status"/>
-<apex:column value="{!s.Seats}" headerValue="Seats Available"/>
-<apex:column value="{!s.Locations}" headerValue="Locations"/>
-<apex:column headerValue="Action">  
-  <apex:commandButton action="{!updatestatus}" value="Change Status" reRender="tablesrerender" >
-       <apex:param name="tablename" value="{!s.name}"/>    
-    </apex:commandButton>
-</apex:column>
-    <apex:column >
-  <apex:commandButton action="https://c.na31.visual.force.com/apex/MenuNew?reqlocation={!selectedlocation }&tableid={!s.name}" value="Menu"  >
- </apex:commandButton>
-        </apex:column>
-       
-</apex:pageBlockTable>
-
-</apex:pageBlock>
-</apex:form> 
- </div>
+            <apex:form >
+                <apex:pageBlock >
+                    <apex:outputPanel >
+                        <div style="font-weight:bold;text-align:center;">Select your Location</div>
+                        <apex:selectList style="color:maroon;" value="{!selectedlocation }" size="1">
+                            <apex:selectOptions value="{!Locationdata}"/>
+                            <apex:actionSupport event="onchange" reRender="tablesrerender" />
+                        </apex:selectList>
+                    </apex:outputPanel>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <apex:pageBlockTable styleClass="border table table-bordered" value="{!tables}" var="s" id="tablesrerender">
+                                    <apex:column value="{!s.TableNumber}" headerValue="Table Number"/>
+                                    <apex:column value="{!s.Status}" headerValue="Status"/>
+                                    <apex:column value="{!s.Seats}" headerValue="Seats Available"/>
+                                    <apex:column headerValue="Action">  
+                                        <apex:commandButton action="{!updatestatus}" value="Change Status" reRender="tablesrerender" >
+                                            <apex:param name="tablename" value="{!s.name}"/>    
+                                        </apex:commandButton>
+                                    </apex:column>
+                                    <apex:column headerValue="Menu Link">
+                                        <apex:commandLink action="https://c.na31.visual.force.com/apex/MenuNew?reqlocation={!selectedLocation}&tableid={!s.tableNumber}" immediate="true" styleClass="btn" value="Menu" />
+                                    </apex:column>
+                                </apex:pageBlockTable>
+                            </div>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+            </apex:form>
+        
+        </div>
+    </body>
 </apex:page>

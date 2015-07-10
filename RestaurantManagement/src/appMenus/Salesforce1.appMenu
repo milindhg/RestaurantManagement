@@ -52,4 +52,8 @@
         <name>WaiterPage</name>
         <type>CustomTab</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>Tables</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>

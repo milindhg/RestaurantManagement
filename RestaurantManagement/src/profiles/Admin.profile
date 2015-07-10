@@ -61,6 +61,10 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>Bill</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Cart</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -74,6 +78,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ChefListController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DeleteOrderItems</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1272,6 +1280,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Order_Item__c.Delete_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Order_Item__c.Food_Item_Name__c</field>
         <readable>true</readable>
@@ -1847,6 +1860,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>NewPage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>SiteLogin</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -1917,6 +1934,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Table__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Tables</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

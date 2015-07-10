@@ -115,7 +115,7 @@ background: #abb1b8;
         
         
         .panel-body {
-        	background-color:white !important;
+        	background-color:grey !important;
         	text-align:left !important;
         	padding:0px;
         }
@@ -481,7 +481,7 @@ background: #abb1b8;
         
     })( jQuery );
     
-    function AddOrder(event,name){
+    function AddOrder(event,name,table,location){
         
         var item = event.target.parentNode;
         alert(item.id);
@@ -492,7 +492,9 @@ background: #abb1b8;
             "MenuItemListController",  //class name    
             "createOrderItem",  //method name        
             {item : name,    // method parameter
-             quant:quantity
+             quant:quantity,
+             table:table,
+             location:location
             });
         
         alert(result);
@@ -566,7 +568,8 @@ function flip(event) {
             
             <div data-role="page" id="pageone">
                 <div data-role="header">
-                    <h1>Place Order</h1>
+                    <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
+</h1>
                 </div>
                 <a href="#" data-role="button" onclick="Alert();"  id="open_cart">View Cart <img src="{!$Resource.cart}" width="30px"/></a>
                 <a href="#" data-role="button" onclick="Alert();" id="close_cart" style="display:none;">Close Cart <img src="{!$Resource.cart}" width="30px"/></a>
@@ -593,7 +596,7 @@ function flip(event) {
                                                     </ul>
                                                 </div>
                                                 
-                                                <div id="one" class="container">
+                                                <div id="one" class="container" style="background-color:grey">
                                                     <div class="row">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
                                                             
@@ -605,39 +608,40 @@ function flip(event) {
                                                                                 
                                                                                     
                                                                                 
-                                                                            <div class="cardimage">
+                                                                            <div class="cardimage" style="position:relative;">
+                                                                                 <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:#585858;opacity:0.8;font-size:32px;color:black;font-weight:bold">
+                                                                                     
+                                                                               
+                                                                                    <p style="float:left;padding-right:10px;opacity:1;">
+                                                                                      Price  
+                                                                                    </p><p id="price" style="float:left;padding-right:10px;" >${!item.price}</p>
+                                                                         </div>
+                
                                                                             </div>
-                                                                            <div id="desc2">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon" />
+                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;">
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon;font-weight:bold;font-size:16px;" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
 
-                            												<div id="desc" style="padding:0px;margin:0px;height:40px;">
+                            												<div id="desc" style="padding:0px;margin:0px;height:60px;">
                                                                                 
                                                                                 
                                                                                 <p>
                                                                                     {!item.description}
                                                                                 </p>
-                                                                                <input type="text" id="spinEdit"/>
+                                                                                
                                                                                 </div>
                                                                                 
                                                                                </div>
-                                                                                <div id="price" style="float:left;">
-                                                                                     
-                                                                               
-                                                                                    <p style="float:left;padding-right:10px;">
-                                                                                      Price  
-                                                                                    </p><p id="price" style="float:left;padding-right:10px;" >$10</p>
-                                                                         </div>
-                       
+                                                                                      
                                                                             
                                                                             <div id="quantity_desc">
                                                                                 
                                                                                 <label for="spin">Quantity</label>
                                                                                 <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
                                                                                 <input type="number" min="0" max="10" value="1" id="quant" size='4'/>
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}');" id="addorder">ADD</a>
+                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}');" id="addorder">ADD</a>
                                                                               </div> 
                                                                                     
                                                                             

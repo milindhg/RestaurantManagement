@@ -170,6 +170,7 @@
     <tab>Order_Item__c</tab>
     <tab>Food_Order__c</tab>
     <tab>Table__c</tab>
+    <tab>Tables</tab>
     <workspaceMappings>
         <mapping>
             <tab>Food_Item__c</tab>
@@ -191,6 +192,9 @@
         </mapping>
         <mapping>
             <tab>Table__c</tab>
+        </mapping>
+        <mapping>
+            <tab>Tables</tab>
         </mapping>
         <mapping>
             <tab>standard-Account</tab>
