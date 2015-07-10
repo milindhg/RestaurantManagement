@@ -54,25 +54,51 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
-        <fullName>Date_Of_Purchase__c</fullName>
+        <fullName>Date_of_Purchase__c</fullName>
         <externalId>false</externalId>
-        <label>Date Of Purchase</label>
+        <label>Date of Purchase</label>
         <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>DateTime</type>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Quantity__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Quantity</label>
-        <precision>6</precision>
+        <precision>18</precision>
         <required>true</required>
         <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RawMaterial__c</fullName>
+        <externalId>false</externalId>
+        <label>RawMaterial</label>
+        <referenceTo>RawMaterial__c</referenceTo>
+        <relationshipLabel>Purchases</relationshipLabel>
+        <relationshipName>Purchases</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <label>Purchase</label>
     <listViews>
@@ -81,12 +107,12 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>P-{00000}</displayFormat>
-        <label>Purchase Id</label>
+        <displayFormat>P-{0000}</displayFormat>
+        <label>Purchase Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Purchases</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

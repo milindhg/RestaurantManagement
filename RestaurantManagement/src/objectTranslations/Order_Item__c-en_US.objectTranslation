@@ -21,6 +21,10 @@
         </picklistValues>
     </fields>
     <fields>
+        <label><!-- Delivered Time --></label>
+        <name>Delivered_Time__c</name>
+    </fields>
+    <fields>
         <label><!-- Food Item Name --></label>
         <name>Food_Item_Name__c</name>
     </fields>
@@ -37,6 +41,10 @@
     <fields>
         <label><!-- Item Prep Time --></label>
         <name>Item_Prep_Time__c</name>
+    </fields>
+    <fields>
+        <label><!-- Picked Up Time --></label>
+        <name>Picked_Up_Time__c</name>
     </fields>
     <fields>
         <label><!-- Price --></label>

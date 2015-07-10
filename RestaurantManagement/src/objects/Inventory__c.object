@@ -67,15 +67,11 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>New York</fullName>
+                <fullName>NewYork</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Ohio</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Texas</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -86,16 +82,22 @@
         </picklist>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
+        <type>MultiselectPicklist</type>
+        <visibleLines>5</visibleLines>
     </fields>
     <label>Inventory</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
-        <displayFormat>INV-{0000}</displayFormat>
-        <label>Inventory Id</label>
+        <label>Inventory Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Inventories</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
 </CustomObject>

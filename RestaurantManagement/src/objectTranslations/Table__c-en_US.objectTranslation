@@ -44,5 +44,9 @@
         <label><!-- Table Number --></label>
         <name>Table_Number__c</name>
     </fields>
+    <fields>
+        <label><!-- Waiter --></label>
+        <name>Waiter__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

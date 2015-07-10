@@ -10,11 +10,12 @@
     <tab>Food_Order__c</tab>
     <tab>Order_Item__c</tab>
     <tab>Menu</tab>
-    <tab>Raw_Material__c</tab>
-    <tab>Purchase__c</tab>
     <tab>standard-report</tab>
     <tab>standard-Dashboard</tab>
     <tab>Table__c</tab>
     <tab>WaiterPage</tab>
     <tab>Tables</tab>
+    <tab>Inventory__c</tab>
+    <tab>RawMaterial__c</tab>
+    <tab>Purchase__c</tab>
 </CustomApplication>

@@ -13,6 +13,7 @@
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
         Integer i = 0;
         String intTest;
+        Decimal taxRate = 0.075;
         
         //Check whether current operation is delete or not.
         if(Trigger.isDelete)
@@ -53,18 +54,22 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         System.debug('All Order Items in Current FoodOrder are: !!!!' + allOrderItems);
              
         //Calculate the updated bill amounts by adding the bill amounts of all the Child Order Items
+        Decimal newPrice = 0;
+        Decimal newPriceEstimate = 0;
+        Decimal newTax = 0;
+        Decimal newTaxEstimate = 0;
         Decimal newTotalPrice = 0;
-        Decimal newExpectedBill = 0;
+        Decimal newTotalPriceEstimate = 0;
         Boolean orderStatusNewFlag = false;
         
         for(Order_Item__c item : allOrderItems)
         {
             if(item.Total_Price__c!=null)
             {
-                newExpectedBill += item.Total_Price__c;
+                newPriceEstimate += item.Total_Price__c;
                 if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up' || item.Status__c == 'Pending')
                 {
-                    newTotalPrice += item.Total_Price__c;
+                    newPrice += item.Total_Price__c;
                 }
                 if(item.Status__c == 'New' && orderStatusNewFlag==false)
                 {
@@ -75,9 +80,13 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         //If the current operation on orderItem is delete, 
         //then we don't want to include the total price of that orderitem in our new bill amounts.
         if(Trigger.isDelete){
-            newTotalPrice -= myOrderItem.Total_Price__c;
-            newExpectedBill -= myOrderItem.Total_Price__c;
+            newPrice -= myOrderItem.Total_Price__c;
+            newPriceEstimate -= myOrderItem.Total_Price__c;
         }
+        
+        //Calculate tax on the prices
+        newTax = newPrice * taxRate;
+        newTaxEstimate = newPriceEstimate * taxRate;
         
         //Get the Food Order object and update it with the newly calculated bill amounts.
         Food_Order__c myFoodOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
@@ -90,13 +99,17 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         System.debug('My Order is: !!!!' + myFoodOrder);
         
         System.debug('My Order Current TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
-        myFoodOrder.TotalPrice__c = newTotalPrice;
-        myFoodOrder.TotalPriceEstimate__c = newExpectedBill;
+        myFoodOrder.Price__c = newPrice;
+        myFoodOrder.PriceEstimate__c = newPriceEstimate;
+        myFoodOrder.Tax__c = newTax;
+        myFoodOrder.TaxEstimate__c = newTaxEstimate;
+        myFoodOrder.TotalPrice__c = newPrice + newTax;
+        myFoodOrder.TotalPriceEstimate__c = newPriceEstimate + newTaxEstimate;
+        
         if(orderStatusNewFlag)
         {
             myFoodOrder.Status__c='New';
         }
         update(myFoodOrder);
-        System.debug('My Order New TotalPrice is: !!!!' + myFoodOrder.TotalPrice__c);
-        
+
 }

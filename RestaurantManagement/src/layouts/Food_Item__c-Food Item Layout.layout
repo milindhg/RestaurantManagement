@@ -32,7 +32,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Diet__c</field>
+                <field>Item_Image__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

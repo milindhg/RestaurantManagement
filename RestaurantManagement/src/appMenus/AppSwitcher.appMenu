@@ -44,4 +44,8 @@
         <name>Resto</name>
         <type>CustomApplication</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>agf__Agile_Accelerator</name>
+        <type>CustomApplication</type>
+    </appMenuItems>
 </AppMenu>

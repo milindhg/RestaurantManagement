@@ -81,6 +81,31 @@
         <type>AutoNumber</type>
     </fields>
     <fields>
+        <fullName>PriceEstimate__c</fullName>
+        <description>This will contain the Order Price + Tax amount
+i.e. the summation of the prices of all the items in the order plus the tax applied.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Order items price summation + Tax.</inlineHelpText>
+        <label>Price Estimate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Price__c</fullName>
+        <description>This will contain the order price i.e. the summation of the prices of all the items in the order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Order items price summation.</inlineHelpText>
+        <label>Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
         <label>Status</label>
@@ -116,6 +141,30 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TaxEstimate__c</fullName>
+        <description>This field will contain the estimated tax on the price of the placed order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax on placed order as well as the cart.</inlineHelpText>
+        <label>Tax Estimate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Tax__c</fullName>
+        <description>This field will contain the tax of the items in the placed order.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax on Placed Order</inlineHelpText>
+        <label>Tax</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>TotalPriceEstimate__c</fullName>

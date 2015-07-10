@@ -29,8 +29,8 @@
         <name>Description__c</name>
     </fields>
     <fields>
-        <label><!-- Diet --></label>
-        <name>Diet__c</name>
+        <label><!-- Image --></label>
+        <name>Item_Image__c</name>
     </fields>
     <fields>
         <label><!-- Preparation Time --></label>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>RawMaterial</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>RawMaterials</value>
+    </caseValues>
+    <fields>
+        <label><!-- Available --></label>
+        <name>Available__c</name>
+    </fields>
+    <fields>
+        <label><!-- Inventory --></label>
+        <name>Inventory__c</name>
+        <relationshipLabel><!-- RawMaterials --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Name --></label>
+        <name>Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- QuantityRollup --></label>
+        <name>QuantityRollup__c</name>
+    </fields>
+    <fields>
+        <label><!-- Used --></label>
+        <name>Used__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -118,7 +118,7 @@ background: #abb1b8;
         
         
         .panel-body {
-        	background-color:maroon !important;
+        	background-color:white !important;
         	text-align:left !important;
         	padding:0px;
         }
@@ -178,9 +178,11 @@ background: #abb1b8;
         }
         #addorder{
         padding:0px;
-        background-color:maroon !important;
-        color:white;
+        background-color:white !important;
+        color:black;
         text-shadow:none;
+        height:30px;
+        width:90px;
         }
         
         #showdetail{
@@ -569,40 +571,36 @@ function flip(event) {
     </script>
     <body>
         <apex:pageBlock >
-            <div id="content">
-            </div>
             
-            <div data-role="page" id="pageone">
+            <div data-role="page" id="pageone" >
                 <div data-role="header">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
 </h1>
                 </div>
-                <a href="#" data-role="button" onclick="Alert();"  id="open_cart">View Cart <img src="{!$Resource.cart}" width="30px"/></a>
-                <a href="#" data-role="button" onclick="Alert();" id="close_cart" style="display:none;">Close Cart <img src="{!$Resource.cart}" width="30px"/></a>
+               
                 
                 
-                
-                <div data-role="main" class="ui-content">
                     
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <a id="menu_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                <p id="menu_link" class="pull-left">Menu <img src="{!$Resource.menu1}" width="30px"/></p>
-                            </a>
-                            <div id="collapseOne" class="panel-collapse collapse in">
-                                <div class="panel-body" >
-                                    <div class="row">
+                    
+                        
+                          
+                               
+                           
+                            
+                                
+                                    <div class="row" style="width:75%;float:left;">
+                                         <p id="menu_link" class="pull-left">Menu <img src="{!$Resource.menu1}" width="30px" style="background-color:maroon;"/></p>
                                         <div class="col-xs-12">
-                                            <div data-role="tabs" data-mini="true" data-position="fixed">
+                                            <div data-role="tabs" data-mini="true" data-position="fixed" style="padding:5px;">
                                                 <div data-role="navbar"  data-iconpos="bottom" data-mini="true">
                                                     <ul>
-                                                        <li><a href="#one" data-icon="grid" data-theme="b" width="100px" data-ajax="false" class="ui-btn-active" >Appetizers</a></li>
+                                                        <li><a href="#one" data-icon="grid" data-theme="b"  data-ajax="false" class="ui-btn-active" >Appetizers</a></li>
                                                         <li><a href="#two"  data-icon="grid" data-theme="b" data-ajax="false" >Entree</a></li>
                                                         <li><a href="#three" data-icon="grid" data-theme="b" data-ajax="false" >Dessert</a></li>
                                                     </ul>
                                                 </div>
                                                 
-                                                <div id="one" class="container" style="background-color:maroon">
+                                                <div id="one" class="container" style="clear:left;background-color:white;padding:10px;margin:10px;width:100%">
                                                     <div class="row">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
                                                             
@@ -615,7 +613,7 @@ function flip(event) {
                                                                                     
                                                                                 
                                                                             <div class="cardimage" style="position:relative;">
-                                                                                 <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:#585858;opacity:0.8;font-size:32px;color:black;font-weight:bold">
+                                                                                 <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
                                                                                      
                                                                                
                                                                                     <p style="float:left;padding-right:10px;opacity:1;">
@@ -624,13 +622,13 @@ function flip(event) {
                                                                          </div>
                 
                                                                             </div>
-                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#424242;">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:maroon;font-weight:bold;font-size:19px;" />
+                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;">
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:19px;" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
 
-                            												<div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#424242;">
+                            												<div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#610B0B;opacity:0.7;">
                                                                                 
                                                                                 
                                                                                 <p>
@@ -642,12 +640,12 @@ function flip(event) {
                                                                                </div>
                                                                                       
                                                                             
-                                                                            <div id="quantity_desc" style="background-color:#424242;background-size:100%;">
+                                                                            <div id="quantity_desc" style="background-color:#610B0B;background-size:100%;opacity:0.7;">
                                                                                 
                                                                                 <label for="spin" style="color:white">Quantity</label>
                                                                                 <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                                                <input type="number" min="0" max="10" value="1" id="quant" size='4'/>
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}');" id="addorder">ADD</a>
+                                                                                <input type="number" min="0" max="10" value="1" id="quant" size='4' style="float:left;background-color:white;"/>
+                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}');" id="addorder" style="float:left">ADD</a>
                                                                               </div> 
                                                                         </div>
                                                                     </div>
@@ -664,15 +662,7 @@ function flip(event) {
                                                         
                                                     </p>
                                                 </div>
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
-                                                
+
                                                 
                                                 <div id="two" class="container">
                                                     <div class="row">
@@ -789,46 +779,22 @@ function flip(event) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <a id="view_cart_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                <p id="view_cart_link" class="pull-left">View Cart <img src="{!$Resource.cart}" width="30px"/></p>
+                                
+                           
+                        
+  
+                
+        
+                 <div data-role="main" class="ui-content" style="width:25%;height:1200px;background-color:white;padding:0px;">
+                                        <a id="menu_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <p id="menu_link" class="pull-left">Order Details <img src="{!$Resource.menu1}" width="30px"/></p>
                             </a>
-                            <div id="collapseTwo" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6 col-lg-4"> 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body text-center">
-                                                        <div class="cardimage">
-                                                            <apex:image value="{!$Resource.appetizer4}"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-sm-6 col-md-6 col-lg-4"> 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body text-center">
-                                                        <div class="cardimage">
-                                                            <apex:image value="{!$Resource.appetizer4}"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div style="background-color:maroon;opacity:0.7;height:80%;">
                         
                     </div>
                 </div>
-                
             </div>  
+                   
         </apex:pageBlock>
     </body>
     

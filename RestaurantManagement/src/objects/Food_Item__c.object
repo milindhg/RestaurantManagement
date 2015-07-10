@@ -85,9 +85,9 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Diet__c</fullName>
+        <fullName>Item_Image__c</fullName>
         <externalId>false</externalId>
-        <label>Diet</label>
+        <label>Image</label>
         <length>32768</length>
         <trackTrending>false</trackTrending>
         <type>Html</type>

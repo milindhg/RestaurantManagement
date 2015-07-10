@@ -21,6 +21,16 @@
         <name>OrderId__c</name>
     </fields>
     <fields>
+        <help><!-- Order items price summation + Tax. --></help>
+        <label><!-- Price Estimate --></label>
+        <name>PriceEstimate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Order items price summation. --></help>
+        <label><!-- Price --></label>
+        <name>Price__c</name>
+    </fields>
+    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
         <picklistValues>
@@ -43,6 +53,16 @@
     <fields>
         <label><!-- Table Number --></label>
         <name>TableNumber__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tax on placed order as well as the cart. --></help>
+        <label><!-- Tax Estimate --></label>
+        <name>TaxEstimate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tax on Placed Order --></help>
+        <label><!-- Tax --></label>
+        <name>Tax__c</name>
     </fields>
     <fields>
         <help><!-- This is Expected Bill Amount to charge Customer if all order items are fulfilled. --></help>

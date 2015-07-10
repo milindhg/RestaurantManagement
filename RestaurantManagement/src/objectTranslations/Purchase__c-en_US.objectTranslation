@@ -9,12 +9,21 @@
         <value>Purchases</value>
     </caseValues>
     <fields>
-        <label><!-- Date Of Purchase --></label>
-        <name>Date_Of_Purchase__c</name>
+        <label><!-- Date of Purchase --></label>
+        <name>Date_of_Purchase__c</name>
+    </fields>
+    <fields>
+        <label><!-- Price --></label>
+        <name>Price__c</name>
     </fields>
     <fields>
         <label><!-- Quantity --></label>
         <name>Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- RawMaterial --></label>
+        <name>RawMaterial__c</name>
+        <relationshipLabel><!-- Purchases --></relationshipLabel>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

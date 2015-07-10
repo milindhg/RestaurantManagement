@@ -120,6 +120,17 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Waiter__c</fullName>
+        <externalId>false</externalId>
+        <label>Waiter</label>
+        <length>30</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>Table</label>
     <listViews>
         <fullName>All</fullName>

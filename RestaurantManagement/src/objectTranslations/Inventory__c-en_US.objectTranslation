@@ -20,21 +20,17 @@
             <translation><!-- Indiana --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>New York</masterLabel>
-            <translation><!-- New York --></translation>
+            <masterLabel>NewYork</masterLabel>
+            <translation><!-- NewYork --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Ohio</masterLabel>
             <translation><!-- Ohio --></translation>
         </picklistValues>
         <picklistValues>
-            <masterLabel>Texas</masterLabel>
-            <translation><!-- Texas --></translation>
-        </picklistValues>
-        <picklistValues>
             <masterLabel>Virginia</masterLabel>
             <translation><!-- Virginia --></translation>
         </picklistValues>
     </fields>
-    <startsWith>Consonant</startsWith>
+    <startsWith>Vowel</startsWith>
 </CustomObjectTranslation>

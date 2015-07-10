@@ -164,19 +164,23 @@
     <tab>standard-Lead</tab>
     <tab>standard-Knowledge</tab>
     <tab>Food_Item__c</tab>
-    <tab>Raw_Material__c</tab>
-    <tab>Purchase__c</tab>
     <tab>Menu</tab>
     <tab>Order_Item__c</tab>
     <tab>Food_Order__c</tab>
     <tab>Table__c</tab>
     <tab>Tables</tab>
+    <tab>Inventory__c</tab>
+    <tab>RawMaterial__c</tab>
+    <tab>Purchase__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>Food_Item__c</tab>
         </mapping>
         <mapping>
             <tab>Food_Order__c</tab>
+        </mapping>
+        <mapping>
+            <tab>Inventory__c</tab>
         </mapping>
         <mapping>
             <tab>Menu</tab>
@@ -188,7 +192,7 @@
             <tab>Purchase__c</tab>
         </mapping>
         <mapping>
-            <tab>Raw_Material__c</tab>
+            <tab>RawMaterial__c</tab>
         </mapping>
         <mapping>
             <tab>Table__c</tab>

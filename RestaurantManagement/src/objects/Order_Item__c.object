@@ -75,6 +75,15 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Delivered_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Delivered Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Food_Item_Name__c</fullName>
         <description>Required for PushTopics</description>
         <externalId>false</externalId>
@@ -129,6 +138,15 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Picked_Up_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Picked Up Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Price__c</fullName>

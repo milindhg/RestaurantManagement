@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="Cart">
+<apex:page showheader="false" controller="MenuItemListController">
     <style type="text/css">
         <!-- /* Some custom styles to beautify this example */
 .demo-content{
@@ -208,6 +208,18 @@ background: #abb1b8;
                                                </apex:column>                                                                                              
                                                
                                               </apex:pageBlockTable>  
+                                              
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                              Taxes
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                                                                                    
+                                                      <apex:outputField value="{!FoodOrder.Tax__c}" />                                                     
+                                                
+                                               </div>  
+                                              
                                               <div class="col-sm-6 col-md-6 col-lg-4">
                                               </div>
                                               <div class="col-sm-6 col-md-6 col-lg-4">
@@ -218,6 +230,7 @@ background: #abb1b8;
                                                       
                                                  </apex:pageMessage>
                                                </div>  
+                                               
                                               </apex:pageBlock> 
                                               </apex:form>
                                             </div>
@@ -260,6 +273,18 @@ background: #abb1b8;
                                                </apex:column>                                                                                          
                                                                                            
                                                  </apex:pageBlockTable> 
+                                                 
+                                                 <div class="col-sm-6 col-md-6 col-lg-4">
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                              Taxes
+                                              </div>
+                                              <div class="col-sm-6 col-md-6 col-lg-4">
+                                                                                                    
+                                                      <apex:outputField value="{!FoodOrder.TaxEstimate__c}" />                                                     
+                                                
+                                               </div>  
+                                                 
                                               <div class="col-sm-6 col-md-6 col-lg-4">  
                                                     <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
@@ -273,7 +298,6 @@ background: #abb1b8;
                                               <div class="col-sm-6 col-md-6 col-lg-4">
                                                  <apex:pageMessage id="estimatedBill" rendered="true" title="Total Estimated Bill" severity="high">                                                      
                                                       <apex:outputField value="{!FoodOrder.TotalPriceEstimate__c}" style="float:right;" />                                                     
-                                                      
                                                  </apex:pageMessage>
                                               </div>
 
