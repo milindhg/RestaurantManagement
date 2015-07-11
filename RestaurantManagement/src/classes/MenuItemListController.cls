@@ -5,7 +5,9 @@ global class MenuItemListController {
     public static List<DisplayMenuItems> ItemList;
     //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
     public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
-    public Id foodOrderId='a0537000000RI9b';
+    public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
+    public Decimal tableNo= Decimal.valueOf(tableNumber);
+    public Id foodOrderId='a0537000000RF93';
     Food_Order__c fo = getFoodOrder();
     //public Cart(){  }
     public List<DisplayCart> orderItemsList;
@@ -15,11 +17,18 @@ global class MenuItemListController {
     
     public MenuItemListController(){
         selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
-        
+        tableNumber=ApexPages.currentPage().getParameters().get('tableid');
+        tableNo= Decimal.valueOf(tableNumber);
         System.debug(selLocation);
     }
     
     public Food_Order__c getFoodOrder(){
+         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
+            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
+                                     where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' ];
+    foodOrderId= existingOrder[0].Id;
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
                         f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, 
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
@@ -163,7 +172,7 @@ global class MenuItemListController {
                 List<PriceBook__c> price = [Select p.Price__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
-                ItemList.add(new DisplayMenuItems(item,price[0].price__c));
+                ItemList.add(new DisplayMenuItems(item,price));
             }
         }
         
@@ -171,8 +180,9 @@ global class MenuItemListController {
     }
     
     @RemoteAction 
-    WebService static String createOrderItem(String item, String quant, String table, String location){
+    WebService static String createOrderItem(String item, String quant, String table, String location, Id price){
         Decimal tableid= Decimal.valueOf(table);
+        //Decimal itemPrice = Decimal.valueOf(price); 
         System.debug(item);
         System.debug(quant);
         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
@@ -203,27 +213,33 @@ global class MenuItemListController {
         Order_Item__c orderitem = new Order_Item__c();
         
         orderitem.Name= item;
+        orderitem.Price__c= price;
         orderitem.Food_Item__c= food_items[0].Id;
         orderitem.Food_Order__c= orders[0].Id;
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
+        
         orderitem.Status__c='New';
         insert orderitem;
         return orders[0].name;
         
     }
     
+    public static String rerenderCart(){
+        return null;
+    }
     
     
     public class DisplayMenuItems{
         private Food_Item__c availableItems;
         private Decimal pricetag;
         private String imgurl;
+        private PriceBook__c book;
         
-        
-        public DisplayMenuItems(Food_Item__c item, Decimal price){
+        public DisplayMenuItems(Food_Item__c item, List<PriceBook__c> price){
             this.availableItems= item;
-            this.pricetag= price;
+            this.pricetag= price[0].Price__c;
+            this.book = price[0];
             
         }
         
@@ -261,6 +277,10 @@ global class MenuItemListController {
             get{return availableItems.Name;}
         }
         
+        public Id priceBook{
+            get{return this.book.Id;}
+        }
+        
         public String category{
             get{return availableItems.Category__c;}
         }
@@ -286,11 +306,12 @@ global class MenuItemListController {
         
         public String getimgurl(){
            imgurl = availableItems.Item_Image__c+'';
-           Integer st_index = imgurl.lastIndexOf('src');
-           Integer end_index = imgurl.lastIndexOf('');
-           //imgurl = imgurl.substring(end_index).replace('&amp;','&');
-       
-           return imgurl ;
+           Integer st_index = imgurl.IndexOf('src');
+           Integer end_index = imgurl.lastIndexOf('\"');
+           
+           Integer len = end_index - (st_index+5);
+           imgurl = imgurl.mid(st_index+5,len).replace('&amp;','&');
+           return imgurl; 
        }
         
         // public Object diet{

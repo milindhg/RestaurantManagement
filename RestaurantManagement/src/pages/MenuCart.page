@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="MenuItemListController">
+<apex:page showheader="false" controller="Cart">
     <style type="text/css">
         <!-- /* Some custom styles to beautify this example */
 .demo-content{
@@ -181,29 +181,23 @@ background: #abb1b8;
                                               
                                              
                                            
-                                                <apex:column headerValue="Item Name">
-                                                     <apex:outputText value="{!pitem.name}"/>
-                                               </apex:column>
-                                               
-                                                <apex:column headerValue="Quantity">
-                                                     <apex:outputText value="{!pitem.quantity}"/>
-                                               </apex:column>
-                                               
-                                               <apex:column headerValue="Action">
-                                                   <apex:commandButton value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                <apex:column >
+                                                     <apex:outputText value="{!pitem.quantity} "/> <apex:outputText value=" {!pitem.name}"/>
+                                                <br></br>
+                                                   <apex:commandButton value="+" style="border-radius:50%;" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>   
                                                    
-                                                   <apex:commandButton value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                   <apex:commandButton value="-" style="border-radius:50%;" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton> 
                                                    
-                                                   <apex:commandButton value="Remove" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                   <apex:commandButton value="X" style="border-radius:50%;"  action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>           
                                                </apex:column>
                                                
-                                               <apex:column headerValue="Total Price">
+                                               <apex:column headerValue="Price">
                                                      <apex:outputText value="{!pitem.totalPrice}"/>
                                                </apex:column>                                                                                              
                                                
@@ -245,30 +239,23 @@ background: #abb1b8;
                                             <apex:pageBlock title="Cart">
                                               <apex:pageBlockTable id="cart_table" value="{!activeCartItems}" var="pitem">
                                               
-                                                <apex:column headerValue="Item Name">
-                                                     <apex:outputText value="{!pitem.name}"/>
-                                               </apex:column>
-                                           
-                                                <apex:column headerValue="Quantity">
-                                                     <apex:outputText value="{!pitem.quantity}"/>
-                                               </apex:column>
-                                           
-                                                                                         
-                                               <apex:column headerValue="Action">
-                                                   <apex:commandButton value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                <apex:column >
+                                                     <apex:outputText value="{!pitem.quantity} "/> <apex:outputText value=" {!pitem.name}"/>
+                                             
+                                                   <apex:commandButton value="+" style="border-radius:50%; font: bold 15px ;" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>   
                                                    
-                                                   <apex:commandButton value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                   <apex:commandButton value="-" style="border-radius:50%; font-weight:bold;" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton> 
                                                    
-                                                   <apex:commandButton value="Remove" action="{!onDelete}" rerender="cart, cart_table, currentBill, estimatedBill">
+                                                   <apex:commandButton value="X" style="border-radius:50%; color:red;"  action="{!onDelete}" rerender="cart, cart_table, currentBill, estimatedBill">
                                                          <apex:param name="Id" value="{!pitem.id}"/>                                  
                                                    </apex:commandButton>           
                                                </apex:column>
                                            
-                                               <apex:column headerValue="Total Price">
+                                               <apex:column headerValue="Price">
                                                      <apex:outputText value="{!pitem.totalPrice}"/>
                                                </apex:column>                                                                                          
                                                                                            

@@ -53,42 +53,15 @@
     <enableReports>true</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <fields>
-        <fullName>Location__c</fullName>
-        <externalId>false</externalId>
-        <label>Location</label>
-        <picklist>
-            <picklistValues>
-                <fullName>California</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Indiana</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>NewYork</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Ohio</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Virginia</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
-        <visibleLines>5</visibleLines>
-    </fields>
     <label>Inventory</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>equals</operation>
+            <value>Virginia</value>
+        </filters>
         <label>All</label>
     </listViews>
     <nameField>

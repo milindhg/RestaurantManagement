@@ -8,29 +8,5 @@
         <plural>true</plural>
         <value>Inventories</value>
     </caseValues>
-    <fields>
-        <label><!-- Location --></label>
-        <name>Location__c</name>
-        <picklistValues>
-            <masterLabel>California</masterLabel>
-            <translation><!-- California --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Indiana</masterLabel>
-            <translation><!-- Indiana --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>NewYork</masterLabel>
-            <translation><!-- NewYork --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Ohio</masterLabel>
-            <translation><!-- Ohio --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Virginia</masterLabel>
-            <translation><!-- Virginia --></translation>
-        </picklistValues>
-    </fields>
     <startsWith>Vowel</startsWith>
 </CustomObjectTranslation>

@@ -69,20 +69,20 @@
     </fields>
     <fields>
         <fullName>Inventory__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Inventory</label>
         <referenceTo>Inventory__c</referenceTo>
         <relationshipLabel>RawMaterials</relationshipLabel>
         <relationshipName>RawMaterials</relationshipName>
-        <required>false</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Name__c</fullName>
-        <caseSensitive>false</caseSensitive>
         <externalId>false</externalId>
         <label>Name</label>
         <length>20</length>
@@ -90,7 +90,7 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>true</unique>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>QuantityRollup__c</fullName>
@@ -122,6 +122,17 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Indiana</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Inventory__c</field>
+            <operation>equals</operation>
+            <value>Indiana</value>
+        </filters>
+        <label>Indiana</label>
+    </listViews>
     <nameField>
         <label>RawMaterial Name</label>
         <trackHistory>false</trackHistory>
@@ -129,5 +140,5 @@
     </nameField>
     <pluralLabel>RawMaterials</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

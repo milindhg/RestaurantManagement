@@ -936,11 +936,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Inventory__c.Location__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Lead.Address</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1387,11 +1382,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>RawMaterial__c.Available__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>RawMaterial__c.Inventory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

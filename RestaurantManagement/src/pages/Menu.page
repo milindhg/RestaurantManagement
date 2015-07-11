@@ -11,9 +11,9 @@ margin-bottom: 10px;
 .demo-content.bg-alt{
 background: #abb1b8;
 
-}-->    
+}-->	
         body{
-            background-color:black;
+        	background-color:black;
         }
         #item_name{
         text-align:left;
@@ -118,9 +118,9 @@ background: #abb1b8;
         
         
         .panel-body {
-            background-color:white !important;
-            text-align:left !important;
-            padding:0px;
+        	background-color:white !important;
+        	text-align:left !important;
+        	padding:0px;
         }
         
         .cardimage{
@@ -142,9 +142,10 @@ background: #abb1b8;
         #desc{
         padding:10px;
         height:50%;
+        font-size:12px;
         }
         .panel-body > .text-center{
-            background-color:grey;
+        	background-color:grey;
         }
         
         #quantity_desc{
@@ -492,7 +493,7 @@ background: #abb1b8;
         
     })( jQuery );
     
-    function AddOrder(event,name,table,location){
+    function AddOrder(event,name,table,location,price){
         
         var item = event.target.parentNode;
         alert(item.id);
@@ -505,10 +506,12 @@ background: #abb1b8;
             {item : name,    // method parameter
              quant:quantity,
              table:table,
-             location:location
+             location:location,
+             price:price
             });
         
         alert(result);
+        $j("#cart_items").load(document.URL + " #cart_items");
     }
     
     
@@ -558,7 +561,7 @@ background: #abb1b8;
 function flip(event) {
     
     var item = event.target.parentNode;
-    //var page=     item.getElementsByTagName('div')[0].id;
+    //var page= 	item.getElementsByTagName('div')[0].id;
     alert(item.id);
     //var page = item.id;
     //alert(page);
@@ -580,19 +583,9 @@ function flip(event) {
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
 </h1>
                 </div>
-               
-                
-                
-                    
-                    
-                        
-                          
-                               
-                           
-                            
-                                
-                                    <div class="row" style="width:75%;float:left;padding:10px;">
-                                         <p id="menu_btn" class="pull-left">Menu <img src="{!$Resource.menu1}" width="30px" style="background-color:maroon;"/></p>
+
+                                    <div class="row" style="width:75%;float:left;">
+                                         <p id="menu_btn" class="pull-left">Menu <img src="{!$Resource.menu1}"  style="width:30px;background-color:maroon;"/></p>
                                         <div class="col-xs-12">
                                             <div data-role="tabs" data-mini="true" data-position="fixed" style="padding:5px;">
                                                 <div data-role="navbar"  data-iconpos="bottom" data-mini="true">
@@ -603,7 +596,7 @@ function flip(event) {
                                                     </ul>
                                                 </div>
                                                 
-                                                <div id="one" class="container" style="clear:left;background-color:white;padding:10px;margin:10px;width:100%">
+                                                <div id="one" class="container" style="clear:left;background-color:white;width:100%">
                                                     <div class="row">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
                                                             
@@ -625,13 +618,13 @@ function flip(event) {
                                                                          </div>
                 
                                                                             </div>
-                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B">
-                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:19px;" />
+                                                                            <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.9;">
+                                                                                <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:15px;" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
                                                                                 <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
-                                                                                <apex:outputText value="{!item.imgurl}"></apex:outputText>
-                                                                            <div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#610B0B;">
+
+                            												<div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#610B0B;opacity:0.7;">
                                                                                 
                                                                                 
                                                                                 <p>
@@ -643,12 +636,13 @@ function flip(event) {
                                                                                </div>
                                                                                       
                                                                             
-                                                                            <div id="quantity_desc" style="background-color:#610B0B;background-size:100%;">
+                                                                            <div id="quantity_desc" style="background-color:#610B0B;background-size:100%;opacity:0.9;">
                                                                                 
                                                                                 <label for="spin" style="color:white">Quantity</label>
                                                                                 <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
                                                                                 <input type="number" min="0" max="10" value="1" id="quant" size='4' style="float:left;background-color:white;"/>
-                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}');" id="addorder" style="float:left">ADD</a>
+                                                                                <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="float:left">ADD</a>
+                                                 
                                                                               </div> 
                                                                         </div>
                                                                     </div>
@@ -788,11 +782,11 @@ function flip(event) {
   
                 
         
-                 <div data-role="main" class="ui-content" style="width:25%;height:1200px;background-color:white;padding:0px;">
-                                        <a id="menu_btn" class="btn accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                <p id="menu_link" class="pull-left">Order Details <img src="{!$Resource.menu1}" width="30px"/></p>
-                            </a>
-                    <div style="background-color:maroon;opacity:0.7;height:80%;">
+                 <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:25%;background-color:white;padding:0px;">
+                                        
+                                <p id="menu_link" class="pull-left" style="border: maroon 0px solid;color:white">Order Details </p>
+                           
+                    <div style="background-color:white;opacity:0.9;height:80%;">
                         <div class="container" style="width:80%;">
 
                                             <div class="row billed_items">
