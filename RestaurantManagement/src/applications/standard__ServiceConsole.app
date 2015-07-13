@@ -172,7 +172,12 @@
     <tab>Inventory__c</tab>
     <tab>RawMaterial__c</tab>
     <tab>Purchase__c</tab>
+    <tab>Feedback__c</tab>
+    <tab>Offers__c</tab>
     <workspaceMappings>
+        <mapping>
+            <tab>Feedback__c</tab>
+        </mapping>
         <mapping>
             <tab>Food_Item__c</tab>
         </mapping>
@@ -184,6 +189,9 @@
         </mapping>
         <mapping>
             <tab>Menu</tab>
+        </mapping>
+        <mapping>
+            <tab>Offers__c</tab>
         </mapping>
         <mapping>
             <tab>Order_Item__c</tab>

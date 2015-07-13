@@ -37,6 +37,10 @@
         <name>Prep_Time__c</name>
     </fields>
     <fields>
+        <label><!-- Special --></label>
+        <name>Special__c</name>
+    </fields>
+    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
         <picklistValues>
@@ -64,5 +68,16 @@
             <translation><!-- Vegetarian --></translation>
         </picklistValues>
     </fields>
+    <layouts>
+        <layout>Food Item Manager</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

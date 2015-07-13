@@ -1,5 +1,10 @@
 global with sharing class Cart{
 
+    public PageReference test() {
+        return null;
+    }
+
+
     public String foodOrderId = 'a0537000000RI9b';
     public Cart(){  }
     public List<DisplayCart> orderItemsList;
@@ -40,6 +45,7 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
+                                    AND o.Delete_Status__c = 'No'
                                     order by o.Status__c]){
             if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
                 orderItemsList.add(new DisplayCart(item));
@@ -64,7 +70,8 @@ global with sharing class Cart{
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
-                                    where o.Food_order__c=:fo.id]){
+                                    where o.Food_order__c=:fo.id
+                                    AND o.Delete_Status__c = 'No']){
             if(item.Status__c == 'New')
                 activeCartItems.add(new DisplayCart(item));
         }
@@ -102,7 +109,8 @@ global with sharing class Cart{
      public void onDelete() {
           String id= system.CurrentPageReference().getParameters().get('id');
           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
-          delete orderItem;                             
+          orderItem.Delete_Status__c = 'Yes';
+          update orderItem;                             
      }
      
      public void placeOrder() {
@@ -111,7 +119,7 @@ global with sharing class Cart{
         fo.Status__c = 'Pending';
         update fo;
         
-        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
+        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New' AND oi.Delete_Status__c = 'No'];
         for(Order_Item__c o : orderItems){
             o.Status__c = 'Pending';            
         }
@@ -125,7 +133,12 @@ global with sharing class Cart{
         update fo;
         
         List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
-        delete orderItems;                                                                 
+        
+        for(Order_Item__c o : orderItems){
+            o.Delete_Status__c = 'Yes';            
+        }
+        
+        update orderItems;                                                                 
      }
 
      public void paidStatusUpdate(){
@@ -135,8 +148,37 @@ global with sharing class Cart{
          update foodOrder;
      }
      
-     public PageReference test() {
-         PageReference pageRef = Page.Bill;
+     public PageReference payBill() {
+        Double tableNo = Double.valueOf(ApexPages.CurrentPage().getParameters().get('tableid'));   
+        String loc = ApexPages.CurrentPage().getParameters().get('reqlocation');
+        
+        List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
+                                       FROM   Order_Item__c
+                                       WHERE  Status__c ='Delivered'
+                                       AND    Table_Number__c = :tableNo];
+
+        List<Food_Item__c> fitems = new List<Food_Item__c>();
+        for(Integer i=0;i<oitems.size();i++){
+            Id food_item = oitems[i].Food_Item__c;
+        
+            Food_Item__c f = [SELECT Id, 
+                               (SELECT NoItemsOrdered__c
+                                FROM   PriceBooks__r
+                                WHERE  Location__c = :loc
+                                )
+             FROM Food_Item__c
+             WHERE Id = :food_item];
+            
+             PriceBook__c p = f.PriceBooks__r;
+             p.NoItemsOrdered__c = p.NoItemsOrdered__c + 1;
+            
+             fitems.add(f);
+            
+        }
+        
+        update fitems;
+     
+        PageReference pageRef = Page.Bill;
 //        PageReference pageRef = new PageReference('/apex/Bill');
         System.debug('PageRef------------------->'+pageRef);
          pageRef.setRedirect(true);

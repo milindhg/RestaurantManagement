@@ -17,4 +17,6 @@
     <tab>Inventory__c</tab>
     <tab>RawMaterial__c</tab>
     <tab>Purchase__c</tab>
+    <tab>Feedback__c</tab>
+    <tab>Offers__c</tab>
 </CustomApplication>

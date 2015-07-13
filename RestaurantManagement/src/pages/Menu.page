@@ -1,5 +1,7 @@
 <apex:page showheader="false" controller="MenuItemListController">
     <style type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+        
         <!-- /* Some custom styles to beautify this example */
 .demo-content{
 padding: 15px;
@@ -107,7 +109,32 @@ background: #abb1b8;
         text-shadow:none;
         }
         
+        .swiper-container {
+        width: 100%;
         
+        height: 100%;
+        }
+        .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        height:100%;
+        width:100%;
+        background: #fff;
+       
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        }
         
         
         .col-sm-6{
@@ -230,6 +257,7 @@ background: #abb1b8;
         <apex:includeScript value="{!$Resource.json2}"/>
         <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         <apex:includeScript value="{!$Resource.spineditjs}"/>
+        <apex:includeScript value="{!$Resource.swiperminjs}"/>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
@@ -240,7 +268,9 @@ background: #abb1b8;
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
-        <apex:stylesheet value="{!$Resource.spineditcss}"  />
+        <apex:stylesheet value="{!$Resource.spineditcss}"/>
+        <apex:stylesheet value="{!$Resource.swipermincss}"/>
+        
         
         
         
@@ -250,7 +280,7 @@ background: #abb1b8;
     //sforce.connection.login("resto@persistent.com", "persistent123GR2MVKquYRkYUAVKiOOLI9Xl");
     
     $j = jQuery.noConflict();
-    $j('#spinEdit').spinedit();
+    
     $(document).ready(function() {
         
         
@@ -506,6 +536,15 @@ background: #abb1b8;
         
     })( jQuery );
     
+    $(document).ready(function(){
+        
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 3,
+            paginationClickable: true,
+            spaceBetween: 30
+        });
+    });
     function AddOrder(event,name,table,location,price){
         
         var item = event.target.parentNode;
@@ -597,13 +636,46 @@ background: #abb1b8;
                     </h1>
                 </div>
                 
-                <div class="row" style="width:75%;float:left;margin-left:5px;padding:0px;">
+                <div class="row" style="width:70%;float:left;margin-left:5px;padding:0px;">
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;">
                         <h2>
                             Menu
                         </h2>  
                     </div>
-                    
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <apex:repeat value="{!offers}" id="offers" var="offer"><div class="swiper-slide" style="height:200px;">Slide 1                   
+                               <!-- <div class="cardimage" style="position:relative;">
+                                    
+                                    <div id="discount" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
+                                        
+                                        
+                                        <p style="float:left;padding-right:10px;opacity:1;">
+                                            
+                                        </p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >{!offer.discount}% {!offer.description}</p>
+                                    </div>
+                                    <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;">
+                                        <apex:outputText value="{!offer.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;" />
+                                       
+                                    </div>
+                                    
+                                    
+                                </div>-->
+                                </div></apex:repeat>
+                            <!-- <div class="swiper-slide">Slide 1</div>
+<div class="swiper-slide">Slide 2</div>
+<div class="swiper-slide">Slide 3</div>
+<div class="swiper-slide">Slide 4</div>
+<div class="swiper-slide">Slide 5</div>
+<div class="swiper-slide">Slide 6</div>
+<div class="swiper-slide">Slide 7</div>
+<div class="swiper-slide">Slide 8</div>
+<div class="swiper-slide">Slide 9</div>
+<div class="swiper-slide">Slide 10</div>-->
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
                     <div class="col-xs-12">
                         <div data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
                             <div data-role="navbar"  data-iconpos="bottom" data-mini="true">
@@ -614,13 +686,13 @@ background: #abb1b8;
                                 </ul>
                             </div>
                             
-                            <div id="one" class="container" style="clear:left;background-color:white;width:100%">
+                            <div id="one" class="container" style="clear:left;background-color:white;width:90%">
                                 <div class="row">
                                     <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
                                         
                                         <apex:form >
                                             
-                                            <div class="col-sm-6 col-md-6 col-lg-4" > 
+                                            <div class="col-sm-6 col-md-6 col-lg-4" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};" > 
                                                 
                                                 <div class="panel panel-default" >
                                                     
@@ -644,6 +716,8 @@ background: #abb1b8;
                                                                     <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
                                                                     <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
                                                                     <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
+                                                                    <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark1}" width="60px" />
+                                                                    
                                                                 </div>
                                                                 
                                                                 
@@ -652,20 +726,18 @@ background: #abb1b8;
                                                         </div>
                                                         
                                                         <div class="page2" id="page2" onClick="flip(event);">
-                                                                                                    <div class="cardimage" style="position:relative;">
+                                                            <div class="cardimage" style="position:relative;">
                                                                 
-                                                                <div id="" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
-                                                                    
-                                                                    
-                                                                    <p style="float:left;padding-right:10px;opacity:1;">
-                                                                        
-                                                                    </p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
-                                                                </div>
+                                                                <!--<div id="" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
+
+
+<p style="float:left;padding-right:10px;opacity:1;">
+
+</p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
+</div>-->
                                                                 <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;">
-                                                                    <apex:outputText value="{!item.name}" id="ite" style="color:White;font-weight:bold;font-size:25px;" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
+                                                                    <apex:outputText value="{!item.description}" id="ite" style="color:White;font-weight:bold;font-size:16px;background-size:cover;" />
+                                                                    
                                                                 </div>
                                                                 
                                                                 
@@ -675,18 +747,18 @@ background: #abb1b8;
                                                             
                                                             
                                                             
-                                                           <!-- <div id="quantity_desc" style="background-size:100%;opacity:0.8;background-color:#610B0B;opacity:0.8;">
-                                                                
-                                                                <div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#610B0B;opacity:0.8;color:white;">
-                                                                    
-                                                                    
-                                                                    <p>
-                                                                        {!item.description}
-                                                                    </p>
-                                                                    
-                                                                </div>
-                                                                
-                                                            </div> -->
+                                                            <!-- <div id="quantity_desc" style="background-size:100%;opacity:0.8;background-color:#610B0B;opacity:0.8;">
+
+<div id="desc" style="padding:0px;margin:0px;height:60px;background-color:#610B0B;opacity:0.8;color:white;">
+
+
+<p>
+{!item.description}
+</p>
+
+</div>
+
+</div> -->
                                                         </div>
                                                         <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.8;">
                                                             
@@ -835,7 +907,7 @@ background: #abb1b8;
                 
                 
                 
-                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:25%;background-color:white;padding:0px;">
+                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:30%;background-color:white;padding:0px;">
                     
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;">
                         <h2>
@@ -990,7 +1062,7 @@ background: #abb1b8;
         </apex:pageBlock>
     </body>
     <script type="text/javascript">
-    $( document ).ready(function() {
+    $(document ).ready(function() {
         var i=0;
         $('.col-sm-5').each(function(){
             // alert('item');
@@ -998,7 +1070,7 @@ background: #abb1b8;
             i++;
         });
         
-    });
+    });   
     </script>
     
 </apex:page>

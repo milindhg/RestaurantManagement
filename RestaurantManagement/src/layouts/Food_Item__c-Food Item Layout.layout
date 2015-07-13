@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Item_Image__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Special__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -78,6 +82,10 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>PriceBook__c.Food_Item__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Offers__c.Food_Item__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

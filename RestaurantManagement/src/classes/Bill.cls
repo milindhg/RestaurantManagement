@@ -1,6 +1,70 @@
 global with sharing class Bill{
 
     public String foodOrderId = 'a0537000000RI9b';
+    
+    public String SelectedFQ;
+    public String SelectedService;
+    public String SelectedOAE;
+    public String likes;
+    public String unlikes;
+    
+    public String getSelectedFQ() {
+        return SelectedFQ;
+    }
+     
+    public void setSelectedFQ(String recType) {
+        this.SelectedFQ= recType;
+    }
+    
+    
+    public String getSelectedService() {
+        return SelectedService;
+    }
+     
+    public void setSelectedService (String recType) {
+        this.SelectedService= recType;
+    }
+    
+    public String getSelectedOAE () {
+        return SelectedOAE;
+    }
+     
+    public void setSelectedOAE (String recType) {
+        this.SelectedOAE = recType;
+    }
+    
+    
+    public String getlikes() {
+        return likes;
+    }
+     
+    public void setlikes(String recType) {
+        this.likes= recType;
+    }
+    
+    public String getunlikes() {
+        return unlikes;
+    }
+     
+    public void setunlikes(String recType) {
+        this.unlikes= recType;
+    }
+   
+    public void insertfeedback()
+    {
+    Feedback__c fb = new Feedback__c();
+    fb.Food_Quality__c=SelectedFQ;
+    fb.Overall_Experience__c=SelectedOAE;
+    fb.Service__c=SelectedService;
+    fb.What_I_liked__c=likes;
+    fb.What_must_have_been_there__c=unlikes;
+    insert fb;
+    likes=null;
+    unlikes=null;
+    
+    }
+    
+    
     public Bill(){  }
     public List<DisplayCart> orderItemsList;
  
@@ -9,8 +73,8 @@ global with sharing class Bill{
     Food_Order__c fo = getFoodOrder();
     
     public Food_Order__c getFoodOrder(){
-    return [Select f.TotalPrice__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, 
+    return [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
+                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c,
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 

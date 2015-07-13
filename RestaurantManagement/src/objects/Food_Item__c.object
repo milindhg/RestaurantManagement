@@ -105,6 +105,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Special__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Special</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Status__c</fullName>
         <description>Whether the food item should be enabled in the menu or not</description>
         <externalId>false</externalId>
@@ -149,6 +157,11 @@
     <label>Food Item</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Category__c</columns>
+        <columns>Prep_Time__c</columns>
+        <columns>Type__c</columns>
+        <columns>Special__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

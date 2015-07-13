@@ -3,6 +3,7 @@ global class MenuItemListController {
     
     
     public static List<DisplayMenuItems> ItemList;
+    public static List<DisplayOffer> offerList;
     //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
     public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
     public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
@@ -168,7 +169,7 @@ global class MenuItemListController {
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Item_Image__c, Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
+            for(Food_Item__c item : [Select Name, Category__c, Description__c,Special__c, Item_Image__c, Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
                 List<PriceBook__c> price = [Select p.Price__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
@@ -177,6 +178,21 @@ global class MenuItemListController {
         }
         
         return ItemList;
+    }
+    
+       public List<DisplayOffer> getOffers(){
+        
+        if(offerList==null){
+            
+            offerList = new List<DisplayOffer>();
+            for(Offers__c offer : [Select o.Id, o.Food_Item__c, o.Food_Item__r.name,o.Discount__c, o.Description__c From Offers__c o]){
+                //System.debug(item.Name);
+                //System.debug(selLocation);
+                offerList.add(new DisplayOffer(offer));
+            }
+        }
+        
+        return offerList;
     }
     
     @RemoteAction 
@@ -300,6 +316,9 @@ global class MenuItemListController {
             get{return availableItems.Status__c;}
         }
         
+        public boolean isSpecial{
+            get{return availableItems.Special__c;}
+        }
         public String typ{
             get{return availableItems.Type__c;}
         }
@@ -320,6 +339,31 @@ global class MenuItemListController {
         
     }
     
+    public class DisplayOffer{
+        private Offers__c availableOffers;
+        private Decimal pricetag;
+        private String imgurl;
+        private PriceBook__c book;
+        
+        public DisplayOffer(Offers__c offer){
+            this.availableOffers= offer;
+            
+        }
+
+        public String name{
+            get{return availableOffers.Food_Item__r.name;}
+        }
+        
+        public Decimal discount{
+            get{return availableOffers.discount__c;}
+        }        
+        public String description{
+            get{return availableOffers.Description__c;}
+        }
+        
+       
+        
+    }
     public class DisplayCart {
     private Order_Item__c cartItem;
 

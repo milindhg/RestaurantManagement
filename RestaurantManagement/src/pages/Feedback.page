@@ -1,0 +1,57 @@
+<apex:page controller="Feedbackcontroller">
+
+ <apex:form >
+                <apex:pageBlock id="clean">
+                 <div style="font-weight:bold;text-align:center;">Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
+                         <div >
+                                <table >   
+                                <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Food quality </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedFQ }"  size="1">
+                                               <apex:selectOption itemValue="5" itemLabel="5"/>
+                                               <apex:selectOption itemValue="4" itemLabel="4"/>
+                                               <apex:selectOption itemValue="3" itemLabel="3"/>
+                                               <apex:selectOption itemValue="2" itemLabel="2"/>
+                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Service </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedService}" size="1" >
+                                               <apex:selectOption itemValue="5" itemLabel="5"/>
+                                               <apex:selectOption itemValue="4" itemLabel="4"/>
+                                               <apex:selectOption itemValue="3" itemLabel="3"/>
+                                               <apex:selectOption itemValue="2" itemLabel="2"/>
+                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Overall Experience </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedOAE }" size="1">
+                                               <apex:selectOption itemValue="5" itemLabel="5"/>
+                                               <apex:selectOption itemValue="4" itemLabel="4"/>
+                                               <apex:selectOption itemValue="3" itemLabel="3"/>
+                                               <apex:selectOption itemValue="2" itemLabel="2"/>
+                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> What I liked: </apex:outputPanel>     </td>
+                               <td>  <apex:inputTextArea rows="4" cols="50" value="{!likes}" > </apex:inputTextArea> </td>
+                               </tr>
+                               <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> What must have been there : </apex:outputPanel>     </td>
+                               <td> <apex:inputTextArea rows="4" cols="50" value="{!unlikes}" > </apex:inputTextArea> </td>
+                               </tr>
+
+                   </table>
+                   
+                 </div>
+                 <div  style="text-align: center;">
+                 <apex:commandButton action="{!insertfeedback}" value="Submit" >
+                 </apex:commandButton>
+                 </div>
+                </apex:pageBlock>
+            </apex:form>
+        
+</apex:page>
