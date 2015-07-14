@@ -62,7 +62,7 @@ global class MenuItemListController {
         //fo = getFoodOrder();
         return orderItemsList;
     }
-    
+    //Method to get the active cart items - which are not accepted yet.
     public List<DisplayCart> getActiveCartItems() {
         activeCartItems = new List<DisplayCart>();
         if(activeCartItems == null){
@@ -78,7 +78,8 @@ global class MenuItemListController {
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
-                                    where o.Food_order__c=:fo.id]){
+                                    where o.Food_order__c=:fo.id
+                                    AND o.Delete_Status__c <> 'Yes']){
             if(item.Status__c == 'New')
                 activeCartItems.add(new DisplayCart(item));
         }
@@ -116,7 +117,8 @@ global class MenuItemListController {
      public void onDelete() {
           String id= system.CurrentPageReference().getParameters().get('id');
           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
-          delete orderItem;                             
+          orderItem.Delete_Status__c = 'Yes';
+          update orderItem;                             
      }
      
      public void placeOrder() {
@@ -139,7 +141,12 @@ global class MenuItemListController {
         update fo;
         
         List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
-        delete orderItems;                                                                 
+        
+        for(Order_Item__c o : orderItems){
+            o.Delete_Status__c = 'Yes';            
+        }
+        
+        update orderItems;                                                                 
      }
 
      public void paidStatusUpdate(){
@@ -148,6 +155,43 @@ global class MenuItemListController {
          foodOrder.status__c = PAID;
          update foodOrder;
      }
+     
+     public PageReference payBill() {
+        Double tableNo = Double.valueOf(ApexPages.CurrentPage().getParameters().get('tableid'));   
+        String loc = ApexPages.CurrentPage().getParameters().get('reqlocation');
+        
+        List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
+                                       FROM   Order_Item__c
+                                       WHERE  Status__c ='Delivered'
+                                       AND    Table_Number__c = :tableNo];
+
+        List<Food_Item__c> fitems = new List<Food_Item__c>();
+        for(Integer i=0;i<oitems.size();i++){
+            Id food_item = oitems[i].Food_Item__c;
+        
+            Food_Item__c f = [SELECT Id, 
+                               (SELECT NoItemsOrdered__c
+                                FROM   PriceBooks__r
+                                WHERE  Location__c = :loc
+                                )
+             FROM Food_Item__c
+             WHERE Id = :food_item];
+            
+             PriceBook__c p = f.PriceBooks__r;
+             p.NoItemsOrdered__c = p.NoItemsOrdered__c + 1;
+            
+             fitems.add(f);
+            
+        }
+        
+        update fitems;
+     
+        PageReference pageRef = Page.Bill;
+        System.debug('PageRef------------------->'+pageRef);
+         pageRef.setRedirect(true);
+         return pageRef;
+         }
+
      
      public PageReference test() {
          PageReference pageRef = Page.Bill;
@@ -170,13 +214,20 @@ global class MenuItemListController {
             
             ItemList = new List<DisplayMenuItems>();
             for(Food_Item__c item : [Select Name, Category__c, Description__c,Special__c, Item_Image__c, Prep_Time__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
-                List<PriceBook__c> price = [Select p.Price__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
+                List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
                 ItemList.add(new DisplayMenuItems(item,price));
             }
         }
         
+        //TO DO
+        //Write the code to call comparator and sort the items list based on numof times ordered here.
+        ItemList.sort();
+        for(Integer i = 0; i < 3; i++){
+            ItemList[i].starredItem = true;
+        }
+        System.debug('Starred Items!!!!: ' + ItemList);
         return ItemList;
     }
     
@@ -245,185 +296,10 @@ global class MenuItemListController {
         return null;
     }
     
-    
-    public class DisplayMenuItems{
-        private Food_Item__c availableItems;
-        private Decimal pricetag;
-        private String imgurl;
-        private PriceBook__c book;
-        
-        public DisplayMenuItems(Food_Item__c item, List<PriceBook__c> price){
-            this.availableItems= item;
-            this.pricetag= price[0].Price__c;
-            this.book = price[0];
-            
-        }
-        
-        // public String status{
-        //    get{if(actionList.containsKey(availDeals.Name)){
-        
-        //      return actionList.get(availDeals.Name);}
-        
-        //    else return 'Available';}
-        
-        //}
-        
-        
-        // public String getUrl{
-        //   get{
-        //     List<StaticResource> resourceName= new List<StaticResource>();
-        //   resourceName= [Select s.Name from StaticResource s where s.Name=:availDeals.Name];
-        // if(!resourceName.isEmpty()){
-        //return URL.getSalesforceBaseUrl().toExternalForm()+'/resource'+'/'+availDeals.Name;
-        //}else{
-        //     return URL.getSalesforceBaseUrl().toExternalForm()+'/resource/sample';
-        // }
-        //}
-        //}
-        
-        //public Boolean isAccepted{
-        // get{if(actionList.containsKey(availDeals.Name)){
-        
-        //   return true;}
-        
-        // else return false;}
-        
-        //}
-        public String name{
-            get{return availableItems.Name;}
-        }
-        
-        public Id priceBook{
-            get{return this.book.Id;}
-        }
-        
-        public String category{
-            get{return availableItems.Category__c;}
-        }
-                
-                public Decimal price{
-            get{return this.pricetag;}
-        }        
-        public String description{
-            get{return availableItems.Description__c;}
-        }
-        
-        public Decimal preptime{
-            get{return availableItems.Prep_Time__c;}
-        }
-        
-        public String status{
-            get{return availableItems.Status__c;}
-        }
-        
-        public boolean isSpecial{
-            get{return availableItems.Special__c;}
-        }
-        public String typ{
-            get{return availableItems.Type__c;}
-        }
-        
-        public String getimgurl(){
-           imgurl = availableItems.Item_Image__c+'';
-           Integer st_index = imgurl.IndexOf('src');
-           Integer end_index = imgurl.lastIndexOf('\"');
-           
-           Integer len = end_index - (st_index+5);
-           imgurl = imgurl.mid(st_index+5,len).replace('&amp;','&');
-           return imgurl; 
-       }
-        
-        // public Object diet{
-          //  get{return availableItems.Diet__c;}
-        //}
-        
+    public PageReference sayHello() {
+        return null;
     }
     
-    public class DisplayOffer{
-        private Offers__c availableOffers;
-        private Decimal pricetag;
-        private String imgurl;
-        private PriceBook__c book;
-        
-        public DisplayOffer(Offers__c offer){
-            this.availableOffers= offer;
-            
-        }
-
-        public String name{
-            get{return availableOffers.Food_Item__r.name;}
-        }
-        
-        public Decimal discount{
-            get{return availableOffers.discount__c;}
-        }        
-        public String description{
-            get{return availableOffers.Description__c;}
-        }
-        
-       
-        
-    }
-    public class DisplayCart {
-    private Order_Item__c cartItem;
-
-    public DisplayCart(Order_Item__c item){
-        this.cartItem = item;
-    }
     
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    
-    public Id id
-    {
-        get { return cartItem.id; }
-    }
-
-    public String Name
-    {
-        get { return cartItem.name;  }
-    }
-    
-    public Decimal price
-    {
-        //Code to get the price from the lookup column and return it here.
-        get { return 10.00; }
-    }
-    
-    public Decimal quantity
-    {
-        get { return cartItem.Quantity__c; } 
-    }
-
-    public Decimal totalPrice
-    {
-        get { return cartItem.Total_Price__c; } 
-    }      
-
-    public String status 
-    {
-        get { return cartItem.status__c; }
-    }
-       
-    public String type
-    {
-        get { return cartItem.type__c; }
-    }
-    
-    public Food_Item__c foodItem
-    {
-        get { return cartItem.Food_Item__r;}
-    }
-    
-    public Food_Order__c foodOrder
-    {
-        get { return cartItem.Food_Order__r; }
-    }
-
-    public Decimal tableNumber
-    {
-        get { return cartItem.table_number__c; }
-    }
-}
 
 }

@@ -73,6 +73,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DisplayCart</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DisplayMenuItems</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DisplayOffer</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Feedbackcontroller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1668,6 +1680,10 @@
     </tabSettings>
     <tabSettings>
         <tab>Order_Item__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>PriceBook__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

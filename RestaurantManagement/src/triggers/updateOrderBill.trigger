@@ -8,6 +8,7 @@
  * Change 1. Added logic for maintaining expected bill amount along with the total bill (Total price) of the order.
  * Change 2. Added logic for maintaining the order status as new if any of the order items are new.
  * Change 3. Added fix for updating the total price exptected on deleting an item from the order items.
+ * Change 4. Added fix for correctly updating the totals - taxes, prices and estimated prices and taxes of the foodOrder object when the child orderitem is marked deleted.
  */
 
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
@@ -50,7 +51,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
                                             o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                             o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                             From Order_Item__c o
-                                            where o.Food_Order__c=:myFoodOrderId];
+                                            where o.Food_Order__c=:myFoodOrderId and o.Delete_Status__c <> 'Yes'];
         System.debug('All Order Items in Current FoodOrder are: !!!!' + allOrderItems);
              
         //Calculate the updated bill amounts by adding the bill amounts of all the Child Order Items

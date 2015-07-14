@@ -61,7 +61,6 @@ global with sharing class Bill{
     insert fb;
     likes=null;
     unlikes=null;
-    
     }
     
     

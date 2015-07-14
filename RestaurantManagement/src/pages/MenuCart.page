@@ -1,3 +1,11 @@
+<!-- /**
+ * @author Akshay Jarandikar and Milind Gokhale
+ * Creation Date: July 7, 2015
+ * This class is the front end visualforce page created for parallel development of MenuCart functionality,
+ * This code is to be periodically integrated with the frontend visualforce menu page. 
+ */
+ -->
+
 <apex:page showheader="false" controller="Cart">
     <style type="text/css">
         <!-- /* Some custom styles to beautify this example */-->
@@ -85,10 +93,7 @@
         }
     </style>
     <head>
-        <apex:includeScript value="{!$Resource.cometd}"/>
-        <apex:includeScript value="{!$Resource.jquery}"/>
-        <apex:includeScript value="{!$Resource.json2}"/>
-        <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+        
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
@@ -104,16 +109,18 @@
     <script type="text/javascript">
     
     $j = jQuery.noConflict();
-
     
     $(document).ready(function() {
-       $.cometd.init({
+        
+        
+        $.cometd.init({
             url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
             requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
         });
         
         $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
-            $('#bill_items').load(location.href + '#bill_items');
+            alert('Hello');
+            $j('#bill_items').load(location.href + '#bill_items');
         });
     });
     
@@ -193,7 +200,7 @@
                                                 </div>
                                                 <div style="float:left;width:100%">
                                                 <div style="float:left;width:70%" >
-                                                    <b><apex:outputLabel value="Current Bill" ></apex:outputLabel></b>
+                                                    <apex:outputLabel value="Current Bill" style="font-weight:bold;" ></apex:outputLabel>
                                                 </div>
                                                 <div style="float:left;width:30%">
                                                     <apex:outputText value="{!FoodOrder.TotalPrice__c}" ></apex:outputText>                                          
@@ -242,7 +249,6 @@
                                            
                                                  </apex:pageBlockTable> 
 
-                                                    <apex:commandLink styleClass="btn" action="{!payBill}" value="Pay now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />    
 
                                               <div class="col-sm-6 col-md-6 col-lg-4">  
                                                     <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
@@ -271,6 +277,7 @@
                                                 </div> 
                                                      
                                                  </div> 
+                                                    <apex:commandLink styleClass="btn" action="{! payBill}" value="Pay Now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />    
                                                  </apex:pageBlock>
 
                                                 </apex:pageBlock>

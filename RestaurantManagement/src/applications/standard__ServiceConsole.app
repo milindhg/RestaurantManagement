@@ -174,6 +174,7 @@
     <tab>Purchase__c</tab>
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
+    <tab>PriceBook__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>Feedback__c</tab>
@@ -195,6 +196,9 @@
         </mapping>
         <mapping>
             <tab>Order_Item__c</tab>
+        </mapping>
+        <mapping>
+            <tab>PriceBook__c</tab>
         </mapping>
         <mapping>
             <tab>Purchase__c</tab>

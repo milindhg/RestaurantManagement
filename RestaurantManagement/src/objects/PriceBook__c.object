@@ -299,6 +299,16 @@
         <type>Currency</type>
     </fields>
     <label>PriceBook</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Food_Item__c</columns>
+        <columns>Location__c</columns>
+        <columns>Price__c</columns>
+        <columns>NoItemsOrdered__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>PriceBook Name</label>
         <type>Text</type>

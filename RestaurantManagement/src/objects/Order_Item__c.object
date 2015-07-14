@@ -257,6 +257,20 @@
     <label>Order Item</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Delete_Status__c</columns>
+        <columns>Delivered_Time__c</columns>
+        <columns>Food_Item__c</columns>
+        <columns>Food_Item_Name__c</columns>
+        <columns>Food_Order__c</columns>
+        <columns>Item_Prep_Time__c</columns>
+        <columns>Picked_Up_Time__c</columns>
+        <columns>Price__c</columns>
+        <columns>Quantity__c</columns>
+        <columns>Status__c</columns>
+        <columns>Table_Number__c</columns>
+        <columns>Total_Price__c</columns>
+        <columns>Type__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

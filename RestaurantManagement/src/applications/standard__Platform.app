@@ -17,4 +17,5 @@
     <tab>Purchase__c</tab>
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
+    <tab>PriceBook__c</tab>
 </CustomApplication>

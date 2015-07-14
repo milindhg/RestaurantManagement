@@ -1,8 +1,12 @@
-global with sharing class Cart{
+/**
+ * @author Milind Gokhale and Akshay Jarandikar
+ * Creation Date: July 7, 2015
+ * This class is the BackEnd Controller Class created for parallel development of MenuCart functionality,
+ * This code is to be periodically integrated with the backend controller of Front end menu page. 
+ */
 
-    public PageReference test() {
-        return null;
-    }
+
+global with sharing class Cart{
 
 
     public String foodOrderId = 'a0537000000RI9b';
@@ -71,7 +75,7 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
-                                    AND o.Delete_Status__c = 'No']){
+                                    AND o.Delete_Status__c <> 'Yes']){
             if(item.Status__c == 'New')
                 activeCartItems.add(new DisplayCart(item));
         }
@@ -179,10 +183,8 @@ global with sharing class Cart{
         update fitems;
      
         PageReference pageRef = Page.Bill;
-//        PageReference pageRef = new PageReference('/apex/Bill');
         System.debug('PageRef------------------->'+pageRef);
          pageRef.setRedirect(true);
-  //       pageRef.getParameters().put('msg','success');
          return pageRef;
          }
      
@@ -192,66 +194,5 @@ global with sharing class Cart{
          return activeCartItems.size();
      }
     
-public class DisplayCart {
-    private Order_Item__c cartItem;
-
-    public DisplayCart(Order_Item__c item){
-        this.cartItem = item;
-    }
-    
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    
-    public Id id
-    {
-        get { return cartItem.id; }
-    }
-
-    public String Name
-    {
-        get { return cartItem.name;  }
-    }
-    
-    public Decimal price
-    {
-        //Code to get the price from the lookup column and return it here.
-        get { return 10.00; }
-    }
-    
-    public Decimal quantity
-    {
-        get { return cartItem.Quantity__c; } 
-    }
-
-    public Decimal totalPrice
-    {
-        get { return cartItem.Total_Price__c; } 
-    }      
-
-    public String status 
-    {
-        get { return cartItem.status__c; }
-    }
-       
-    public String type
-    {
-        get { return cartItem.type__c; }
-    }
-    
-    public Food_Item__c foodItem
-    {
-        get { return cartItem.Food_Item__r;}
-    }
-    
-    public Food_Order__c foodOrder
-    {
-        get { return cartItem.Food_Order__r; }
-    }
-
-    public Decimal tableNumber
-    {
-        get { return cartItem.table_number__c; }
-    }
-}
 
 }

@@ -1,7 +1,6 @@
 <apex:page showheader="false" controller="Bill">
                 <style type="text/css">
-                   
-                    h1{
+					h1{
                     color:maroon;
                     font-weight:bold;
                     text-shadow:none;
@@ -46,9 +45,7 @@
                     .desc{
                     
                     background-size:100%;
-                    
-                    
-                    margin:0px;
+ 				    margin:0px;
                     float:left;
                     text-shadow:none;
                     
@@ -74,9 +71,7 @@
                     color:white;
                     text-shadow:none;
                     }
-                    
-                    
-                    #menu_link, #view_cart_link{
+				    #menu_link, #view_cart_link{
                     text-align:left;
                     background-image:none;
                     color: black;
@@ -104,7 +99,7 @@
                 
                 <body>
                 
-                    <apex:pageBlock id="wholepage">
+                    <apex:pageBlock >
                       
                                                 <div class="container">
             
@@ -220,7 +215,7 @@
                                    
                                  </div>
                                  <div  style="text-align: center;">
-                                 <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="wholepage"/>
+                                 <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="clean"/>
                                  </div>
                                     </apex:pageBlock>
                                  </apex:form>
