@@ -54,6 +54,17 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>Calories__c</fullName>
+        <externalId>false</externalId>
+        <label>Calories</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Category__c</fullName>
         <description>The category of dish - Appetizer, Entree or Dessert</description>
         <externalId>false</externalId>
@@ -162,6 +173,7 @@
         <columns>Prep_Time__c</columns>
         <columns>Type__c</columns>
         <columns>Special__c</columns>
+        <columns>Calories__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

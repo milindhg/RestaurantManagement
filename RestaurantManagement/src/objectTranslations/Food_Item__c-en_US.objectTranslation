@@ -9,6 +9,10 @@
         <value>Food Items</value>
     </caseValues>
     <fields>
+        <label><!-- Calories --></label>
+        <name>Calories__c</name>
+    </fields>
+    <fields>
         <label><!-- Category --></label>
         <name>Category__c</name>
         <picklistValues>

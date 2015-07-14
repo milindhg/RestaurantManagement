@@ -49,7 +49,7 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
-                                    AND o.Delete_Status__c = 'No'
+                                    AND o.Delete_Status__c <> 'Yes'
                                     order by o.Status__c]){
             if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
                 orderItemsList.add(new DisplayCart(item));

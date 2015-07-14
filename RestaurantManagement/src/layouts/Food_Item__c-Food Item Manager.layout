@@ -41,6 +41,10 @@
                 <behavior>Edit</behavior>
                 <field>Item_Image__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Calories__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

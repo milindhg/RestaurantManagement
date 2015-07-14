@@ -50,18 +50,7 @@ global with sharing class Bill{
         this.unlikes= recType;
     }
    
-    public void insertfeedback()
-    {
-    Feedback__c fb = new Feedback__c();
-    fb.Food_Quality__c=SelectedFQ;
-    fb.Overall_Experience__c=SelectedOAE;
-    fb.Service__c=SelectedService;
-    fb.What_I_liked__c=likes;
-    fb.What_must_have_been_there__c=unlikes;
-    insert fb;
-    likes=null;
-    unlikes=null;
-    }
+   
     
     
     public Bill(){  }
@@ -107,6 +96,22 @@ global with sharing class Bill{
         }
         //fo = getFoodOrder();
         return orderItemsList;
+    }
+    
+     public void insertfeedback()
+    {
+    Feedback__c fb = new Feedback__c();
+    fb.Food_Quality__c=SelectedFQ;
+    fb.Overall_Experience__c=SelectedOAE;
+    fb.Service__c=SelectedService;
+    fb.What_I_liked__c=likes;
+    fb.What_must_have_been_there__c=unlikes;
+    insert fb;
+    likes=null;
+    unlikes=null;
+    SelectedFQ='5';
+    SelectedOAE='5';
+    SelectedService='5';
     }
     
      public PageReference paidStatusUpdate(){

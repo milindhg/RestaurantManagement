@@ -1,6 +1,6 @@
 <apex:page showheader="false" controller="Bill">
                 <style type="text/css">
-					h1{
+                                        h1{
                     color:maroon;
                     font-weight:bold;
                     text-shadow:none;
@@ -45,7 +45,7 @@
                     .desc{
                     
                     background-size:100%;
- 				    margin:0px;
+                                    margin:0px;
                     float:left;
                     text-shadow:none;
                     
@@ -71,7 +71,7 @@
                     color:white;
                     text-shadow:none;
                     }
-				    #menu_link, #view_cart_link{
+                                    #menu_link, #view_cart_link{
                     text-align:left;
                     background-image:none;
                     color: black;
@@ -99,7 +99,7 @@
                 
                 <body>
                 
-                    <apex:pageBlock >
+                    <apex:pageBlock id="clean" >
                       
                                                 <div class="container">
             
@@ -168,7 +168,7 @@
                                                         
                                                 </div>                                   
                          <apex:form >
-                                <apex:pageBlock id="clean">
+                                <apex:pageBlock >
                                  <div style="text-align:center;">Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
                                          <div class="container" >
                                                 <table >   
@@ -215,7 +215,7 @@
                                    
                                  </div>
                                  <div  style="text-align: center;">
-                                 <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="clean"/>
+                                 <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="clean" />
                                  </div>
                                     </apex:pageBlock>
                                  </apex:form>

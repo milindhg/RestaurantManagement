@@ -173,7 +173,7 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>F-{0000}</displayFormat>
+        <displayFormat>FB-{0000}</displayFormat>
         <label>Feedback Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>

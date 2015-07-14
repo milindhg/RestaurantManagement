@@ -67,6 +67,10 @@ public class DisplayMenuItems implements Comparable{
             get{return item.Prep_Time__c;}
         }
         
+    	public Decimal calories{
+            get{return item.Calories__c;}
+        }
+    
         public String status{
             get{return item.Status__c;}
         }

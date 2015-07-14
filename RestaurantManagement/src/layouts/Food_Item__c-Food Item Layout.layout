@@ -38,6 +38,10 @@
                 <behavior>Edit</behavior>
                 <field>Special__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Calories__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

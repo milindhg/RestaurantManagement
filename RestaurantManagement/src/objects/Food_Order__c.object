@@ -193,6 +193,18 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
     <label>Food Order</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>DeliveryTime__c</columns>
+        <columns>OrderDateTime__c</columns>
+        <columns>OrderId__c</columns>
+        <columns>Price__c</columns>
+        <columns>PriceEstimate__c</columns>
+        <columns>Status__c</columns>
+        <columns>TableNumber__c</columns>
+        <columns>Tax__c</columns>
+        <columns>TaxEstimate__c</columns>
+        <columns>TotalPrice__c</columns>
+        <columns>TotalPriceEstimate__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
