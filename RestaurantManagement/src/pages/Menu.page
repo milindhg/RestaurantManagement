@@ -310,7 +310,8 @@ background: #abb1b8;
         });
         
         $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
-            //alert(JSON.stringify(message).replace(/\"/g, ""));
+             //$j('#bill_items').load(location.href + '#bill_items');
+             sayHello();
         });
     });
     
@@ -475,6 +476,7 @@ background: #abb1b8;
                                         </apex:form>
                                     </apex:repeat> 
                                 </div>  <!-- row -->
+
                             </div>
                             <div id="item_desc" data-role="popup" class="ui-content" >
                                 <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>

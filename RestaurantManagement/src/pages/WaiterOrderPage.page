@@ -43,7 +43,7 @@
                  $('#content').append(JSON.stringify(message).replace(/\"/g, ""));
                  
                  $('#tbody').append(
-                    '<tr class = \"fontStyleTr border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"text-center\">' 
+                    '<tr class = \"fontStyleTr border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"border text-center\">' 
                                    + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
                     
                     '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 

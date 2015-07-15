@@ -1923,6 +1923,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>UploadPhoto</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>WaiterOrderPage</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
