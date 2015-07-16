@@ -248,8 +248,8 @@ global class MenuItemListController {
         if(ItemList==null){
             
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Special__c, Item_Image__c, Prep_Time__c,Calories__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
-                List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =: selLocation]; 
+            for(Food_Item__c item : [Select Name, Category__c, Description__c,Spice_Level__c,Special__c, Item_Image__c, Prep_Time__c,Calories__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
+                List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =:selLocation]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
                 ItemList.add(new DisplayMenuItems(item,price));

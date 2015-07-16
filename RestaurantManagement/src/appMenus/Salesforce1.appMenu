@@ -56,4 +56,12 @@
         <name>Tables</name>
         <type>CustomTab</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>Chef_Page</name>
+        <type>CustomTab</type>
+    </appMenuItems>
+    <appMenuItems>
+        <name>MenuCart_TestPage</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>

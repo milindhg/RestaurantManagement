@@ -67,7 +67,7 @@ public class DisplayMenuItems implements Comparable{
             get{return item.Prep_Time__c;}
         }
         
-    	public Decimal calories{
+        public Decimal calories{
             get{return item.Calories__c;}
         }
     
@@ -78,6 +78,11 @@ public class DisplayMenuItems implements Comparable{
         public boolean isSpecial{
             get{return item.Special__c;}
         }
+    	
+    	 public String spiceLevel{
+            get{return item.Spice_Level__c;}
+        }
+    
         public String typ{
             get{return item.Type__c;}
         }
@@ -88,13 +93,13 @@ public class DisplayMenuItems implements Comparable{
         }
         
         public String getimgurl(){
-           imgurl = item.Item_Image__c+'';
-           Integer st_index = imgurl.IndexOf('src');
-           Integer end_index = imgurl.lastIndexOf('\"');
-           
-           Integer len = end_index - (st_index+5);
-           imgurl = imgurl.mid(st_index+5,len).replace('&amp;','&');
-           return imgurl; 
+            String s = item.Item_Image__c+'';
+            Integer st = s.indexOf('src');
+            s = s.substring(st+5);
+            Integer last = s.indexOf('\"');
+            s = s.mid(0,last).replace('&amp;','&');
+            imgurl = s;
+            return imgurl; 
        }
         
         // public Object diet{

@@ -25,6 +25,7 @@ thead {
     background: tomato none repeat scroll 0 0;
     font: bold 15px sans-serif;
     width: 100px;
+    height: 40px;
 }
 
 .readyBtn {
@@ -32,14 +33,14 @@ thead {
     font: bold 18px sans-serif;
     width: 110px;
     margin-left: 6px;
-    height:30px;
+    height:40px;
 }
 
 .acceptBtn{
     background: coral none repeat scroll 0 0;
     font: bold 18px sans-serif;
     width: 110px;
-    height:30px;
+    height:40px;
 
 }
 

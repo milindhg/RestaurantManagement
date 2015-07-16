@@ -45,6 +45,22 @@
         <name>Special__c</name>
     </fields>
     <fields>
+        <label><!-- Spicy --></label>
+        <name>Spice_Level__c</name>
+        <picklistValues>
+            <masterLabel>Hot</masterLabel>
+            <translation><!-- Hot --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Medium</masterLabel>
+            <translation><!-- Medium --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mild</masterLabel>
+            <translation><!-- Mild --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
         <picklistValues>

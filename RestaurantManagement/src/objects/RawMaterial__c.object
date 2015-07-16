@@ -72,7 +72,6 @@
         <externalId>false</externalId>
         <label>Inventory</label>
         <referenceTo>Inventory__c</referenceTo>
-        <relationshipLabel>RawMaterials</relationshipLabel>
         <relationshipName>RawMaterials</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -116,7 +115,7 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <label>RawMaterial</label>
+    <label>Raw Material</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
@@ -138,7 +137,7 @@
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>RawMaterials</pluralLabel>
+    <pluralLabel>Raw Materials</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

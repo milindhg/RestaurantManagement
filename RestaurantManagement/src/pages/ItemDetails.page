@@ -1,0 +1,67 @@
+<apex:page controller="ItemController">
+
+ <apex:form >
+                <apex:pageBlock id="item_details">
+                 <div style="font-weight:bold;text-align:center;">Enter item details </div>
+                         <div >
+                                <table >   
+                                
+                                 <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Item Name: </apex:outputPanel>     </td>
+                               <td>  <apex:inputText /> </td>
+                               </tr>
+                               
+                               <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Description: </apex:outputPanel>     </td>
+                               <td>  <apex:inputTextArea rows="4" cols="50"  > </apex:inputTextArea> </td>
+                               </tr>
+                               
+                                <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Category </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" size="1">
+                                               <apex:selectOption itemValue="Appetizer" itemLabel="Appetizer"/>
+                                               <apex:selectOption itemValue="Entree" itemLabel="Entree"/>
+                                               <apex:selectOption itemValue="Dessert" itemLabel="Dessert"/>
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Type </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" size="1" >
+                                               <apex:selectOption itemValue="Vegetarian" itemLabel="Vegetarian"/>
+                                               <apex:selectOption itemValue="Non-Vegetarian" itemLabel="Non-Vegetarian"/>
+                                               <apex:selectOption itemValue="Vegan" itemLabel="Vegan"/>
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Preparation Time </apex:outputPanel>     </td>
+                                         <td>  <apex:inputText /> </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Special </apex:outputPanel>     </td>
+                                         <td>  <apex:inputCheckbox /> </td>
+                               </tr>
+                                <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Status </apex:outputPanel>     </td>
+                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" size="1" >
+                                               <apex:selectOption itemValue="Enabled" itemLabel="Enabled"/>
+                                               <apex:selectOption itemValue="Disabled" itemLabel="Disabled"/>
+                                               <apex:selectOption itemValue="Vegan" itemLabel="Vegan"/>
+                                               </apex:selectlist>  </apex:outputPanel>  </td>
+                               </tr>
+                               <tr>
+                                         <td> <apex:outputPanel style="font-weight:bold"> Calories </apex:outputPanel>     </td>
+                                         <td>  <apex:inputText /> </td>
+                               </tr>
+                              
+
+                   </table>
+                   
+                 </div>
+                 <div  style="text-align: center;">
+                 <apex:commandButton value="Submit" >
+                 </apex:commandButton>
+                 </div>
+                </apex:pageBlock>
+            </apex:form>
+        
+</apex:page>

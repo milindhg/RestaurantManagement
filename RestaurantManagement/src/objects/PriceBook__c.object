@@ -72,55 +72,7 @@
         <label>Location</label>
         <picklist>
             <picklistValues>
-                <fullName>Alabama</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Alaska</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Arizona</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Arkansas</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>California</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Colorado </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Connecticut </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Delaware </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Florida </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Georgia </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Hawaii </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Idaho </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Illinois</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -128,147 +80,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Iowa </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Kansas </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Kentucky </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Louisiana </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Maine </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Maryland </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Massachusetts </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Michigan </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Minnesota </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Mississippi </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Missouri </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Montana</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Nebraska </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Nevada </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>New Hampshire </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>New Jersey </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>New Mexico </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>New York </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>North Carolina </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>North Dakota </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Ohio</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Oklahoma </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Oregon </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Pennsylvania</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Rhode Island </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>South Carolina </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>South Dakota </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Tennessee </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Texas </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Utah </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Vermont </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Virginia </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Washington </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>West Virginia </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Wisconsin </fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Wyoming</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -308,6 +120,17 @@
         <columns>NoItemsOrdered__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Pricebook</fullName>
+        <columns>NAME</columns>
+        <columns>Food_Item__c</columns>
+        <columns>Location__c</columns>
+        <columns>NoItemsOrdered__c</columns>
+        <columns>Price__c</columns>
+        <columns>OBJECT_ID</columns>
+        <filterScope>Everything</filterScope>
+        <label>Pricebook</label>
     </listViews>
     <nameField>
         <label>PriceBook Name</label>

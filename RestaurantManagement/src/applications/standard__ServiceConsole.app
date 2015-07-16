@@ -175,7 +175,12 @@
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
     <tab>PriceBook__c</tab>
+    <tab>Chef_Page</tab>
+    <tab>MenuCart_TestPage</tab>
     <workspaceMappings>
+        <mapping>
+            <tab>Chef_Page</tab>
+        </mapping>
         <mapping>
             <tab>Feedback__c</tab>
         </mapping>
@@ -190,6 +195,9 @@
         </mapping>
         <mapping>
             <tab>Menu</tab>
+        </mapping>
+        <mapping>
+            <tab>MenuCart_TestPage</tab>
         </mapping>
         <mapping>
             <tab>Offers__c</tab>

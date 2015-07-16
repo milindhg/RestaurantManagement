@@ -82,6 +82,8 @@ global with sharing class Bill{
         else{
             orderItemsList.clear();    
         }
+        
+        Map<Id, DisplayCart> itemMap = new Map<Id, DisplayCart>(); 
             
         for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                     o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
@@ -91,10 +93,33 @@ global with sharing class Bill{
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
                                     order by o.Status__c]){
-            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
-                orderItemsList.add(new DisplayCart(item));
+            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending'){
+                    DisplayCart displayCart = new DisplayCart(item);
+                    System.debug('Map-----------------------------------');
+                    System.debug(itemMap);
+                    System.debug('Cart-----------------------------------');
+                    System.debug(displayCart);
+                    System.debug('-----------------------------------');
+                    if(itemMap.containsKey(displayCart.foodItemId)){
+                        DisplayCart cart = itemMap.get(displayCart.foodItemId);
+                        cart.quantity += item.Quantity__c;
+                        cart.totalPrice += item.Total_Price__c;
+                        System.debug('Updated Cart-----------------------------------');
+                        System.debug(cart);
+                        itemMap.put(displayCart.foodItemId, cart);
+                        System.debug('Inside****');
+
+                    }
+                    else{                        
+                       itemMap.put(displayCart.foodItemId, displayCart);
+                       System.debug('Else****');
+                    }
+                }
         }
         //fo = getFoodOrder();
+        for(DisplayCart displayCart: itemMap .values()){
+            orderItemsList.add(displayCart);
+            }
         return orderItemsList;
     }
     
@@ -130,66 +155,6 @@ global with sharing class Bill{
      }
          
     
-public class DisplayCart {
-    private Order_Item__c cartItem;
 
-    public DisplayCart(Order_Item__c item){
-        this.cartItem = item;
-    }
-    
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    
-    public Id id
-    {
-        get { return cartItem.id; }
-    }
-
-    public String Name
-    {
-        get { return cartItem.name;  }
-    }
-    
-    public Decimal price
-    {
-        //Code to get the price from the lookup column and return it here.
-        get { return 10.00; }
-    }
-    
-    public Decimal quantity
-    {
-        get { return cartItem.Quantity__c; } 
-    }
-
-    public Decimal totalPrice
-    {
-        get { return cartItem.Total_Price__c; } 
-    }      
-
-    public String status 
-    {
-        get { return cartItem.status__c; }
-    }
-       
-    public String type
-    {
-        get { return cartItem.type__c; }
-    }
-    
-    public Food_Item__c foodItem
-    {
-        get { return cartItem.Food_Item__r;}
-    }
-    
-    public Food_Order__c foodOrder
-    {
-        get { return cartItem.Food_Order__r; }
-    }
-
-    public Decimal tableNumber
-    {
-        get { return cartItem.table_number__c; }
-    }
-}
 
 }

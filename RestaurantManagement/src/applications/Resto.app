@@ -21,4 +21,6 @@
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
     <tab>PriceBook__c</tab>
+    <tab>Chef_Page</tab>
+    <tab>MenuCart_TestPage</tab>
 </CustomApplication>

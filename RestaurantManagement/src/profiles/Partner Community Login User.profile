@@ -109,6 +109,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ItemController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MenuItemListController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -917,6 +921,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Food_Item__c.Spice_Level__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Food_Item__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1557,6 +1566,9 @@
         <layout>Asset-Asset Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BIll__c-BIll Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1903,6 +1915,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ItemDetails</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>Menu</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1920,6 +1936,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>MenuNew</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Menu_Alt</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1976,6 +1996,10 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
+        <tab>Chef_Page</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Feedback__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -1993,6 +2017,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Menu</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>MenuCart_TestPage</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

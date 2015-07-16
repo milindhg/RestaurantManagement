@@ -60,11 +60,11 @@
         <label>Location</label>
         <picklist>
             <picklistValues>
-                <fullName>Indiana</fullName>
+                <fullName>California</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Virginia</fullName>
+                <fullName>Indiana</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -134,6 +134,12 @@
     <label>Table</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Location__c</columns>
+        <columns>No_of_seats__c</columns>
+        <columns>Status__c</columns>
+        <columns>Table_Number__c</columns>
+        <columns>Waiter__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>RawMaterial</value>
+        <value>Raw Material</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>RawMaterials</value>
+        <value>Raw Materials</value>
     </caseValues>
     <fields>
         <label><!-- Available --></label>
@@ -15,7 +15,7 @@
     <fields>
         <label><!-- Inventory --></label>
         <name>Inventory__c</name>
-        <relationshipLabel><!-- RawMaterials --></relationshipLabel>
+        <relationshipLabel><!-- Raw Materials --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- Name --></label>

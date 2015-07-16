@@ -1,23 +1,6 @@
 <apex:page showheader="false" controller="Cart">
-    <style type="text/css">
-        <!-- /* Some custom styles to beautify this example */
-.demo-content{
-padding: 15px;
-font-size: 18px;
-min-height: 300px;
-background: #dbdfe5;
-margin-bottom: 10px;
-}
-.demo-content.bg-alt{
-background: #abb1b8;
-
-}-->
-        h1{
-        color:maroon;
-        font-weight:bold;
-        text-shadow:none;
-        }
-        
+<style text="css/text">
+        <!-- /* Some custom styles to beautify this example */-->
         .col-sm-6{
         margin-top:10px;
         padding:0px;
@@ -100,7 +83,13 @@ background: #abb1b8;
         margin:0px;
         
         }
+        
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+        margin:0px;
+    }
+
     </style>
+
     <head>
         
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -112,12 +101,33 @@ background: #abb1b8;
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         
-        
-        
     </head>
     <body>
         
         <apex:pageBlock >
+            <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="list-group">
+				 <a href="#" class="list-group-item active">Home</a>
+				<div class="list-group-item">
+					List header
+				</div>
+				<div class="list-group-item">
+					<h4 class="list-group-item-heading">
+						List group item heading
+					</h4>
+					<p class="list-group-item-text">
+						...
+					</p>
+				</div>
+				<div class="list-group-item">
+					<span class="badge">14</span>Help
+				</div> <a class="list-group-item active"><span class="badge">14</span>Help</a>
+			</div>
+		</div>
+	</div>
+</div>
         </apex:pageBlock>
         
     </body>

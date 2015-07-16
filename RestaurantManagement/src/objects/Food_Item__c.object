@@ -124,6 +124,28 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Spice_Level__c</fullName>
+        <externalId>false</externalId>
+        <label>Spicy</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Mild</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Medium</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Status__c</fullName>
         <description>Whether the food item should be enabled in the menu or not</description>
         <externalId>false</externalId>

@@ -22,7 +22,7 @@
         sforce.connection.sessionId = "{!$Api.Session_ID}";
         
         function accept(orderItemId, foodOrderId){
-           alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
+           //alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
         
            var result = sforce.apex.execute("ChefListController",
                                              "itemAcceptUpdate",
@@ -35,7 +35,7 @@
        }
         
         function ready(orderItemId){
-             alert('Order Item Id: ' + orderItemId);
+             //alert('Order Item Id: ' + orderItemId);
              var result  = sforce.apex.execute("ChefListController",
                                                "itemReadyUpdate",
                                                {orderItemId
@@ -57,12 +57,11 @@
           // Subscribe to a topic. JSON-encoded update will be returned in the callback
           $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
                 
+
                 $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
-                 
                 
                 $('#tbody').append(
-                '<tr class=\"fontStyleTr border\" id=\"' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\"><td class=\"text-center border\">' 
-                               + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+                '<tr class=\"fontStyleTr border\" id=\"' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
                 
                 '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
                 
