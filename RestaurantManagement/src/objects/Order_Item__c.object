@@ -223,6 +223,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Tax__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Total_Price__c</fullName>
         <description>Total Price of the ordered item</description>
         <externalId>false</externalId>

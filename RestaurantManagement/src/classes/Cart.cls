@@ -193,6 +193,14 @@ global with sharing class Cart{
      public Integer getCartSize(){
          return activeCartItems.size();
      }
-    
+
+    //Dummy function to rerender the cart elements on selecting any item from the menu and clicking add.
+    public PageReference sayHello() {
+        //Call getFoodOrder to populate the current foodOrder and set it in global object.
+        System.debug('Enter method sayHello!!!!');
+        fo=getFoodOrder();
+        System.debug('fo FoodOrder now is: ' + fo);
+        return null;
+    }
 
 }

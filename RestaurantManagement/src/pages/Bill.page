@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="Bill">
+<apex:page showheader="false" controller="Bill" >
                 <style type="text/css">
                                         h1{
                     color:maroon;
@@ -99,7 +99,7 @@
                 
                 <body>
                 
-                    <apex:pageBlock id="clean" >
+                    <apex:pageBlock >
                       
                                                 <div class="container">
             
@@ -160,20 +160,12 @@
                                                                </apex:commandLink> 
                                                             </apex:pageBlock>
                                                             
-                                                          </apex:form>
-                                                        </div>
-                                                        
-                                                        
-                                                    
-                                                        
-                                                </div>                                   
-                         <apex:form >
+                                                         
                                 <apex:pageBlock >
-                                 <div style="text-align:center;">Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
-                                         <div class="container" >
+                                 <div style="text-align:center;"> Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
+                                        
                                                 <table >   
-                                                <tr>
-                                                         <td> <apex:outputPanel > Food quality </apex:outputPanel>     </td>
+                                                <tr>   <td> <apex:outputPanel > Food quality </apex:outputPanel>     </td>
                                                          <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedFQ }"  size="1">
                                                                <apex:selectOption itemValue="5" itemLabel="5"/>
                                                                <apex:selectOption itemValue="4" itemLabel="4"/>
@@ -212,13 +204,13 @@
                                                </tr>
                 
                                    </table>
-                                   
+                                  <div  style="text-align: center;">
+                                 <apex:commandLink styleClass="btn" action="{!insertfeedback}" value="Submit" immediate="true"/>
+                                            
                                  </div>
-                                 <div  style="text-align: center;">
-                                 <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="clean" />
-                                 </div>
-                                    </apex:pageBlock>
-                                 </apex:form>
+                                                 </apex:pageBlock>
+                                 </apex:form> </div>
+                                                                </div> 
                                 </apex:pageBlock>
                                 </body>
                             

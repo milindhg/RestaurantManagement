@@ -6,7 +6,7 @@
  */
  -->
 
-<apex:page showheader="false" controller="Cart">
+<apex:page showheader="false" controller="Cart"  standardstylesheets="false">
     <style type="text/css">
         <!-- /* Some custom styles to beautify this example */-->
         .col-sm-6{
@@ -95,6 +95,9 @@
 
 
 /**Styling for the new cart UI: Starts **/
+	.apexp{
+	    width: 200px;
+	}
 	.list-group{
 		width: 200px;
 		margin-bottom:0px;
@@ -102,12 +105,23 @@
     .bs-example{
     	margin-bottom: 10px;
     }
+    .bPageBlock .pbTitle{
+        width:100%;
+    }
     .bPageBlock{
+        width:100%;
         border:0px;
     }
     .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
         margin:0px;
     }
+    .h2, h2{
+        font-size:18px;
+    }
+    .item-actions{
+        border-radius:50%;margin-left:10px;margin-right:10px;
+    }
+}
 /**Styling for the new cart UI: End **/
 
     </style>
@@ -146,30 +160,8 @@
     });
     
     
-    function increaseQuant(event){
-        alert(event.id);
-        var name= event.id;
-        alert(name);
-        $j('#name').getAttribute('value');
-    }
-    
-    function decreaseQuant(event){
-        if($j('#quantity').text()!=0){
-          $j('#quantity').html(function(i, val) { return val*1-1 });
-          }else{
-             alert('Quantity of a menu item cannot be less than zero');
-              }
-    }
-    
-    function Alert(){
-        
-        $j('#collapseOne').collapse('toggle');
-        $j('#collapseTwo').collapse('toggle');
-        $j('#open_cart').toggle();
-        $j('#close_cart').toggle();
-        
-    }
-   
+    function sayHello(){
+        }
     
     
     
@@ -194,17 +186,17 @@
                                 </div>
                                 <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}">
                                     <div class="list-group" >
-                                        <div class="list-group-item" style="margin:0px;padding:0px;">
-                                            <apex:commandButton value="+" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
+                                        <!--<div class="list-group-item" style="margin:0px;padding:0px;">-->
+                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton>   
-                                           <apex:commandButton value="-" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton> 
-                                           <apex:commandButton value="X" style="border-radius:50%;color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton> 
-                                        </div>
+                                        <!--</div>-->
                                     </div>
                                 </apex:outputPanel>
                             </div>
@@ -233,6 +225,8 @@
                         <!-- Placeholder for div - cart_table pageblock -->
                 <apex:pageBlock id="cart_table" title="Cart">
                     <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons"/>
+                                    
                         <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
                             <div class="bs-example">
                                 <div class="list-group">
@@ -245,13 +239,13 @@
                                 <apex:outputPanel style="horizontal-align:center;" >
                                     <div class="list-group" >
                                         <div class="list-group-item" style="margin:0px;padding:0px;">
-                                            <apex:commandButton value="+" style="border-radius:50%;font:bold 15px;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton>   
-                                           <apex:commandButton value="-" style="border-radius:50%; font-weight:bold;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton> 
-                                           <apex:commandButton value="X" style="border-radius:50%; color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                                                  <apex:param name="Id" value="{!pitem.id}"/>                                  
                                            </apex:commandButton>
                                         </div>
@@ -259,17 +253,16 @@
                                 </apex:outputPanel>
                             </div>
                         </apex:repeat>
-
-                        <apex:commandButton value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>                                        
-                        <apex:commandButton value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </apex:form>
                 </apex:pageBlock>
                 
-                
+                <br/>
                     <!-- Placeholder for div - estimated_bill pageblock -->
                 <apex:pageBlock id="estimated_bill">
                     <div class="bs-example">

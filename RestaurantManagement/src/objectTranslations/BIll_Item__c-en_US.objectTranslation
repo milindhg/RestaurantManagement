@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>BIll Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Bill Items</value>
+    </caseValues>
+    <fields>
+        <label><!-- Bill --></label>
+        <name>Bill__c</name>
+        <relationshipLabel><!-- Bill Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- ItemName --></label>
+        <name>ItemName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Quantity --></label>
+        <name>Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax --></label>
+        <name>Tax__c</name>
+    </fields>
+    <fields>
+        <label><!-- TotalPrice --></label>
+        <name>TotalPrice__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

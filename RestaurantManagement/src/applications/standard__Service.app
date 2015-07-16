@@ -22,4 +22,5 @@
     <tab>PriceBook__c</tab>
     <tab>Chef_Page</tab>
     <tab>MenuCart_TestPage</tab>
+    <tab>BIll_Item__c</tab>
 </CustomApplication>

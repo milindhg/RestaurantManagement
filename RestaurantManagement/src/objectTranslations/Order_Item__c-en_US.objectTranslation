@@ -84,6 +84,10 @@
         <name>Table_Number__c</name>
     </fields>
     <fields>
+        <label><!-- Tax --></label>
+        <name>Tax__c</name>
+    </fields>
+    <fields>
         <label><!-- Total Price --></label>
         <name>Total_Price__c</name>
     </fields>

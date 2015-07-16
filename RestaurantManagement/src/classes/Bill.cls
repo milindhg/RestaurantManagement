@@ -1,12 +1,12 @@
 global with sharing class Bill{
 
     public String foodOrderId = 'a0537000000RI9b';
-    
     public String SelectedFQ;
     public String SelectedService;
     public String SelectedOAE;
     public String likes;
     public String unlikes;
+   
     
     public String getSelectedFQ() {
         return SelectedFQ;
@@ -89,7 +89,7 @@ global with sharing class Bill{
                                     o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                     o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                    o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                    o.Food_Item__c, o.CreatedDate, o.CreatedById, o.Tax__c 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
                                     order by o.Status__c]){
@@ -102,11 +102,13 @@ global with sharing class Bill{
                     System.debug('-----------------------------------');
                     if(itemMap.containsKey(displayCart.foodItemId)){
                         DisplayCart cart = itemMap.get(displayCart.foodItemId);
-                        cart.quantity += item.Quantity__c;
+                        Decimal quantity = cart.quantity;
+                        quantity += item.Quantity__c;
+                        cart.quantity = quantity;
                         cart.totalPrice += item.Total_Price__c;
                         System.debug('Updated Cart-----------------------------------');
                         System.debug(cart);
-                        itemMap.put(displayCart.foodItemId, cart);
+                        itemMap.put(cart.foodItemId, cart);
                         System.debug('Inside****');
 
                     }
@@ -119,11 +121,14 @@ global with sharing class Bill{
         //fo = getFoodOrder();
         for(DisplayCart displayCart: itemMap .values()){
             orderItemsList.add(displayCart);
+            
+           
             }
+        
         return orderItemsList;
     }
     
-     public void insertfeedback()
+     public PageReference insertfeedback()
     {
     Feedback__c fb = new Feedback__c();
     fb.Food_Quality__c=SelectedFQ;
@@ -137,12 +142,26 @@ global with sharing class Bill{
     SelectedFQ='5';
     SelectedOAE='5';
     SelectedService='5';
+        PageReference pageRef = Page.MenuCart;
+         pageRef.setRedirect(true);
+         return pageRef;
     }
     
      public PageReference paidStatusUpdate(){
          Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE ID=:foodOrderId];
          foodOrder.status__c = PAID;
          update foodOrder;
+         
+          for(DisplayCart displayCart: orderItemsList){
+            
+            BIll_Item__c billItem= new BIll_Item__c();
+            billItem.ItemName__c= displayCart.Name;
+            billItem.Quantity__c = displayCart.quantity;
+            billItem.TotalPrice__c = displayCart.totalPrice;
+//            billItem.Tax__c = 34;
+            upsert billItem;             
+       }     
+         
          PageReference pageRef = Page.MenuCart;
          pageRef.setRedirect(true);
          return pageRef;

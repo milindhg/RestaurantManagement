@@ -1,5 +1,13 @@
-<apex:page showheader="false" controller="Cart">
-<style text="css/text">
+<!-- /**
+ * @author Akshay Jarandikar and Milind Gokhale
+ * Creation Date: July 7, 2015
+ * This class is the front end visualforce page created for parallel development of MenuCart functionality,
+ * This code is to be periodically integrated with the frontend visualforce menu page. 
+ */
+ -->
+
+<apex:page showheader="false" controller="Cart"  standardstylesheets="false">
+    <style type="text/css">
         <!-- /* Some custom styles to beautify this example */-->
         .col-sm-6{
         margin-top:10px;
@@ -84,12 +92,39 @@
         
         }
         
-.apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+
+
+/**Styling for the new cart UI: Starts **/
+	.apexp{
+	    width: 200px;
+	}
+	.list-group{
+		width: 200px;
+		margin-bottom:0px;
+	}
+    .bs-example{
+    	margin-bottom: 10px;
+    }
+    .bPageBlock .pbTitle{
+        width:100%;
+    }
+    .bPageBlock{
+        width:100%;
+        border:0px;
+    }
+    .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
         margin:0px;
     }
+    .h2, h2{
+        font-size:18px;
+    }
+    .item-actions{
+        border-radius:50%;margin-left:10px;margin-right:10px;
+    }
+}
+/**Styling for the new cart UI: End **/
 
     </style>
-
     <head>
         
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -101,36 +136,156 @@
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         
-    </head>
-    <body>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+
         
+        
+    </head>
+    <script type="text/javascript">
+    
+    $j = jQuery.noConflict();
+    
+    $(document).ready(function() {
+        
+        
+        $.cometd.init({
+            url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+        });
+        
+        $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
+            alert('Hello');
+            $j('#bill_items').load(location.href + '#bill_items');
+        });
+    });
+    
+    
+    function sayHello(){
+        }
+    
+    
+    
+    </script>
+    <body>
+
         <apex:pageBlock >
-            <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="list-group">
-				 <a href="#" class="list-group-item active">Home</a>
-				<div class="list-group-item">
-					List header
-				</div>
-				<div class="list-group-item">
-					<h4 class="list-group-item-heading">
-						List group item heading
-					</h4>
-					<p class="list-group-item-text">
-						...
-					</p>
-				</div>
-				<div class="list-group-item">
-					<span class="badge">14</span>Help
-				</div> <a class="list-group-item active"><span class="badge">14</span>Help</a>
-			</div>
-		</div>
-	</div>
-</div>
+
+            <div class="container">
+            
+                        <!-- Placeholder for div - bill_items pageblock -->
+                <apex:pageBlock id="billed_items" title="Billed Items">
+                    <apex:form >
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item active">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                                <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}">
+                                    <div class="list-group" >
+                                        <!--<div class="list-group-item" style="margin:0px;padding:0px;">-->
+                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton>   
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton> 
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton> 
+                                        <!--</div>-->
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
+                    
+                    <!-- Placeholder for div - current_bill pageblock -->
+                <apex:pageBlock id="current_bill">
+                    <div class="bs-example">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                <span class="glyphicon">Taxes</span> 
+                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active">
+                                <span class="glyphicon">Current Bill</span> 
+                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                            </a>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+
+                        <!-- Placeholder for div - cart_table pageblock -->
+                <apex:pageBlock id="cart_table" title="Cart">
+                    <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons"/>
+                                    
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
+                            <div class="bs-example">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item active">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                                <apex:outputPanel style="horizontal-align:center;" >
+                                    <div class="list-group" >
+                                        <div class="list-group-item" style="margin:0px;padding:0px;">
+                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton>   
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton> 
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </apex:repeat>
+                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                        </apex:commandButton>                                        
+                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                        </apex:commandButton>
+                    </apex:form>
+                </apex:pageBlock>
+                
+                <br/>
+                    <!-- Placeholder for div - estimated_bill pageblock -->
+                <apex:pageBlock id="estimated_bill">
+                    <div class="bs-example">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                <span class="glyphicon">Taxes</span> 
+                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active">
+                                <span class="glyphicon">Estimated Bill</span> 
+                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                            </a>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+                
+                <apex:form >
+                <apex:commandLink styleClass="btn" action="{! payBill}" value="Pay Now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />                                            
+                </apex:form>
+
+            </div>                        
+              
         </apex:pageBlock>
         
     </body>
-    
-    
 </apex:page>

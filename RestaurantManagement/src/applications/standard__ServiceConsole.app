@@ -177,7 +177,11 @@
     <tab>PriceBook__c</tab>
     <tab>Chef_Page</tab>
     <tab>MenuCart_TestPage</tab>
+    <tab>BIll_Item__c</tab>
     <workspaceMappings>
+        <mapping>
+            <tab>BIll_Item__c</tab>
+        </mapping>
         <mapping>
             <tab>Chef_Page</tab>
         </mapping>
