@@ -252,17 +252,18 @@ global class MenuItemListController {
             if(dietType==null){
                 System.debug('WITHOUT Type'+ dietType);
              food_items=[Select Name, Category__c, Description__c,
-                                     		Spice_Level__c,Special__c, Item_Image__c, 
-                                     		Prep_Time__c,Calories__c,Status__c,Type__c  
-                                     		From Food_Item__c 
-                                     		where Status__c='enabled'];
+                                                Spice_Level__c,Special__c, Item_Image__c, 
+                                                Prep_Time__c,Calories__c,Status__c,Type__c  
+                                                From Food_Item__c 
+                                                where Status__c='enabled'];
             }else{
                 System.debug('WITH Type');
                food_items=[Select Name, Category__c, Description__c,
-                                     		Spice_Level__c,Special__c, Item_Image__c, 
-                                     		Prep_Time__c,Calories__c,Status__c,Type__c  
-                                     		From Food_Item__c 
-                                     		where Status__c='enabled' and type__c=:dietType];
+                                                Spice_Level__c,Special__c, Item_Image__c, 
+                                                Prep_Time__c,Calories__c,Status__c,Type__c  
+                                                From Food_Item__c 
+                                                where Status__c='enabled' and type__c=:dietType];
+                        dietType=null;                
             }
             ItemList = new List<DisplayMenuItems>();
             for(Food_Item__c item : food_items){
@@ -366,10 +367,13 @@ global class MenuItemListController {
     
     public PageReference getItemsByType(){
          dietType=ApexPages.currentPage().getParameters().get('type');
-    	getMenuItems();
+        //getMenuItems();
         System.debug(dietType);
         return null;
     }
     
-
+    public PageReference getAllItems(){
+        dietType=null;
+        return null;
+    }
 }

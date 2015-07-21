@@ -31,18 +31,18 @@ background: #abb1b8;
         background-color:green;
         }
         .ui-link,.ui-btn{
-        	background-color:green;
+            background-color:green;
         }
         .ui-input-text input, .ui-input-search input{
         min-height:20px;
         height:35px;
         margin-right:10px;
         }
-		
+        
          .ui-link,.ui-btn{
         background-color:green;
         }
-		
+        
         
         #billed_items{
         background-color:maroon;
@@ -51,6 +51,7 @@ background: #abb1b8;
         .list-group-item.active.ui-link{
         color:white;
         text-shadow:none;
+        font-size:12px;
         
         }
         
@@ -58,10 +59,12 @@ background: #abb1b8;
         background-image:none;
         background-color:maroon;
         border-color:white;
+        font-size:12px;
         }
         .list-group{
         background-color:maroon;
         color:maroon;
+        font-size:12px;
         }
         #panel_body1 {
         padding:0px;
@@ -69,6 +72,13 @@ background: #abb1b8;
         -webkit-perspective: 1000;
         -moz-perspective: 1000;
         }
+         .panel_body1 {
+        padding:0px;
+        position: absolute;   
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        }
+        
         .page1 {
         width: 100%;
         background: white;
@@ -230,7 +240,18 @@ background: #abb1b8;
         background:grey;
         opacity:0.8;
         }
+         .content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
         #desc{
+        padding:10px;
+        height:50%;
+        font-size:16px;
+        text-shadow:none;
+        }
+        desc{
         padding:10px;
         height:50%;
         font-size:16px;
@@ -241,6 +262,21 @@ background: #abb1b8;
         }
         
         #quantity_desc{
+        width:100%;
+        
+        float:left;
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:200px;
+        
+        }
+        .quantity_desc{
         width:100%;
         
         float:left;
@@ -299,6 +335,38 @@ background: #abb1b8;
         height:20px;
         }
         
+         #cart_items {
+        position:fixed;
+        margin-top:35px;
+        overflow: scroll;
+        right:0;
+        width:100%;
+        z-index:55;
+       }     
+
+         #stspecial {
+        position:fixed;
+        margin-top:35px;
+        left:0;
+      
+        }
+        
+         #stmenu{
+        position:fixed;
+        margin-top:335px;
+        left:0;
+         
+        overflow:scroll;
+        
+        }
+
+
+               
+
+
+
+
+        
         #menu_link, #view_cart_link{
         text-align:left;
         background-image:none;
@@ -332,13 +400,13 @@ background: #abb1b8;
         margin:0px;
     }
         /*@media screen and (max-width: 1400px) {
-    	.btn {
+        .btn {
         width:100%;
-    	}
+        }
         }*/
 /**Styling for the new cart UI: End **/
 
-             
+               
     </style>
     <head>
         <apex:includeScript value="{!$Resource.cometd}"/>
@@ -386,13 +454,27 @@ background: #abb1b8;
     });
     
     function onClickTab(event){
+        
+        //to check if page1 is displayed or not  
+         $('.page1').each(function(){
+             $(this).hasClass('flip in') ? $(this).removeClass('flip in'): '';
+             $(this).hasClass('flip out') ? $(this).removeClass('flip out'): '';
+             $(this).show() ;
+         });
+         
+         $('.page2').each(function(){
+             $(this).hasClass('flip in') ? $(this).removeClass('flip in'): '';
+             $(this).hasClass('flip out') ? $(this).removeClass('flip out'): '';
+             $(this).hide() ;
+         });
+         
         var item = event.target;
         var h = item.getAttribute('href');
         $j(h).effect( "slide", "slow" );
         init();
         }
     function init(){
-        alert('init');
+        //alert('init');
          var list = document.getElementsByClassName('sliderex');
         //alert(list.length);
         //alert(list.length);
@@ -408,31 +490,44 @@ background: #abb1b8;
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             document.getElementById('place_order').style.width='120%';
             document.getElementById('reset_order').style.width='120%';
-           	document.getElementById('cart_container').style.width='80%';
+            document.getElementById('cart_container').style.width='80%';
             document.getElementById('menu_area').style.width='65%';
+            document.getElementById('stmenu').style.width='65%';
             document.getElementById('cart_items').style.width='35%';
-  			var grp =     document.getElementsByClassName('list-group');
-  			for(i=0; i<grp.length; i++) {
-    		grp[i].style.width =    '200px';
-  		}
-		
+             document.getElementById('global_nav').style.width='65%';
+            document.getElementById('stspecial').style.width='65%';
+             document.getElementById('legends').style.marginTop='310px';
+             document.getElementById('global_nav').style.marginTop='360px';
+             document.getElementById('stmenu').style.marginTop='430px';
+            
+            var grp =     document.getElementsByClassName('list-group');
+            for(i=0; i<grp.length; i++) {
+            grp[i].style.width =    '200px';
+        }
+        
         var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         slidesPerView: 1,
-        slidesPerColumn: 3,
+        slidesPerColumn: 2,
         paginationClickable: true,
-        spaceBetween: 40
+        spaceBetween: 20
         });
 }else{
     var grp =     document.getElementsByClassName('list-group');
-  			for(i=0; i<grp.length; i++) {
-    		grp[i].style.width =    '100%';
-  		}
+            for(i=0; i<grp.length; i++) {
+            grp[i].style.width =    '100%';
+        }
     document.getElementById('place_order').style.width='100%';
     document.getElementById('reset_order').style.width='100%';
     document.getElementById('cart_container').style.width='100%';
     document.getElementById('menu_area').style.width='75%';
+    document.getElementById('stmenu').style.width='75%';
     document.getElementById('cart_items').style.width='25%';
+    document.getElementById('global_nav').style.width='75%';
+    document.getElementById('stspecial').style.width='75%';
+     document.getElementById('legends').style.marginTop='280px';
+     document.getElementById('global_nav').style.marginTop='330px';
+     document.getElementById('stmenu').style.marginTop='400px';
     var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         slidesPerView: 3,
@@ -510,15 +605,55 @@ background: #abb1b8;
     }
     
     
-    function flip(event) {
+   function flip_out(event) {
+       
+        var target = event.target.parentNode;     
+        var parent_list = $(target).parents();
+        var parent= target.parentNode;
         
-        var item = event.target.parentNode;
-        //var page=     item.getElementsByTagName('div')[0].id;
-        var parent= item.parentNode;
+        if(target.getAttribute("class") === 'cardimage')
+           parent = parent_list[1];
+        else 
+          {if(target.getAttribute("class") === 'desc2')
+             parent = parent_list[2];
+            else if(target.getAttribute("class") === 'page2')
+                    parent = parent_list[0]; 
+          }
+        
         var page_1 = $(parent).children(".page1")[0];
         var page1= $(page_1);
+       
         var page_2 = $(parent).children(".page2")[0];
         var page2= $(page_2);
+        
+        var toHide = page1.is(':visible') ? page1 : page2 ;
+        var toShow = page2.is(':visible') ? page1 : page2 ;
+        
+        toHide.removeClass('flip in').addClass('flip out').hide();
+        toShow.removeClass('flip out').addClass('flip in').show();
+    }  
+    
+    function flip_in(event) {
+        var target = event.target;
+        var parent_list = $(target).parents();
+        var parent= target.parentNode;
+        
+        if(target.getAttribute("class") === 'cardimage')
+           parent = parent_list[1];
+        else 
+          {if(target.getAttribute("class") === 'desc1')
+             parent = parent_list[2] ; 
+           else if(target.getAttribute("class") === 'chef_special' || target.getAttribute("class") == null ||
+                   target.getAttribute("class") === 'item_name')
+                   parent = parent_list[3]; 
+          }
+
+        var page_1 = $(parent).children(".page1")[0];
+        var page1= $(page_1);
+       
+        var page_2 = $(parent).children(".page2")[0];
+        var page2= $(page_2);
+        
         var toHide = page1.is(':visible') ? page1 : page2 ;
         var toShow = page2.is(':visible') ? page1 : page2 ;
         
@@ -531,11 +666,12 @@ background: #abb1b8;
         <apex:pageBlock >
            
             <div data-role="page" id="pageone" style="padding:0px;" >
-                <div data-role="header">
+                <div data-role="header" style="position:fixed;top:0;left:0;right:0;z-index:100;">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
                     </h1>
                 </div>
-                <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
+                    <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
+                         <div id="stspecial">
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:auto;margin-right:auto;">
                         <h2>
                             Menu
@@ -555,13 +691,13 @@ background: #abb1b8;
                                             <p style="float:left;padding-right:10px;opacity:1;"></p>
                                             <p id="discount_price" style="float:left;padding-right:10px;padding-left:10px;" >{!offer.discount}% {!offer.description}</p>
                                         </div>
-                                        <div id="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;">
+                                        <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;">
                                             <apex:outputText value="{!offer.name}" id="item_name" style="color:White;font-weight:bold;font-size:20px;" />
                                         </div>  
                                     </div></li>
                             </apex:repeat>
                         </ul>
-                    </div>
+                             </div></div>
                     <!-- <div class="swiper-container">
         <div class="swiper-wrapper" >
             <div class="swiper-slide">Slide 1</div>
@@ -580,93 +716,80 @@ background: #abb1b8;
     </div>-->
                     <div class="col-xs-12" style="padding:0px;">
                         <div id="tabs" data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
-                                                 <div class="row" style="margin:2px 0 0 30px;">
+                                <div id="legends" style="position:fixed;z-index:990">
+                               <div class="row" style="margin:2px 0 0 30px;">
                                 <img width="20px" style="margin-left:10px;" src="/resource/1436389015000/veg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Veg</span>
                                 <img width="20px" style="margin-left:10px;" src="/resource/1436388987000/vegan" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Vegan</span>
                                 <img width="20px" style="margin-left:10px;" src="/resource/1436389036000/nonveg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Non-Veg</span>
                                 <img width="20px" height="17px;" style="margin-left:10px;background-color:white;" src="/resource/1436987448000/star1" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Most popular</span>
                                 <p style="margin-left:10px;font-family:'Tangerine',cursive;font-weight:bold;color:maroon;"> Tap image for more details </p>
-                              </div>
-                            <div data-role="navbar"  data-iconpos="bottom" data-mini="true" style="width:100%;margin-left:auto;margin-right:auto;">
+                                    </div></div>
+                            
+                              <div data-role="navbar"  data-iconpos="bottom" id="global_nav" data-mini="true" style="height:40px;margin-left:auto;margin-right:auto;position:fixed;z-index:1000">
                                 <ul>
                                     <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
                                     <li><a href="#two" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" id="entTab" >Entree</a></li>
                                     <li><a href="#three" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false"  id="desTab">Dessert</a></li>
                                 </ul>
-                            </div>
-      
-							
-                            <div id="one" class="container" style="clear:left;background-color:white;width:100%">
-                                <div data-role="navbar">
-    <ul>
-        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Vegans" reRender="entree_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
-            			<apex:param name="type" value="Vegan"/>
-            		   </apex:commandButton></apex:form></li>
-      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
-        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Vegetarian" rerender="entree_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
-            			<apex:param name="type" value="Vegetarian"/>		
-            		    </apex:commandButton></apex:form></li>
-        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Non Vegetarian" rerender="entree_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
-            		   <apex:param name="type" value="Non-Vegetarian"/>
-            		   </apex:commandButton></apex:form></li>
-    </ul>
-                                   
-  </div> 
-                                <apex:form id="entree_list">
-                                    <script type="text/javascript">
-                                    init();
-                                    </script>
+                                </div>
+                       <div id="stmenu" style="left:0;width:75%;height:40%;overflow:scroll;">
+                        
+                               <div id="one" class="container" style="clear:left;background-color:white;width:100%">
+                                
+                                 <div id="all_appetizers">
+ 
                                 <div class="row">
                                     <div class="swiper-container">
                                    <div class="swiper-wrapper" >
-                                    <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
+                                    <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer" var="item">
 
                                             <!--<div class="swiper-slide" style="">-->
                                                 <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;">
 
                                             <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
                                                  
-                                                <div class="panel panel-default" >
+                                                <div class="panel panel-default">
                                                     
                                                     <div id="panel_body" class="panel-body text-center" >
 
-                                                        <div class="page1" id="page1" onClick="flip(event);">
+                                                        <div class="page1" id="page1" onClick="flip_in(event);">
                                                              
-                                                            <div class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
+                                                            <div   class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
                                                                 <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
-                                                                    <p style="float:left;padding-right:10px;opacity:1;">  
-                                                                    </p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
+                                                                    <p style="float:left;padding-right:10px;opacity:1;"></p>
+                                                                    <p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
                                                                 </div>
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;padding:0px;">
-                                                                    <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;font-family: 'Oleo Script', cursive;" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
-                                                                   <!-- <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark}" width="60px" />-->
-                                                                    <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
-                                                                </div>
+                                                                
+                                                                
+                                                                <div id="desc1" class=".desc1" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;cursor:pointer;padding:0px;height:30px">
+                                                                    <!-- <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;" /> -->
+                                                                    <div id="item_name" class="item_name" style="color:White;font-weight:bold;font-size:20px;float:left"> {!item.name} </div>
+                                                                        <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.veg}" width="20px" />
+                                                                        <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.vegan}" width="20px" />
+                                                                        <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.nonveg}" width="20px" />
+                                                                       <!-- <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark}" width="60px" />-->
+                                                                        <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
+                                                                   </div>
                                                                 <apex:image style="{!IF((item.spiceLevel == 'Hot'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.veryhot}" width="60px" /> 
                                                                 <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
                                                                 <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
                                                                 <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
-                                                            <p style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;background-color:white;opacity:0.7;font-size:16px;">
-                                                                Chef's Special
-                                                            </p>
-                                                                
+                                                                   <p id="chef_special" class="chef_special" style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;cursor:pointer;background-color:white;opacity:0.7;font-size:16px;">
+                                                                     Chef's Special
+                                                                   </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                         
-                                                        <div class="page2" id="page2" onClick="flip(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
-                                                            <div class="cardimage"  style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;height:60px;cursor: pointer;">
+                                                        <div class="page2" id="page2" onClick="flip_out(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
+                                                            <div class="cardimage"    style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
+                                                                
+                                                                    <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;cursor:pointer;padding:0px">
+                                                                        <apex:outputText value="{!item.description}" id="ite" style="color:White;font-size:14px;background-size:cover;" /> 
+                                                                       <br> Preparation time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
+                                                                      Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />
                                                                     
-                                                                        {!item.description}
-                                                                    
-                                                                    <!--<apex:outputText value="{!item.description}" id="ite" style="color:White;font-weight:bold;font-size:16px;background-size:cover;" /> 
-                                                                   <br> Prepartion time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
-                                                                  Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />-->
-                                                                </div>
+                                                                   </div> 
                                                             </div> 
                                                         </div>
                                                 
@@ -688,147 +811,41 @@ background: #abb1b8;
                                         </div>
                                     </div>
                                 </div>  <!-- row -->
-                              </apex:form>
-                            </div>
-                           
-                            <div id="two" class="container" style="clear:left;background-color:white;width:90%">
-                                 <div data-role="navbar">
-    <ul>
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegans" reRender="#entree_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
-            			<apex:param name="type" value="Vegan"/>
-            		   </apex:commandButton></apex:form></li>
-      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegetarian" rerender="#entree_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
-            			<apex:param name="type" value="Veg"/>		
-            		    </apex:commandButton></apex:form></li>
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Non Vegetarian" rerender="#entree_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
-            		   <apex:param name="type" value="Non-Veg"/>
-            		   </apex:commandButton></apex:form></li>
-    </ul>
-  </div>           
-                              <div class="row" >
+                                                          </div>
+                        </div>
+                           <div id="two" class="container" style="clear:left;background-color:white;width:100%">
+                                
+                                
+                                   
+                                <div class="row">
                                     <div class="swiper-container">
                                    <div class="swiper-wrapper" >
                                     <apex:repeat value="{! MenuItems}" id="Menu_Items_entree" var="item">
-                                         
-                                       
-                                        
-                                            <!--<div class="swiper-slide" style="">-->
-                                                <div  id="slider" class="sliderex" style="{!IF((item.category=='Entree'), 'display:block', 'display:none')};">
-                                                    
-                                           
-                                               
-                                                    
-                                      <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
-                                                 
-                                                <div class="panel panel-default" >
-                                                    
-                                                    <div id="panel_body" class="panel-body text-center" >
 
-                                                        <div class="page1" id="page1" onClick="flip(event);">
-                                                             
-                                                            <div class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
-                                                                <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
-                                                                    <p style="float:left;padding-right:10px;opacity:1;">  
-                                                                    </p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
-                                                                </div>
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;padding:0px;">
-                                                                    <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;font-family: 'Oleo Script', cursive;" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
-                                                                   <!-- <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark}" width="60px" />-->
-                                                                    <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
-                                                                </div>
-                                                                <apex:image style="{!IF((item.spiceLevel == 'Hot'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.veryhot}" width="60px" /> 
-                                                                <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
-                                                                <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
-                                                                <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
-                                                            <p style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;background-color:white;opacity:0.7;font-size:16px;">
-                                                                Chef's Special
-                                                            </p>
-                                                                
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                        
-                                                        <div class="page2" id="page2" onClick="flip(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
-                                                            <div class="cardimage"  style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;height:60px;cursor: pointer;">
-                                                                    
-                                                                        {!item.description}
-                                                                    
-                                                                    <!--<apex:outputText value="{!item.description}" id="ite" style="color:White;font-weight:bold;font-size:16px;background-size:cover;" /> 
-                                                                   <br> Prepartion time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
-                                                                  Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />-->
-                                                                </div>
-                                                            </div> 
-                                                        </div>
-                                                
-                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
-                                                            <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
-                                                        </div>                               </div>
-                                                </div>
-                                            
-                                               </div>
-                                            <!--</div>-->
-                                      </div>
-                                            
-                                             
-                                    </apex:repeat> 
-                                        </div>
-                                    </div>
-                                </div>  <!-- row -->
-                            </div>
-                            <div id="three" class="container" style="clear:left;background-color:white;width:90%">
-                                 <div data-role="navbar">
-    <ul>
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegans" reRender="#dessert_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
-            			<apex:param name="type" value="Vegan"/>
-            		   </apex:commandButton></apex:form></li>
-      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegetarian" rerender="#dessert_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
-            			<apex:param name="type" value="Veg"/>		
-            		    </apex:commandButton></apex:form></li>
-        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Non Vegetarian" rerender="#dessert_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
-            		   <apex:param name="type" value="Non-Veg"/>
-            		   </apex:commandButton></apex:form></li>
-    </ul>
-  </div>           
-                                <div class="row" id="dessert_list">
-                                    <div class="swiper-container">
-                                   <div class="swiper-wrapper" >
-                                    <apex:repeat value="{! MenuItems}" id="Menu_Items_dessert" var="item">
-                                         
-                                       
-                                        
                                             <!--<div class="swiper-slide" style="">-->
-                                                <div  id="slider" class="sliderex" style="{!IF((item.category=='Dessert'), 'display:block', 'display:none')};">
-                                                    
-                                           
-                                               
-                                                    
+                                                <div  id="slider" class="sliderex" style="{!IF((item.category=='Entree'), 'display:block', 'display:none')};margin:0px;">
+
                                             <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
                                                  
                                                 <div class="panel panel-default" >
                                                     
                                                     <div id="panel_body" class="panel-body text-center" >
 
-                                                        <div class="page1" id="page1" onClick="flip(event);">
+                                                        <div class="page1" id="page1" onClick="flip_in(event);">
                                                              
-                                                            <div class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
+                                                            <div id="cardimage"  class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
                                                                 <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
-                                                                    <p style="float:left;padding-right:10px;opacity:1;">  
-                                                                    </p><p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
+                                                                    <p style="float:left;padding-right:10px;opacity:1;"></p>
+                                                                    <p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
                                                                 </div>
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;padding:0px;">
-                                                                    <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;font-family: 'Oleo Script', cursive;" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.veg}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;" value="{!$Resource.vegan}" width="20px" />
-                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;" value="{!$Resource.nonveg}" width="20px" />
+                                                                
+                                                                
+                                                                <div id="desc1" class="desc1" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;cursor:pointer;padding:0px;height:30px">
+                                                                    <!-- <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;" /> -->
+                                                                    <div id="item_name" class="item_name" style="color:White;font-weight:bold;font-size:20px;float:left"> {!item.name} </div>
+                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.veg}" width="20px" />
+                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.vegan}" width="20px" />
+                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.nonveg}" width="20px" />
                                                                    <!-- <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark}" width="60px" />-->
                                                                     <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
                                                                 </div>
@@ -836,28 +853,26 @@ background: #abb1b8;
                                                                 <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
                                                                 <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
                                                                 <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
-                                                                    <p style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;background-color:white;opacity:0.7;font-size:16px;">
-                                                                        Chef's Special
-                                                                    </p>
+                                                                   <p id="chef_special" style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;cursor:pointer;background-color:white;opacity:0.7;font-size:16px;">
+                                                                     Chef's Special
+                                                                   </p>
                                                                 </div>
-                                                                                          </div>
-                                                           
+                                                            </div>
                                                         </div>
                                         
-                                                        <div class="page2" id="page2" onClick="flip(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
-                                                            <div class="cardimage"  style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
-                                                                <div id="desc2" onClick="flip(event);" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;height:60px;cursor: pointer;">
+                                                        <div class="page2" id="page2" onClick="flip_out(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
+                                                            <div class="cardimage" id="cardimage" style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
+                                                                
+                                                                    <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;cursor:pointer;padding:0px">
+                                                                        <apex:outputText value="{!item.description}" id="ite" style="color:White;font-size:14px;background-size:cover;" /> 
+                                                                       <br> Preparation time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
+                                                                      Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />
                                                                     
-                                                                        {!item.description}
-                                                                    
-                                                                    <!--<apex:outputText value="{!item.description}" id="ite" style="color:White;font-weight:bold;font-size:16px;background-size:cover;" /> 
-                                                                   <br> Prepartion time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
-                                                                  Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />-->
-                                                                </div>
+                                                                   </div> 
                                                             </div> 
                                                         </div>
                                                 
-                            <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
+                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
                                                             <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
                                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
                                                             <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
@@ -868,23 +883,103 @@ background: #abb1b8;
                                             
                                                </div>
                                             <!--</div>-->
-                                      </div>         
+                                      </div>
+                                            
+                                             
                                     </apex:repeat> 
                                         </div>
                                     </div>
-                                </div> <!-- row -->
+                                </div>  <!-- row -->
+                              
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:25%;background-color:white;padding-top:0px;font-size:14px;margin:0px;padding:0px;">
-                    <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:5px;margin-top:0px;">
+             <div id="three" class="container" style="clear:left;background-color:white;width:100%">
+                                                     
+                                <div class="row">
+                                    <div class="swiper-container">
+                                   <div class="swiper-wrapper" >
+                                    <apex:repeat value="{! MenuItems}" id="Menu_Items_dessert" var="item">
+
+                                            <!--<div class="swiper-slide" style="">-->
+                                                <div  id="slider" class="sliderex" style="{!IF((item.category=='Dessert'), 'display:block', 'display:none')};margin:0px;">
+
+                                            <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
+                                                 
+                                                <div class="panel panel-default" >
+                                                    
+                                                    <div id="panel_body" class="panel-body text-center" >
+
+                                                        <div class="page1" id="page1" onClick="flip_in(event);">
+                                                             
+                                                            <div id="cardimage"  class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
+                                                                <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
+                                                                    <p style="float:left;padding-right:10px;opacity:1;"></p>
+                                                                    <p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
+                                                                </div>
+                                                                
+                                                                
+                                                                <div id="desc1" class="desc1" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;cursor:pointer;padding:0px;height:30px">
+                                                                    <!-- <apex:outputText value="{!item.name}" id="item_name" style="color:White;font-weight:bold;font-size:25px;" /> -->
+                                                                    <div id="item_name" class="item_name" style="color:White;font-weight:bold;font-size:20px;float:left"> {!item.name} </div>
+                                                                    <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.veg}" width="20px" />
+                                                                    <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.vegan}" width="20px" />
+                                                                    <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.nonveg}" width="20px" />
+                                                                   <!-- <apex:image style="{!IF((item.isSpecial== TRUE), '', 'display:none')};position:absolute;right:0;top:0;background:none;" value="{!$Resource.tick_mark}" width="60px" />-->
+                                                                    <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
+                                                                </div>
+                                                                <apex:image style="{!IF((item.spiceLevel == 'Hot'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.veryhot}" width="60px" /> 
+                                                                <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
+                                                                <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
+                                                                <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
+                                                                   <p id="chef_special" style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;cursor:pointer;background-color:white;opacity:0.7;font-size:16px;">
+                                                                     Chef's Special
+                                                                   </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                        
+                                                        <div class="page2" id="page2"  style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
+                                                            <div class="cardimage" id="cardimage" style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
+                                                                
+                                                                    <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;cursor:pointer;padding:0px">
+                                                                        <apex:outputText value="{!item.description}" id="ite" style="color:White;font-size:14px;background-size:cover;" /> 
+                                                                       <br> Preparation time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
+                                                                      Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />
+                                                                    
+                                                                   </div> 
+                                                            </div> 
+                                                        </div>
+                                                
+                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
+                                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                            <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
+                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
+                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                               </div>
+                                            <!--</div>-->
+                                      </div>
+                                            
+                                             
+                                    </apex:repeat> 
+                                        </div>
+                                    </div>
+                                </div>  <!-- row -->
+                            </div>
+                        
+                    </div> </div>
+        </div></div>
+            
+                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:25%;background-color:white;padding-top:0px;font-size:14px;margin-top:35px;padding:0px;">
+                    <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;margin-left:5px;">
                         <h2>
                             Order
                         </h2>  
                     </div>
                     <div style="background-color:white;opacity:0.9;height:80%;">
-                        <div class="container" style="padding:0px;margin:5px;" id="cart_container">
+                        <div class="container" style="padding:0px;margin:5px;" id="cart_container" >
                             
                         <!-- Placeholder for div - bill_items pageblock -->
                 <apex:pageBlock id="billed_items" title="Billed Items">
@@ -1018,17 +1113,9 @@ background: #abb1b8;
             this.id= 'item'+i;
             i++;
         });
-        
-       
-        
-      
+ 
     });   
-    // document.getElementById("quant").className = "";
-    
-    
-        
-   
-   
+ 
     </script>
     
 </apex:page>

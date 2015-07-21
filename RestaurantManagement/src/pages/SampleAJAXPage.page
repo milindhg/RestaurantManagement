@@ -1,0 +1,79 @@
+<apex:page sidebar="false" showHeader="false">
+    <script type="text/javascript">
+    var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <script src="../../soap/ajax/34.0/connection.js"
+          type="text/javascript"></script>
+    <script type="text/javascript">     window.onload = setupPage;
+    function setupPage() {
+      //function contains all code to execute after page is rendered
+
+      var state = { //state that you need when the callback is called
+          output : document.getElementById("output"),
+          startTime : new Date().getTime()};
+
+      var callback = {
+          //call layoutResult if the request is successful
+          onSuccess: layoutResults,
+
+          //call queryFailed if the api request fails
+          onFailure: queryFailed,
+          source: state};
+
+      sforce.connection.query(
+          "Select f.Id, f.Name, f.Quantity__c, f.Price__r.Price__c,f.Total_Price__c From Order_item__c f where food_order__r.id='a0537000000RI9b' order by Price__c ",
+           callback);
+  }
+
+  function queryFailed(error, source) {
+    source.output.innerHTML = "An error has occurred: " + error;
+  }
+
+  /**
+  * This method will be called when the toolkit receives a successful
+  * response from the server.
+  * @queryResult - result that server returned
+  * @source - state passed into the query method call.
+  */
+  function layoutResults(queryResult, source) {
+    if (queryResult.size > 0) {
+      var output = "";
+
+      //get the records array
+      var records = queryResult.getArray('records');
+      console.log(records);
+      //loop through the records and construct html string
+      for (var i = 0; i < records.length; i++) {
+        var order_item = records[i];
+
+        output += order_item.Id + " " + order_item.Name + " " + parseInt(order_item.Quantity__c,10) + 
+            " [TotalPrice - " + order_item.Total_Price__c + "]<br>";
+      }
+
+    //render the generated html string
+    source.output.innerHTML = output;
+    var newRecords = new Array();
+
+    for(i = 0; i<records.length; i++){
+        if(i==4 || i==2) continue;     
+        var orderItemObj = new sforce.SObject("Order_Item__c");
+        orderItemObj.Id = records[i].Id;
+        //orderItemObj.Name = records[i].Name;
+        orderItemObj.Quantity__c = i;
+        console.log(orderItemObj);
+        newRecords.push(orderItemObj);
+    }    
+    console.log(newRecords);
+    result = sforce.connection.update(newRecords);
+    console.log(result);
+    }
+  }
+  </script>
+
+    <div id="output"> </div>
+   
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: SampleAJAXPage
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

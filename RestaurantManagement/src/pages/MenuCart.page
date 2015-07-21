@@ -95,15 +95,15 @@
 
 
 /**Styling for the new cart UI: Starts **/
-	.apexp{
-	    width: 200px;
-	}
-	.list-group{
-		width: 200px;
-		margin-bottom:0px;
-	}
+        .apexp{
+            width: 200px;
+        }
+        .list-group{
+                width: 200px;
+                margin-bottom:0px;
+        }
     .bs-example{
-    	margin-bottom: 10px;
+        margin-bottom: 10px;
     }
     .bPageBlock .pbTitle{
         width:100%;

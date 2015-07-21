@@ -82,4 +82,9 @@ public class DisplayCart {
         get;
         set;
     }
+    
+    public void setItemQuantity(Decimal qty){
+        this.cartItem.Quantity__c = qty;
+        update cartItem;
+    }
 }

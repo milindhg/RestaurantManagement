@@ -1,0 +1,51 @@
+<apex:page docType="html-5.0" controller="ChefListController" sidebar="false" showHeader="false">
+
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+        <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+        <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:stylesheet value="{!$Resource.customStyle}"  />
+        <apex:includeScript value="{!$Resource.jquery}"/>
+        
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header" id="pageHeader">
+            Intern Cafe
+            </div>
+            <apex:form >
+                <apex:pageBlock >
+                    <apex:outputPanel >
+                        <div style="font-weight:bold;text-align:left;">Select your Location</div>
+                        <apex:selectList style="color:maroon;" value="{!selectedlocation}" size="1">
+                            <apex:selectOptions value="{!Locationdata}"/>
+                            <apex:actionSupport event="onchange" reRender="main"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel >
+                        <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
+                       <!-- <apex:input type="number" value="{!noofchefs}"/>
+                        <apex:commandLink action="{!goToChefOrders}" immediate="true" styleClass="btn" value="Next"/> -->
+                        
+                        
+                        <apex:selectList style="color:maroon;" value="{!noofchefs}" size="1">
+                            
+                            <apex:selectOptions value="{!maxchefs}"/>
+                            <apex:actionSupport event="onchange" reRender="main"/>
+                        </apex:selectList>
+                          
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="main"></apex:outputPanel>
+                </apex:pageBlock>
+            </apex:form>
+        
+        </div>
+    </body>
+</apex:page>

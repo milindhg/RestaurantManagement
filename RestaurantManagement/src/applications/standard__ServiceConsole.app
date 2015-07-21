@@ -179,12 +179,16 @@
     <tab>MenuCart_TestPage</tab>
     <tab>BIll_Item__c</tab>
     <tab>MenuCarts_Modal</tab>
+    <tab>Chef__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>BIll_Item__c</tab>
         </mapping>
         <mapping>
             <tab>Chef_Page</tab>
+        </mapping>
+        <mapping>
+            <tab>Chef__c</tab>
         </mapping>
         <mapping>
             <tab>Feedback__c</tab>

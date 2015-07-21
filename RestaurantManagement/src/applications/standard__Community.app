@@ -26,4 +26,5 @@
     <tab>MenuCart_TestPage</tab>
     <tab>BIll_Item__c</tab>
     <tab>MenuCarts_Modal</tab>
+    <tab>Chef__c</tab>
 </CustomApplication>

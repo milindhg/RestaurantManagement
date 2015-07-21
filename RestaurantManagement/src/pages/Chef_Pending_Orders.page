@@ -1,4 +1,4 @@
-<apex:page sidebar="false" showHeader="false">
+<apex:page sidebar="false" controller="ChefListController" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -135,9 +135,9 @@
                                     <th class="borderBottom text-center" scope="col">Action</th>
                                 </tr>
                             </thead>
-                                <tbody id="tbody">
+                            <tbody id="tbody">
                                 
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>

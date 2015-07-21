@@ -4,8 +4,9 @@ global class WaiterListController{
     public static final String PICKED_UP = 'Picked Up'; 
     
     WebService static String updateOrderPickUp(String orderItemId,String foodOrderId){
-        Order_Item__c orderItem = [SELECT status__c FROM Order_Item__c WHERE Id= :orderItemId];
+        Order_Item__c orderItem = [SELECT status__c, Picked_Up_Time__c FROM Order_Item__c WHERE Id= :orderItemId];
         orderItem.status__c = PICKED_UP;
+        orderItem.Picked_Up_Time__c = System.now();
         update orderItem;
         
         boolean isOrderDelivered = true;

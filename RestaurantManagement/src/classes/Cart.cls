@@ -10,10 +10,10 @@ global with sharing class Cart{
 
 
     public String foodOrderId = 'a0537000000RI9b';
-    public Cart(){  }
+    public Cart(){ selectedItems=''; }
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
-    
+    public String selectedItems{get;set;}    
     
     public static final String PAID = 'Paid';
     
@@ -44,18 +44,27 @@ global with sharing class Cart{
             
         for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                     o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                    o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                    o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                    o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                    o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate,
+                                    o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                    o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
                                     AND o.Delete_Status__c <> 'Yes'
-                                    order by o.Status__c]){
+                                    order by o.Status__c, o.CreatedDate]){
+                                    System.debug('Item Name' + item.Name + ' -- ' + item.LastModifiedDate);
             if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
                 orderItemsList.add(new DisplayCart(item));
         }
         //fo = getFoodOrder();
         return orderItemsList;
+    }
+    
+    public String getOrderItemsListSerialized(){
+        System.debug('Entered orderItemsListSerialized');
+        System.debug('orderItemsList is: ' + orderItemsList);
+        String jsonString = JSON.serializePretty(this.orderItemsList);
+        System.debug('!!!!jsonString: ' + jsonString);
+        return jsonString;
     }
     
     //Method to get the active cart items - which are not accepted yet.
@@ -75,7 +84,8 @@ global with sharing class Cart{
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                     From Order_Item__c o
                                     where o.Food_order__c=:fo.id
-                                    AND o.Delete_Status__c <> 'Yes']){
+                                    AND o.Delete_Status__c <> 'Yes'
+                                    ORDER BY o.LastModifiedDate]){
             if(item.Status__c == 'New')
                 activeCartItems.add(new DisplayCart(item));
         }
@@ -200,7 +210,20 @@ global with sharing class Cart{
         System.debug('Enter method sayHello!!!!');
         fo=getFoodOrder();
         System.debug('fo FoodOrder now is: ' + fo);
+        System.debug('Now the orderItemsList is: ' + orderItemsList);
         return null;
     }
+    
 
+    public PageReference saveChanges(){
+        System.debug('selectedItems: !!!!' + selectedItems);
+        return null;
+    }
+    
+    @RemoteAction
+    public static void updateChanges(List<Order_Item__c> items){
+        System.debug('items are: !!!!' + items);
+        update items;
+    }
+    
 }

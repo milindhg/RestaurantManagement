@@ -1,12 +1,11 @@
 <apex:page showheader="false" controller="Bill" >
-                <style type="text/css">
-                                        h1{
+ <style type="text/css">
+             h1{
                     color:maroon;
                     font-weight:bold;
                     text-shadow:none;
-                    }
-                    
-                    .col-sm-6{
+            }
+                   .col-sm-6{
                     margin-top:10px;
                     padding:0px;
                     border: black 1px solid
@@ -37,7 +36,6 @@
                     }
                     
                     .cardimage{
-                    
                     background-size:100%;
                     float:left;
                     }
@@ -45,7 +43,7 @@
                     .desc{
                     
                     background-size:100%;
-                                    margin:0px;
+                    margin:0px;
                     float:left;
                     text-shadow:none;
                     
@@ -71,7 +69,7 @@
                     color:white;
                     text-shadow:none;
                     }
-                                    #menu_link, #view_cart_link{
+                 #menu_link, #view_cart_link{
                     text-align:left;
                     background-image:none;
                     color: black;
@@ -85,7 +83,7 @@
                     
                     }
                 </style>
-                <head>
+         <head>
                     
                     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
                     <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
@@ -98,121 +96,123 @@
           </head>
                 
                 <body>
-                
-                    <apex:pageBlock >
-                      
-                                                <div class="container">
-            
-                                                        <div class="row billed_items">
-                                                            <!-- Placeholder for div - billed_items -->
-                                                            <apex:form >
-                                                            <apex:pageBlock title="Items">
-                                                          <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
-                                                         
-                                                       
-                                                            <apex:column >
-                                                            <div style="float:left;width:10%">
-                                                                <apex:outputLabel value="{!pitem.quantity}" ></apex:outputLabel>
-                                                            </div>
-                                                            <div style="float:left;width:60%">
-                                                                <apex:outputLabel value="{!pitem.name}" ></apex:outputLabel>
-                                                                
-                                                            </div>
-                                                            <div style="float:left;width:30%">
-                                                                <apex:outputText value="{!pitem.totalPrice}"></apex:outputText>                                                    
-                                                            </div>
-                                                        </apex:column>
-                                                        
-                                                          </apex:pageBlockTable>  
-                                                          
-                                                          
-                                                          <apex:pageBlock id="current_bill">
-                                                          <div style="float:left;width:100%">
-                                                            <div style="float:left;width:70%">
-                                                                <apex:outputLabel value="Taxes" ></apex:outputLabel>
-                                                            </div>
-                                                            <div style="float:left;width:30%">
-                                                                <apex:outputText value="{!FoodOrder.Tax__c}"></apex:outputText>                                                    
-                                                            </div>
-                                                            </div>
-                                                            <div style="float:left;width:100%">
-                                                            <div style="float:left;width:70%" >
-                                                                <apex:outputLabel value="Total Amount" ></apex:outputLabel>
-                                                            </div>
-                                                            <div style="float:left;width:30%">
-                                                                <apex:outputText value="{!FoodOrder.TotalPrice__c}" ></apex:outputText>                                          
-                                                            </div> 
-                                                                 
-                                                             </div>
-                                                             </apex:pageBlock>
-                                                          
-                                                          
-                                                          
-                                                          
-                                                          
-                                                         
-                                                        
-                                                                <apex:commandLink styleClass="btn" value="Back to Cart" action="{!backToCart}" immediate="true">    
-                                                                               <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
-                                                               </apex:commandLink> 
-                                                                <apex:commandLink styleClass="btn" value="Done" action="{!paidStatusUpdate}" immediate="true">    
-                                                                               <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
-                                                               </apex:commandLink> 
-                                                            </apex:pageBlock>
+      <apex:pageBlock >
+        <div class="container">
+     <div class="row billed_items">
+                                                                <!-- Placeholder for div - billed_items -->
+                                                                <apex:form >
+                                                                <apex:pageBlock title="Items">
+                                                              <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
+                                                             
+                                                           
+                                                                <apex:column >
+                                                                <div style="float:left;width:10%">
+                                                                    <apex:outputLabel value="{!pitem.quantity}" ></apex:outputLabel>
+                                                                </div>
+                                                                <div style="float:left;width:60%">
+                                                                    <apex:outputLabel value="{!pitem.name}" ></apex:outputLabel>
+                                                                    
+                                                                </div>
+                                                                <div style="float:left;width:30%">
+                                                                    <apex:outputText value="{!pitem.totalPrice}"></apex:outputText>                                                    
+                                                                </div>
+                                                            </apex:column>
                                                             
-                                                         
-                                <apex:pageBlock >
-                                 <div style="text-align:center;"> Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
-                                        
-                                                <table >   
-                                                <tr>   <td> <apex:outputPanel > Food quality </apex:outputPanel>     </td>
-                                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedFQ }"  size="1">
-                                                               <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                               <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                               <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                               <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                               </apex:selectlist>  </apex:outputPanel>  </td>
-                                               </tr>
-                                               <tr>
-                                                         <td> <apex:outputPanel > Service </apex:outputPanel>     </td>
-                                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedService}" size="1" >
-                                                               <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                               <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                               <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                               <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                               </apex:selectlist>  </apex:outputPanel>  </td>
-                                               </tr>
-                                               <tr>
-                                                         <td> <apex:outputPanel > Overall Experience </apex:outputPanel>     </td>
-                                                         <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedOAE }" size="1">
-                                                               <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                               <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                               <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                               <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                               </apex:selectlist>  </apex:outputPanel>  </td>
-                                               </tr>
-                                               <tr>
-                                               <td> <apex:outputPanel > What I liked: </apex:outputPanel>     </td>
-                                               <td>  <apex:inputTextArea rows="4" cols="50" value="{!likes}" > </apex:inputTextArea> </td>
-                                               </tr>
-                                               <tr>
-                                               <td> <apex:outputPanel > What must have been there : </apex:outputPanel>     </td>
-                                               <td> <apex:inputTextArea rows="4" cols="50" value="{!unlikes}" > </apex:inputTextArea> </td>
-                                               </tr>
-                
-                                   </table>
-                                  <div  style="text-align: center;">
-                                 <apex:commandLink styleClass="btn" action="{!insertfeedback}" value="Submit" immediate="true"/>
-                                            
-                                 </div>
-                                                 </apex:pageBlock>
-                                 </apex:form> </div>
+                                                              </apex:pageBlockTable>  
+                                                              
+                                                              
+                                                              <apex:pageBlock id="current_bill">
+                                                              <div style="float:left;width:100%">
+                                                                <div style="float:left;width:70%">
+                                                                    <apex:outputLabel value="Taxes" ></apex:outputLabel>
+                                                                </div>
+                                                                <div style="float:left;width:30%">
+                                                                    <apex:outputText value="{!FoodOrder.Tax__c}"></apex:outputText>                                                    
+                                                                </div>
+                                                                </div>
+                                                                <div style="float:left;width:100%">
+                                                                <div style="float:left;width:70%" >
+                                                                    <apex:outputLabel value="Total Amount" ></apex:outputLabel>
+                                                                </div>
+                                                                <div style="float:left;width:30%">
+                                                                    <apex:outputText value="{!FoodOrder.TotalPrice__c}" ></apex:outputText>                                          
                                                                 </div> 
-                                </apex:pageBlock>
-                                </body>
-                            
-                    
-                </apex:page>
+                                                                     
+                                                                 </div>
+                                                                 </apex:pageBlock>
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                             
+                                                            
+                                                                    <apex:commandLink styleClass="btn" value="Back to Cart" action="{!backToCart}" immediate="true">    
+                                                                                   <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
+                                                                   </apex:commandLink> 
+                                                                    <apex:commandLink styleClass="btn" value="Done" action="{!paidStatusUpdate}" immediate="true">    
+                                                                                   <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
+                                                                   </apex:commandLink> 
+                                                                </apex:pageBlock>
+                                                                </apex:form>                    
+    
+                                                        </div></div></apex:pageBlock>
+        
+        <apex:form >
+                    <apex:pageBlock id="clean">
+                        
+                     <div style="font-weight:bold;text-align:center;">Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
+                             <div class="container">
+                                    <table >   
+                                    <tr>
+                                             <td> <apex:outputPanel style="font-weight:bold"> Food quality </apex:outputPanel>     </td>
+                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedFQ }"  size="1">
+                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
+                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
+                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
+                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
+                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                                   </apex:selectlist>  </apex:outputPanel>  </td>
+                                   </tr>
+                                   <tr>
+                                             <td> <apex:outputPanel style="font-weight:bold"> Service </apex:outputPanel>     </td>
+                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedService}" size="1" >
+                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
+                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
+                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
+                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
+                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                                   </apex:selectlist>  </apex:outputPanel>  </td>
+                                   </tr>
+                                   <tr>
+                                             <td> <apex:outputPanel style="font-weight:bold"> Overall Experience </apex:outputPanel>     </td>
+                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedOAE }" size="1">
+                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
+                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
+                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
+                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
+                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                                   </apex:selectlist>  </apex:outputPanel>  </td>
+                                   </tr>
+                                   <tr>
+                                   <td> <apex:outputPanel style="font-weight:bold"> What I liked: </apex:outputPanel>     </td>
+                                   <td>  <apex:inputTextArea rows="4" cols="50" value="{!likes}" > </apex:inputTextArea> </td>
+                                   </tr>
+                                   <tr>
+                                   <td> <apex:outputPanel style="font-weight:bold"> What must have been there : </apex:outputPanel>     </td>
+                                   <td> <apex:inputTextArea rows="4" cols="50" value="{!unlikes}" > </apex:inputTextArea> </td>
+                                   </tr>
+    
+                       </table>
+                       
+                     </div>
+                     <div  style="text-align: center;">
+                     <apex:commandButton action="{!insertfeedback}" value="Submit" reRender="clean" >
+                     </apex:commandButton>
+                     </div>
+                    </apex:pageBlock>
+                </apex:form>
+            
+        
+        
+        </body></apex:page>

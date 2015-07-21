@@ -35,6 +35,7 @@ global with sharing class Bill{
     
     
     public String getlikes() {
+        System.debug('Likes: '+likes);
         return likes;
     }
      
@@ -128,7 +129,7 @@ global with sharing class Bill{
         return orderItemsList;
     }
     
-     public PageReference insertfeedback()
+     public void insertfeedback()
     {
     Feedback__c fb = new Feedback__c();
     fb.Food_Quality__c=SelectedFQ;
@@ -137,15 +138,9 @@ global with sharing class Bill{
     fb.What_I_liked__c=likes;
     fb.What_must_have_been_there__c=unlikes;
     insert fb;
-    likes=null;
-    unlikes=null;
-    SelectedFQ='5';
-    SelectedOAE='5';
-    SelectedService='5';
-        PageReference pageRef = Page.MenuCart;
-         pageRef.setRedirect(true);
-         return pageRef;
-    }
+        
+     
+     }
     
      public PageReference paidStatusUpdate(){
          Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
@@ -168,6 +163,7 @@ global with sharing class Bill{
 //            billItem.Tax__c = 3.4// TODO;
             insert billItem;   
             
+              
                       
        }     
        
