@@ -12,10 +12,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>ItemName__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Quantity__c</field>
             </layoutItems>
             <layoutItems>

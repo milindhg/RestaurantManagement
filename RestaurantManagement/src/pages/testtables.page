@@ -45,13 +45,13 @@
                             <div class="table-responsive">
                                 <apex:pageBlockTable styleClass="border table table-bordered" value="{!tables}" var="s" id="tablesrerender">
                                     <apex:column value="{!s.TableNumber}" headerValue="Table Number"/>
-                                   <!-- <apex:column value="{!s.Status}" headerValue="Status"/>
+                                    <apex:column value="{!s.Status}" headerValue="Status"/>
                                     <apex:column value="{!s.Seats}" headerValue="Seats Available"/>
                                     <apex:column headerValue="Action">  
                                         <apex:commandButton action="{!updatestatus}" value="Change Status" reRender="tablesrerender" >
                                             <apex:param name="tablename" value="{!s.name}"/>    
                                         </apex:commandButton>
-                                    </apex:column> -->
+                                    </apex:column> 
                                     
                                       <apex:column headerValue="Menu Link">
                                         <apex:commandLink action="https://c.na31.visual.force.com/apex/Menu?reqlocation={!selectedLocation}&tableid={!s.tableNumber}" immediate="true" styleClass="btn" value="Menu" />

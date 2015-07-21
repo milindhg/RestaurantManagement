@@ -67,16 +67,6 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>ItemName__c</fullName>
-        <externalId>false</externalId>
-        <label>ItemName</label>
-        <length>32</length>
-        <required>true</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Quantity__c</fullName>
         <externalId>false</externalId>
         <label>Quantity</label>
@@ -114,7 +104,7 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>BIll Name</label>
+        <label>BIll Item Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Bill Items</pluralLabel>

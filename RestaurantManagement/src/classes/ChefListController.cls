@@ -36,6 +36,16 @@ global with sharing class ChefListController{
         return est_del_time;
         
     }
+    
+    WebService static List<Order_Item__c> handleRefreshPage(){
+        List<Order_Item__c> oitems = [SELECT Table_Number__c, Type__c, Delete_Status__c,
+                							 Food_Item_Name__c, Quantity__c, Food_Order__c
+         							  FROM   Order_Item__c
+         							  WHERE  Status__c = 'Pending'
+                                      AND    Delete_Status__c = 'No'
+                                      ORDER BY CreatedDate];
+        return oitems;
+    }
         
     WebService static String itemAcceptUpdate(String orderItemId,String foodOrderId){
         Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];

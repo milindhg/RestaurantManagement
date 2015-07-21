@@ -20,6 +20,32 @@
 
     <script type="text/javascript">
         sforce.connection.sessionId = "{!$Api.Session_ID}";
+       
+        function getOrdersOnRefresh(){
+           var result = sforce.apex.execute("ChefListController",
+                                             "handleRefreshPage",
+                                             {});
+                                             
+           for(i=0;i<result.length;i++){
+               $('#tbody').append(
+                '<tr class=\"fontStyleTr border\" id=\"' + result[i].Id + '\"><td class=\"text-center border\">' + result[i].Table_Number__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Type__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Food_Item_Name__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Quantity__c + 
+                
+                '</td><td id=\"orderStatus_' + result[i].Id + '\" class=\"border text-center\">Pending'+
+                '</td><td class=\"border text-center\">' +
+                      '<button id=\"accept_' + result[i].Id + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
+                             result[i].Id + '\',\'' +
+                             result[i].Food_Order__c + '\');\">Accept</button>' + 
+                             
+                '<button disabled=\"disabled\" id=\"ready_' + result[i].Id + '\" class=\"readyBtn\" onClick=\"ready(\''+ result[i].Id + '\',\''+
+                             result[i].Food_Order__c + '\');\" >Ready</button>' + '</td></tr>');  
+           }                                 
+        }
         
         function accept(orderItemId, foodOrderId){
            //alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
@@ -48,16 +74,12 @@
         (function($){
          $(document).ready(function() {
           
-           // Connect to the CometD endpoint
            $.cometd.init({
              url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
              requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
            });
         
-          // Subscribe to a topic. JSON-encoded update will be returned in the callback
-          $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-                
-
+           $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
                 $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
                 
                 $('#tbody').append(
@@ -83,8 +105,6 @@
                 }       
             });
             
-          
-            
         });
         })(jQuery)
         
@@ -95,7 +115,7 @@
         window.onbeforeunload = disconnect;
     </script>
 
-    <body>
+    <body onload="getOrdersOnRefresh();">
     
         <div class="container">
             <div class="page-header" id="pageHeader">

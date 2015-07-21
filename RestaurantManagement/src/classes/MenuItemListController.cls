@@ -4,6 +4,7 @@ global class MenuItemListController {
     
     public static List<DisplayMenuItems> ItemList;
     public static List<DisplayOffer> offerList;
+    public String dietType;
     //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
     public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
     public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
@@ -245,22 +246,45 @@ global class MenuItemListController {
     
     public List<DisplayMenuItems> getMenuItems(){
         System.debug('ItemList is: !!!!' + ItemList);
-        if(ItemList==null){
-            
+         System.debug('Diet Type'+ dietType);
+        //if(ItemList==null){
+            List<Food_Item__c> food_items;
+            if(dietType==null){
+                System.debug('WITHOUT Type'+ dietType);
+             food_items=[Select Name, Category__c, Description__c,
+                                     		Spice_Level__c,Special__c, Item_Image__c, 
+                                     		Prep_Time__c,Calories__c,Status__c,Type__c  
+                                     		From Food_Item__c 
+                                     		where Status__c='enabled'];
+            }else{
+                System.debug('WITH Type');
+               food_items=[Select Name, Category__c, Description__c,
+                                     		Spice_Level__c,Special__c, Item_Image__c, 
+                                     		Prep_Time__c,Calories__c,Status__c,Type__c  
+                                     		From Food_Item__c 
+                                     		where Status__c='enabled' and type__c=:dietType];
+            }
             ItemList = new List<DisplayMenuItems>();
-            for(Food_Item__c item : [Select Name, Category__c, Description__c,Spice_Level__c,Special__c, Item_Image__c, Prep_Time__c,Calories__c,Status__c,Type__c  From Food_Item__c where Status__c='enabled' ]){
-                List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c from PriceBook__c p where p.Food_Item__r.name=:item.Name and p.Location__c =:selLocation]; 
+            for(Food_Item__c item : food_items){
+                List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c 
+                                            from PriceBook__c p 
+                                            where p.Food_Item__r.name=:item.Name 
+                                            and p.Location__c =:selLocation 
+                                            and p.Price__c!=0]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
-                ItemList.add(new DisplayMenuItems(item,price));
+                if(price.size() > 0)
+                  ItemList.add(new DisplayMenuItems(item,price));
             }
-        }
+       // }
         
         //Code to mark the 3 topselling items as star items 
         //Write the code to call comparator and sort the items list based on numof times ordered here.
         ItemList.sort();
+        if(ItemList.size()>3){
         for(Integer i = 0; i < 3; i++){
             ItemList[i].starredItem = true;
+       }
         }
         System.debug('Starred Items!!!!: ' + ItemList);
         return ItemList;
@@ -340,6 +364,12 @@ global class MenuItemListController {
         return null;
     }
     
+    public PageReference getItemsByType(){
+         dietType=ApexPages.currentPage().getParameters().get('type');
+    	getMenuItems();
+        System.debug(dietType);
+        return null;
+    }
     
 
 }

@@ -95,15 +95,15 @@
 
 
 /**Styling for the new cart UI: Starts **/
-	.apexp{
-	    width: 200px;
-	}
-	.list-group{
-		width: 200px;
-		margin-bottom:0px;
-	}
+    .apexp{
+        width: 200px;
+    }
+    .list-group{
+        width: 200px;
+        margin-bottom:0px;
+    }
     .bs-example{
-    	margin-bottom: 10px;
+        margin-bottom: 10px;
     }
     .bPageBlock .pbTitle{
         width:100%;
@@ -121,7 +121,13 @@
     .item-actions{
         border-radius:50%;margin-left:10px;margin-right:10px;
     }
-}
+
+
+    .center{
+		width: 120px;
+		margin: 0px auto;
+  
+	}
 /**Styling for the new cart UI: End **/
 
     </style>
@@ -131,6 +137,7 @@
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
         <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+        
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
@@ -138,43 +145,222 @@
         
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 
-        
-        
-    </head>
-    <script type="text/javascript">
+<script type="text/javascript">
     
     $j = jQuery.noConflict();
     
-    $(document).ready(function() {
-        
-        
-        $.cometd.init({
-            url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
-            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
-        });
-        
-        $.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
-            alert('Hello');
-            $j('#bill_items').load(location.href + '#bill_items');
-        });
-    });
-    
+
     
     function sayHello(){
         }
+
+//plugin bootstrap minus and plus
+//http://jsfiddle.net/laelitenetwork/puJ6G/
+jQuery('.btn-number').click(function(e){
+    e.preventDefault();
+    
+    fieldName = jQuery(this).attr('data-field');
+    type      = jQuery(this).attr('data-type');
+    var input = jQuery("input[name='"+fieldName+"']");
+    var currentVal = parseInt(input.val());
+    if (!isNaN(currentVal)) {
+        if(type == 'minus') {
+            
+            if(currentVal > input.attr('min')) {
+                input.val(currentVal - 1).change();
+            } 
+            if(parseInt(input.val()) == input.attr('min')) {
+                jQuery(this).attr('disabled', true);
+            }
+
+        } else if(type == 'plus') {
+
+            if(currentVal < input.attr('max')) {
+                input.val(currentVal + 1).change();
+            }
+            if(parseInt(input.val()) == input.attr('max')) {
+                jQuery(this).attr('disabled', true);
+            }
+
+        }
+    } else {
+        input.val(0);
+    }
+});
+jQuery('.input-number').focusin(function(){
+   jQuery(this).data('oldValue', jQuery(this).val());
+});
+jQuery('.input-number').change(function() {
+    
+    minValue =  parseInt(jQuery(this).attr('min'));
+    maxValue =  parseInt(jQuery(this).attr('max'));
+    valueCurrent = parseInt(jQuery(this).val());
+    
+    name = jQuery(this).attr('name');
+    if(valueCurrent >= minValue) {
+        jQuery(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the minimum value was reached');
+        jQuery(this).val(jQuery(this).data('oldValue'));
+    }
+    if(valueCurrent <= maxValue) {
+        jQuery(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the maximum value was reached');
+        jQuery(this).val(jQuery(this).data('oldValue'));
+    }
     
     
-    
-    </script>
+});
+jQuery(".input-number").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+
+</script>        
+        
+    </head>
     <body>
+
+
 
         <apex:pageBlock >
 
+
             <div class="container">
             
+<a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+<div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                Modal title
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                <apex:pageBlock id="billed_items_modal" title="Billed Items">
+                    <apex:form >
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item active">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                    Ok ok
+                                </div>
+                                <div class="row">
+				                    <div class="col-md-8">
+				                        <div class="input-group">
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                  </button>
+                                              </span>
+                                              <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" />
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                  </button>
+                                              </span>
+                                          </div>
+				                        </div>
+				                    <div class="col-md-4">
+				                        <div>
+                                          <button type="button" style="margin:auto 10px; width:inherit;" class="btn btn-primary" aria-label="Delete">
+                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                          </button>
+                                        </div>
+				                    </div>
+			                    </div>
+                                <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}">
+                                    <!-- <div class="list-group" > -->
+                                        <div class="center">
+                                          <div class="input-group">
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                  </button>
+                                              </span>
+                                              <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" />
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                  </button>
+                                              </span>
+                                          </div>
+                                              <div>
+                                                  <button type="button" style="margin:auto 10px; width:inherit;" class="btn btn-primary" aria-label="Delete">
+                                                    <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                  </button>
+                                              </div>
+                                        </div>            
+                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton>   
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton> 
+                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
+                                           </apex:commandButton> 
+                                    <!-- </div> -->
+
+                                </apex:outputPanel>
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
+                
+                            
+                            
+                            
+                        </div>
+                        <div class="modal-footer">
+                             
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button> 
+                            <button type="button" class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
                         <!-- Placeholder for div - bill_items pageblock -->
                 <apex:pageBlock id="billed_items" title="Billed Items">
                     <apex:form >
+                        <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
+                            <button type="button" class="btn btn-primary" aria-label="Edit Items">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            Edit Items
+                            </button>
+                        </a>
                         <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
                             <div class="bs-example">
                                 <div class="list-group">
@@ -287,5 +473,85 @@
               
         </apex:pageBlock>
         
+
+<!-- src="{!$Resource.PlusMinusJs}" -->
+
+<script type="text/javascript" > 
+    //plugin bootstrap minus and plus
+//http://jsfiddle.net/laelitenetwork/puJ6G/
+jQuery('.btn-number').click(function(e){
+    e.preventDefault();
+    
+    fieldName = jQuery(this).attr('data-field');
+    type      = jQuery(this).attr('data-type');
+    var input = jQuery("input[name='"+fieldName+"']");
+    var currentVal = parseInt(input.val());
+    if (!isNaN(currentVal)) {
+        if(type == 'minus') {
+            
+            if(currentVal > input.attr('min')) {
+                input.val(currentVal - 1).change();
+            } 
+            if(parseInt(input.val()) == input.attr('min')) {
+                jQuery(this).attr('disabled', true);
+            }
+
+        } else if(type == 'plus') {
+
+            if(currentVal < input.attr('max')) {
+                input.val(currentVal + 1).change();
+            }
+            if(parseInt(input.val()) == input.attr('max')) {
+                jQuery(this).attr('disabled', true);
+            }
+
+        }
+    } else {
+        input.val(0);
+    }
+});
+jQuery('.input-number').focusin(function(){
+   jQuery(this).data('oldValue', jQuery(this).val());
+});
+jQuery('.input-number').change(function() {
+    
+    minValue =  parseInt(jQuery(this).attr('min'));
+    maxValue =  parseInt(jQuery(this).attr('max'));
+    valueCurrent = parseInt(jQuery(this).val());
+    
+    name = jQuery(this).attr('name');
+    if(valueCurrent >= minValue) {
+        jQuery(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the minimum value was reached');
+        jQuery(this).val(jQuery(this).data('oldValue'));
+    }
+    if(valueCurrent <= maxValue) {
+        jQuery(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the maximum value was reached');
+        jQuery(this).val(jQuery(this).data('oldValue'));
+    }
+    
+    
+});
+jQuery(".input-number").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    
+</script>
     </body>
 </apex:page>

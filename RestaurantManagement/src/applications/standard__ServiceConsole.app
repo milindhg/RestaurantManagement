@@ -178,6 +178,7 @@
     <tab>Chef_Page</tab>
     <tab>MenuCart_TestPage</tab>
     <tab>BIll_Item__c</tab>
+    <tab>MenuCarts_Modal</tab>
     <workspaceMappings>
         <mapping>
             <tab>BIll_Item__c</tab>
@@ -202,6 +203,9 @@
         </mapping>
         <mapping>
             <tab>MenuCart_TestPage</tab>
+        </mapping>
+        <mapping>
+            <tab>MenuCarts_Modal</tab>
         </mapping>
         <mapping>
             <tab>Offers__c</tab>

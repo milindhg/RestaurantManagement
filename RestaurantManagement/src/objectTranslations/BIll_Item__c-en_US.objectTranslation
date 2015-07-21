@@ -14,10 +14,6 @@
         <relationshipLabel><!-- Bill Items --></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- ItemName --></label>
-        <name>ItemName__c</name>
-    </fields>
-    <fields>
         <label><!-- Quantity --></label>
         <name>Quantity__c</name>
     </fields>

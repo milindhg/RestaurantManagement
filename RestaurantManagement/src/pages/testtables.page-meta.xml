@@ -11,6 +11,11 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>1</majorNumber>
+        <minorNumber>18</minorNumber>
+        <namespace>al</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
         <minorNumber>8</minorNumber>
         <namespace>sf_chttr_apps</namespace>
     </packageVersions>

@@ -102,6 +102,7 @@
     </fields>
     <fields>
         <fullName>Price__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Price</label>
         <precision>18</precision>

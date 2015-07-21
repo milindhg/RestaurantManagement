@@ -148,20 +148,29 @@ global with sharing class Bill{
     }
     
      public PageReference paidStatusUpdate(){
-         Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE ID=:foodOrderId];
+         Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
          foodOrder.status__c = PAID;
          update foodOrder;
+         //, TotalPrice__c, Quantity__c, Tax__c, ItemName__c
+         Bill__c bill = new Bill__c();  
+         bill.TableNumber__c = foodOrder.TableNumber__c;
+         bill.Price__c = foodOrder.TotalPrice__c;
+         bill.Tax__c = foodOrder.Tax__c;
+         insert bill;
          
           for(DisplayCart displayCart: orderItemsList){
             
             BIll_Item__c billItem= new BIll_Item__c();
-            billItem.ItemName__c= displayCart.Name;
+            billItem.Name = displayCart.Name;
             billItem.Quantity__c = displayCart.quantity;
             billItem.TotalPrice__c = displayCart.totalPrice;
-//            billItem.Tax__c = 34;
-            upsert billItem;             
+            billItem.Bill__c = bill.Id;
+//            billItem.Tax__c = 3.4// TODO;
+            insert billItem;   
+            
+                      
        }     
-         
+       
          PageReference pageRef = Page.MenuCart;
          pageRef.setRedirect(true);
          return pageRef;

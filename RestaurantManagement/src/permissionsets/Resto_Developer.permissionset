@@ -394,6 +394,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Bill__c.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Bill__c.TableNumber__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1744,6 +1749,10 @@
     </tabSettings>
     <tabSettings>
         <tab>MenuCart_TestPage</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>MenuCarts_Modal</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

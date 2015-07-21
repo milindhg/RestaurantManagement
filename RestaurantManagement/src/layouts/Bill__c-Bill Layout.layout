@@ -23,7 +23,7 @@
                 <field>Price__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Location__c</field>
             </layoutItems>
             <layoutItems>

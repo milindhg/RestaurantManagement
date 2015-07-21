@@ -16,12 +16,32 @@ margin-bottom: 10px;
 background: #abb1b8;
 
 }-->    
+        .tablist-left {
+    width: 25%;
+    display: inline-block;
+}
+.tablist-content {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5%;
+}
+       
+        .ui-page-theme{
+        background-color:green;
+        }
+        .ui-link,.ui-btn{
+        	background-color:green;
+        }
         .ui-input-text input, .ui-input-search input{
         min-height:20px;
         height:35px;
         margin-right:10px;
         }
-
+		
+         .ui-link,.ui-btn{
+        background-color:green;
+        }
 		
         
         #billed_items{
@@ -372,11 +392,13 @@ background: #abb1b8;
         init();
         }
     function init(){
-        
+        alert('init');
          var list = document.getElementsByClassName('sliderex');
         //alert(list.length);
+        //alert(list.length);
         for(var i=0; i< list.length;i++){
-            //alert(list[i].id);
+            
+            // alert(list[i].id);
             if(list[i].style.display == 'block'){
                 //alert('hidden');
                  list[i].classList.add('swiper-slide');
@@ -384,9 +406,11 @@ background: #abb1b8;
            
             }
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-             document.getElementById('place_order').style.width='120%';
+            document.getElementById('place_order').style.width='120%';
             document.getElementById('reset_order').style.width='120%';
-           
+           	document.getElementById('cart_container').style.width='80%';
+            document.getElementById('menu_area').style.width='65%';
+            document.getElementById('cart_items').style.width='35%';
   			var grp =     document.getElementsByClassName('list-group');
   			for(i=0; i<grp.length; i++) {
     		grp[i].style.width =    '200px';
@@ -400,8 +424,15 @@ background: #abb1b8;
         spaceBetween: 40
         });
 }else{
+    var grp =     document.getElementsByClassName('list-group');
+  			for(i=0; i<grp.length; i++) {
+    		grp[i].style.width =    '100%';
+  		}
     document.getElementById('place_order').style.width='100%';
     document.getElementById('reset_order').style.width='100%';
+    document.getElementById('cart_container').style.width='100%';
+    document.getElementById('menu_area').style.width='75%';
+    document.getElementById('cart_items').style.width='25%';
     var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         slidesPerView: 3,
@@ -498,12 +529,13 @@ background: #abb1b8;
     </script>
     <body onLoad="init();">
         <apex:pageBlock >
+           
             <div data-role="page" id="pageone" style="padding:0px;" >
                 <div data-role="header">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
                     </h1>
                 </div>
-                <div class="row" style="width:65%;float:left;padding:0px;margin:0px;">
+                <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:auto;margin-right:auto;">
                         <h2>
                             Menu
@@ -548,6 +580,13 @@ background: #abb1b8;
     </div>-->
                     <div class="col-xs-12" style="padding:0px;">
                         <div id="tabs" data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
+                                                 <div class="row" style="margin:2px 0 0 30px;">
+                                <img width="20px" style="margin-left:10px;" src="/resource/1436389015000/veg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Veg</span>
+                                <img width="20px" style="margin-left:10px;" src="/resource/1436388987000/vegan" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Vegan</span>
+                                <img width="20px" style="margin-left:10px;" src="/resource/1436389036000/nonveg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Non-Veg</span>
+                                <img width="20px" height="17px;" style="margin-left:10px;background-color:white;" src="/resource/1436987448000/star1" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Most popular</span>
+                                <p style="margin-left:10px;font-family:'Tangerine',cursive;font-weight:bold;color:maroon;"> Tap image for more details </p>
+                              </div>
                             <div data-role="navbar"  data-iconpos="bottom" data-mini="true" style="width:100%;margin-left:auto;margin-right:auto;">
                                 <ul>
                                     <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
@@ -555,30 +594,36 @@ background: #abb1b8;
                                     <li><a href="#three" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false"  id="desTab">Dessert</a></li>
                                 </ul>
                             </div>
-                            <div class="row" style="margin:2px 0 0 30px;">
-                                <img width="20px" style="margin-left:10px;" src="/resource/1436389015000/veg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Veg</span>
-                                <img width="20px" style="margin-left:10px;" src="/resource/1436388987000/vegan" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Vegan</span>
-                                <img width="20px" style="margin-left:10px;" src="/resource/1436389036000/nonveg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Non-Veg</span>
-                                <img width="20px" height="17px;" style="margin-left:10px;background-color:white;" src="/resource/1436987448000/star1" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Most popular</span>
-                                <p style="margin-left:10px;font-family:'Tangerine',cursive;font-weight:bold;color:maroon;"> Tap image for more details </p>
-                              </div>
-
+      
+							
                             <div id="one" class="container" style="clear:left;background-color:white;width:100%">
-                               
-                                        
+                                <div data-role="navbar">
+    <ul>
+        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Vegans" reRender="entree_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
+            			<apex:param name="type" value="Vegan"/>
+            		   </apex:commandButton></apex:form></li>
+      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
+        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Vegetarian" rerender="entree_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
+            			<apex:param name="type" value="Vegetarian"/>		
+            		    </apex:commandButton></apex:form></li>
+        <li><apex:form ><apex:commandButton action="{!getItemsByType}" value="Non Vegetarian" rerender="entree_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
+            		   <apex:param name="type" value="Non-Vegetarian"/>
+            		   </apex:commandButton></apex:form></li>
+    </ul>
+                                   
+  </div> 
+                                <apex:form id="entree_list">
+                                    <script type="text/javascript">
+                                    init();
+                                    </script>
                                 <div class="row">
                                     <div class="swiper-container">
                                    <div class="swiper-wrapper" >
                                     <apex:repeat value="{! MenuItems}" id="Menu_Items" var="item">
-                                         
-                                       
-                                        
+
                                             <!--<div class="swiper-slide" style="">-->
                                                 <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;">
-                                                    
-                                           
-                                               
-                                                    
+
                                             <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
                                                  
                                                 <div class="panel panel-default" >
@@ -643,13 +688,25 @@ background: #abb1b8;
                                         </div>
                                     </div>
                                 </div>  <!-- row -->
-
+                              </apex:form>
                             </div>
-                            <div id="item_desc" data-role="popup" class="ui-content" >
-                                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-                            </div>
+                           
                             <div id="two" class="container" style="clear:left;background-color:white;width:90%">
-                              <div class="row">
+                                 <div data-role="navbar">
+    <ul>
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegans" reRender="#entree_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
+            			<apex:param name="type" value="Vegan"/>
+            		   </apex:commandButton></apex:form></li>
+      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegetarian" rerender="#entree_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
+            			<apex:param name="type" value="Veg"/>		
+            		    </apex:commandButton></apex:form></li>
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Non Vegetarian" rerender="#entree_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
+            		   <apex:param name="type" value="Non-Veg"/>
+            		   </apex:commandButton></apex:form></li>
+    </ul>
+  </div>           
+                              <div class="row" >
                                     <div class="swiper-container">
                                    <div class="swiper-wrapper" >
                                     <apex:repeat value="{! MenuItems}" id="Menu_Items_entree" var="item">
@@ -727,7 +784,21 @@ background: #abb1b8;
                                 </div>  <!-- row -->
                             </div>
                             <div id="three" class="container" style="clear:left;background-color:white;width:90%">
-                                <div class="row">
+                                 <div data-role="navbar">
+    <ul>
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegans" reRender="#dessert_list" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;">
+            			<apex:param name="type" value="Vegan"/>
+            		   </apex:commandButton></apex:form></li>
+      <!--<li><a href="#one" data-ajax="false" style="background-color:#86B404;color:white;text-shadow:none;">Vegan <img src="/resource/1436389015000/vegan" style="width:20px;"/></a></li>-->
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Vegetarian" rerender="#dessert_list" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;">
+            			<apex:param name="type" value="Veg"/>		
+            		    </apex:commandButton></apex:form></li>
+        <li><apex:form ><apex:commandButton action="{!getMenuItems}" value="Non Vegetarian" rerender="#dessert_list" style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;">
+            		   <apex:param name="type" value="Non-Veg"/>
+            		   </apex:commandButton></apex:form></li>
+    </ul>
+  </div>           
+                                <div class="row" id="dessert_list">
                                     <div class="swiper-container">
                                    <div class="swiper-wrapper" >
                                     <apex:repeat value="{! MenuItems}" id="Menu_Items_dessert" var="item">
@@ -797,9 +868,7 @@ background: #abb1b8;
                                             
                                                </div>
                                             <!--</div>-->
-                                      </div>
-                                            
-                                             
+                                      </div>         
                                     </apex:repeat> 
                                         </div>
                                     </div>
@@ -808,14 +877,14 @@ background: #abb1b8;
                         </div>
                     </div>
                 </div>
-                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:35%;background-color:white;padding-top:0px;font-size:14px;margin:0px;padding:0px;">
+                <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:25%;background-color:white;padding-top:0px;font-size:14px;margin:0px;padding:0px;">
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:5px;margin-top:0px;">
                         <h2>
                             Order
                         </h2>  
                     </div>
                     <div style="background-color:white;opacity:0.9;height:80%;">
-                        <div class="container" style="width:80%;padding:0px;margin:5px;">
+                        <div class="container" style="padding:0px;margin:5px;" id="cart_container">
                             
                         <!-- Placeholder for div - bill_items pageblock -->
                 <apex:pageBlock id="billed_items" title="Billed Items">
@@ -937,7 +1006,8 @@ background: #abb1b8;
                         </div> 
                     </div>
                 </div>
-            </div>  
+            </div> 
+                
         </apex:pageBlock>
     </body>
     <script type="text/javascript">

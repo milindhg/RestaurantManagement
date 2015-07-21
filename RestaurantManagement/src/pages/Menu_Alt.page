@@ -255,6 +255,38 @@ background: #abb1b8;
         height:20px;
         }
         
+        #headers{
+        position:fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        border: none;
+        z-index: 550; }
+        
+        #cart_items{
+        position:fixed;
+        margin-top:35px;
+        right: 0;
+        z-index: 100;
+        }
+
+        #fixedslider{
+        position:fixed;
+        top: 35px;
+        width:1000px;
+  	    height:200px;
+        z-index: 5;
+        }
+        
+        #menuscroll{
+        position:fixed;
+     	margin-top:375px;
+        width:1000px;
+        height:400px;
+        overflow-x: scroll;
+        
+        }
+               
         #menu_link, #view_cart_link{
         text-align:left;
         background-image:none;
@@ -267,6 +299,7 @@ background: #abb1b8;
         padding:5px;
         margin:0px;
         }
+        
         
         .ui-input-text{
         margin:0px;
@@ -375,6 +408,7 @@ background: #abb1b8;
    
     });
     
+        
     function AddOrder(event,name,table,location,price){
         
         
@@ -431,12 +465,13 @@ background: #abb1b8;
     <body onLoad="init();">
         <apex:pageBlock >
             <div data-role="page" id="pageone" >
-                <div data-role="header">
+               <div id="headers" data-role="header" >
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
                     </h1>
                 </div>
-                <div class="row" style="width:70%;float:left;padding:0px;margin-left:5px;">
-                    <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;">
+                <div class="row" style="width:70%;float:left;padding:0px;margin-left:5px;" >
+                   <div id="fixedslider">
+                      <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;">
                         <h2>
                             Menu
                         </h2>  
@@ -462,6 +497,7 @@ background: #abb1b8;
                             </apex:repeat>
                         </ul>
                     </div>
+                </div>
                     <!-- <div class="swiper-container">
         <div class="swiper-wrapper" >
             <div class="swiper-slide">Slide 1</div>
@@ -478,9 +514,11 @@ background: #abb1b8;
         <!-- Add Pagination -->
        <!-- <div class="swiper-pagination"></div>
     </div>-->
-                    <div class="col-xs-12" style="padding:0px;">
+        
+         <div class="col-xs-12" style="padding:0px;">
                         <div id="tabs" data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
-                            <div data-role="navbar"  data-iconpos="bottom" data-mini="true">
+						<div style="position:fixed;width:1000px;margin-top:275px;height:400px;" >
+                              <div data-role="navbar"  data-iconpos="bottom" data-mini="true" id="navbar" >
                                 <ul>
                                     <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
                                     <li><a href="#two" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" id="entTab" >Entree</a></li>
@@ -493,6 +531,10 @@ background: #abb1b8;
                                   <img width="20px" style="margin-left:40px;" src="/resource/1436389036000/nonveg" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Non-Veg</span>
                                     <img width="20px" height="17px;" style="margin-left:40px;background-color:white;" src="/resource/1436987448000/star1" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;">-Most popular</span>
                               </div>
+     
+    
+                            </div>
+                            <div id="menuscroll">
                             <div id="one" class="container" style="clear:left;background-color:white;width:90%">
                                
                                         
@@ -738,7 +780,7 @@ background: #abb1b8;
                             </div>
                         </div>
                     </div>
-                </div>
+                    </div> </div>
                 <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;width:30%;background-color:white;padding-top:0px;font-size:14px;">
                     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;margin-left:10px;padding-left:10px;">
                         <h2>

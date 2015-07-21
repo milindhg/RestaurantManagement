@@ -18,4 +18,5 @@
     <tab>Chef_Page</tab>
     <tab>MenuCart_TestPage</tab>
     <tab>BIll_Item__c</tab>
+    <tab>MenuCarts_Modal</tab>
 </CustomApplication>

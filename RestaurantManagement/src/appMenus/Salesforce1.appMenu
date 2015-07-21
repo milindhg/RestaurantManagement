@@ -64,4 +64,8 @@
         <name>MenuCart_TestPage</name>
         <type>CustomTab</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>MenuCarts_Modal</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>
