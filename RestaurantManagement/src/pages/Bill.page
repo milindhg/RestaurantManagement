@@ -96,9 +96,9 @@
           </head>
                 
                 <body>
-      <apex:pageBlock >
-        <div class="container">
-     <div class="row billed_items">
+      <apex:pageBlock id="total">
+     
+   
                                                                 <!-- Placeholder for div - billed_items -->
                                                                 <apex:form >
                                                                 <apex:pageBlock title="Items">
@@ -123,22 +123,35 @@
                                                               
                                                               <apex:pageBlock id="current_bill">
                                                               <div style="float:left;width:100%">
-                                                                <div style="float:left;width:70%">
+                                                               
+                                                                  <!--<div style="float:left;width:70%">
                                                                     <apex:outputLabel value="Taxes" ></apex:outputLabel>
+                                                                </div>-->
+                                                                  
+                                                                  <div style="float:left;width:70%">
+                                                                <apex:outputLabel value="Tip" ></apex:outputLabel>
                                                                 </div>
+                                                                  
                                                                 <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!FoodOrder.Tax__c}"></apex:outputText>                                                    
+                                                                    <apex:inputTextarea cols="4" value="{!tip}" >
+                                                                    </apex:inputTextarea>       
+                                                                     <apex:commandButton action="{!inserttip}" value="Check Total" reRender="total">
+                   													  </apex:commandButton>
                                                                 </div>
+                                                                  
+                                                                  
+                                                                <!--<div style="float:left;width:30%">
+                                                                    <apex:outputText value="{!FoodOrder.Tax__c}"></apex:outputText>                                                    
+                                                                </div>-->
                                                                 </div>
                                                                 <div style="float:left;width:100%">
                                                                 <div style="float:left;width:70%" >
                                                                     <apex:outputLabel value="Total Amount" ></apex:outputLabel>
                                                                 </div>
                                                                 <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!FoodOrder.TotalPrice__c}" ></apex:outputText>                                          
+                                                                    <apex:outputText value="{!FoodOrder.FinalPrice__c}" ></apex:outputText>                                          
                                                                 </div> 
-                                                                     
-                                                                 </div>
+                                                                  </div>                                                                
                                                                  </apex:pageBlock>
                                                               
                                                               
@@ -156,7 +169,7 @@
                                                                 </apex:pageBlock>
                                                                 </apex:form>                    
     
-                                                        </div></div></apex:pageBlock>
+                                                     </apex:pageBlock>
         
         <apex:form >
                     <apex:pageBlock id="clean">
@@ -214,5 +227,5 @@
                 </apex:form>
             
         
-        
+                    
         </body></apex:page>

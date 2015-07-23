@@ -13,6 +13,10 @@
         <name>DeliveryTime__c</name>
     </fields>
     <fields>
+        <label><!-- FinalPrice --></label>
+        <name>FinalPrice__c</name>
+    </fields>
+    <fields>
         <label><!-- Order Date --></label>
         <name>OrderDateTime__c</name>
     </fields>
@@ -63,6 +67,10 @@
         <help><!-- Tax on Placed Order --></help>
         <label><!-- Tax --></label>
         <name>Tax__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tip --></label>
+        <name>Tip__c</name>
     </fields>
     <fields>
         <help><!-- This is Expected Bill Amount to charge Customer if all order items are fulfilled. --></help>

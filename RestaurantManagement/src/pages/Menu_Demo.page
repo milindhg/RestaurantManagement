@@ -2,17 +2,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=8"/>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
     <style type="text/css">
-        .ui-panel-animate.ui-panel-open.ui-panel-position-left.ui-panel-display-overlay, 
-        .ui-panel-animate.ui-panel-open.ui-panel-position-left.ui-panel-display-push{
-        	width:320px;
-        	background-color:white;
-        }
         
-        .ui-listview>li.ui-first-child, .ui-listview>li.ui-first-child>a.ui-btn{
-        background-color:white;
-        color:maroon;
-        text-shadow:none;
-        }
         .orderitem{
             height:30px;
         }
@@ -512,9 +502,9 @@
             document.getElementById('stspecial').style.width='65%';
             document.getElementById('stspecial').style.marginTop='18px';
             document.getElementById('cart_items').style.marginTop='18px';
-            document.getElementById('legends').style.marginTop='80px';
-            document.getElementById('global_nav').style.marginTop='110px';
-            document.getElementById('stmenu').style.marginTop='160px';
+            document.getElementById('legends').style.marginTop='230px';
+            document.getElementById('global_nav').style.marginTop='260px';
+            document.getElementById('stmenu').style.marginTop='308px';
             
             var grp =     document.getElementsByClassName('list-group');
             for(i=0; i<grp.length; i++) {
@@ -524,7 +514,7 @@
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 1,
-                slidesPerColumn: 3,
+                slidesPerColumn: 2,
                 paginationClickable: true,
                 spaceBetween: 20
             });
@@ -543,9 +533,9 @@
             document.getElementById('stspecial').style.width='75%';
             document.getElementById('stspecial').style.marginTop='35px';
             document.getElementById('cart_items').style.marginTop='35px';
-            document.getElementById('legends').style.marginTop='70px';
-            document.getElementById('global_nav').style.marginTop='90px';
-            document.getElementById('stmenu').style.marginTop='140px';
+            document.getElementById('legends').style.marginTop='210px';
+            document.getElementById('global_nav').style.marginTop='240px';
+            document.getElementById('stmenu').style.marginTop='288px';
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 3,
@@ -710,20 +700,15 @@
                 <div data-role="header" style="position:fixed;top:0;left:0;right:0;z-index:100;">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
                     </h1>
-                   <a href="#nav-panel" data-icon="bars" style="margin:0px;position:absolute;left:0;top:0;" >View Deals</a>
                 </div>
-                <div role="main" class="ui-content jqm-content jqm-fullwidth" style="padding:0px;margin-left:0px;">
-
                 <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
-                    <div id="stspecial" style="margin-left:0px;padding:0px;">
-                        <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:0px;margin-right:auto;margin-top:0px;margin-top:0px;padding:0px;">
+                    <div id="stspecial">
+                        <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;margin-top:0px;padding:0px;">
                             <h2>
                                 Menu
                             </h2>  
-                            
                         </div>
-  
-                       <!-- <div id="foo" style="margin-top:1px;margin-bottom:0px;">
+                        <div id="foo" style="margin-top:1px;margin-bottom:0px;">
                             <div style="background-color:maroon;background-size:cover;color:white;text-shadow:none;margin-bottom:0px;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;padding:0px;">
                                 <h2 style="font-size:20px;">
                                     Special Offers
@@ -743,9 +728,8 @@
                                         </div></li>
                                 </apex:repeat>
                             </ul>
-                        </div>-->
-                    </div>
-                    <div class="col-xs-12" style="padding:0px;margin-left:0px;">
+                        </div></div>
+                    <div class="col-xs-12" style="padding:0px;">
                         <div id="tabs" data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
                             <div id="legends" style="position:fixed;z-index:990">
                                 <div class="row" style="margin:2px 0 0 30px;">
@@ -755,14 +739,14 @@
                                     <img width="20px" height="15px;" style="margin-left:10px;background-color:white;float:left;" src="/resource/1436987448000/star1" /><span style="font-family:'Tangerine',cursive;font-weight:bold;color:maroon;margin-left:2px;float:left;">-Most popular</span>
                                     <p style="margin-left:10px;font-family:'Tangerine',cursive;font-weight:bold;color:maroon;float:left;"> Tap image for more details </p>
                                 </div></div>
-                            <div data-role="navbar"  data-iconpos="bottom" id="global_nav" data-mini="true" style="height:20px;margin-left:0px;margin-right:auto;position:fixed;z-index:1000">
+                            <div data-role="navbar"  data-iconpos="bottom" id="global_nav" data-mini="true" style="height:20px;margin-left:auto;margin-right:auto;position:fixed;z-index:1000">
                                 <ul>
                                     <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
                                     <li><a href="#two" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" id="entTab" >Entree</a></li>
                                     <li><a href="#three" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false"  id="desTab">Dessert</a></li>
                                 </ul>
                             </div>
-                            <div id="stmenu" style="left:0;height:100%;overflow:scroll;">
+                            <div id="stmenu" style="left:0;height:60%;overflow:scroll;">
                                 <div id="one" class="container" style="clear:left;background-color:white;width:100%;">
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
@@ -1482,36 +1466,14 @@
         </div>
     </div>
 </div>  <!-- row -->
-
-</div>
 </div>
 </div>
 </div> 
 </div>
 </div>
 </div>
- <div data-role="panel" data-display="push" data-theme="b" id="nav-panel">
-        <ul data-role="listview">
-            <li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-               <apex:repeat value="{!offers}" id="offers" var="offer">
-                                    <li style="width:300px;height:110px;margin-left:10px;background-color:white;">
-                                        <div class="offerimage" style="width:250px;position:relative;background-image:url({!offer.imgurl});">
-                                            <div id="discount" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:18px;color:black;font-weight:bold;">
-                                                <p style="float:left;padding-right:10px;opacity:1;"></p>
-                                                <p id="discount_price" style="float:left;padding-right:10px;padding-left:10px;" >{!offer.discount}% {!offer.description}</p>
-                                            </div>
-                                            <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;">
-                                                <apex:outputText value="{!offer.name}" id="item_name" style="color:White;font-weight:bold;font-size:20px;" />
-                                            </div>  
-                                        </div></li>
-                                </apex:repeat>
-               
-        </ul>
-    </div>
-<div data-role="panel" data-display="push" data-theme="b" id="cart-panel" data-position="right">
-<ul data-role="listview">
-<li data-icon="delete"><a href="#" data-rel="close">Close menu</a></li>
-<li><div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;background-color:white;padding-top:0px;font-size:14px;margin-top:35px;padding:0px;">
+
+<div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;background-color:white;padding-top:0px;font-size:14px;margin-top:35px;padding:0px;">
     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;margin-left:5px;">
         <h2>
             Order
@@ -1639,9 +1601,6 @@
             
         </div> 
     </div>
-</div>
-</li>
-</ul>
 </div>
 </div> 
 

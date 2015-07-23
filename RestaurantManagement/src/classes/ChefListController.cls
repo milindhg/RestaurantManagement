@@ -79,9 +79,15 @@ global with sharing class ChefListController{
     
     public Decimal estimateDelivery(){
         Integer tableNo = 1;
-        Decimal curr_item_time = 0;
+        Integer count = 0;
+        Integer MIN_VALUE = -100;
+        Integer max_time = MIN_VALUE;
+        Integer total_time = 0;
+        Integer curr_item_time = 0;
+        Integer prep_time = 0;
         Boolean flag = false;
-        Decimal est_del_time = 0;
+        Integer est_del_time = 0;
+        
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
         
@@ -94,20 +100,41 @@ global with sharing class ChefListController{
                                      FROM   Order_Item__c
                                      WHERE  Status__c = 'New'
                                      AND    Table_Number__c = :tableNo];
+                                     
+        Chef__c chef = [SELECT Total_Chefs__c
+                        FROM Chef__c
+                        WHERE Location__c = 'Ohio'];                             
+                                     
+        Integer total_chefs = (Integer)chef.Total_Chefs__c;
+        
+        for(Order_Item__c o : queue){
+           count++;
+           prep_time = (Integer) o.Item_Prep_Time__c;
+           if(max_time < prep_time )
+               max_time = prep_time;
+           
+           if(Math.mod(count, total_chefs) == 0){
+              total_time+=max_time;
+              max_time = MIN_VALUE;
+           }   
+        }
+        
+        total_time+=max_time;                           
+                                     
+        for(String it_type : item_type){
+           for(Order_Item__c it : items){
+               if(it.Type__c == it_type){
+                  prep_time = (Integer) it.Item_Prep_Time__c;
+                  curr_item_time = prep_time;
+                  flag = true;
+                  break;
+                }
+            }
+            if(flag)
+              break;
+        }
                                          
-         /*for(String it_type : item_type){
-             for(Order_Item__c it : items){
-                 if(it.Type__c == it_type){
-                     curr_item_time = it.Item_Prep_Time__c;
-                     flag = true;
-                     break;
-                 }
-              }
-             if(flag)
-               break;
-          }*/
-                                         
-        //est_del_time = (Decimal)queue[0].get('sum')/noOfChefs + curr_item_time;
+        est_del_time = total_time + curr_item_time;
         return est_del_time;
         
     }

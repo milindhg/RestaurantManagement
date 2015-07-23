@@ -22,6 +22,10 @@
                 <behavior>Edit</behavior>
                 <field>Food_Item__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Offer_Image__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

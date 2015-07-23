@@ -65,6 +65,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>FinalPrice__c</fullName>
+        <externalId>false</externalId>
+        <formula>TotalPrice__c +  Tip__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FinalPrice</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>OrderDateTime__c</fullName>
         <externalId>false</externalId>
         <label>Order Date</label>
@@ -165,6 +177,17 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Tip__c</fullName>
+        <externalId>false</externalId>
+        <label>Tip</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>TotalPriceEstimate__c</fullName>

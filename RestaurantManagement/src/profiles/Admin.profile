@@ -970,6 +970,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Food_Order__c.FinalPrice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Food_Order__c.OrderDateTime__c</field>
         <readable>true</readable>
@@ -1002,6 +1007,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Food_Order__c.Tax__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Food_Order__c.Tip__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1162,6 +1172,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Offers__c.Food_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Offers__c.Offer_Image__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2129,6 +2144,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>Menu_Alt</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Menu_Demo</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

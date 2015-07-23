@@ -3,6 +3,16 @@ global class WaiterListController{
     public static final String DELIVERED = 'Delivered';
     public static final String PICKED_UP = 'Picked Up'; 
     
+    WebService static List<Order_Item__c> handleRefreshPage(){
+        List<Order_Item__c> oitems = [SELECT Table_Number__c, Type__c, Delete_Status__c,
+                                             Food_Item_Name__c, Quantity__c, Food_Order__c
+                                      FROM   Order_Item__c
+                                      WHERE  Status__c = 'Ready'
+                                      AND    Delete_Status__c = 'No'
+                                      ORDER BY CreatedDate];
+        return oitems;
+    }
+    
     WebService static String updateOrderPickUp(String orderItemId,String foodOrderId){
         Order_Item__c orderItem = [SELECT status__c, Picked_Up_Time__c FROM Order_Item__c WHERE Id= :orderItemId];
         orderItem.status__c = PICKED_UP;

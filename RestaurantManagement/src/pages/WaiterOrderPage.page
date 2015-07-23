@@ -29,6 +29,28 @@
             $('#'+orderItemId).remove();
         }
         
+        function getOrdersOnRefresh(){
+           var result = sforce.apex.execute("WaiterListController",
+                                             "handleRefreshPage",
+                                             {});
+                                             
+           for(i=0;i<result.length;i++){
+               $('#tbody').append(
+                '<tr class=\"fontStyleTr border\" id=\"' + result[i].Id + '\"><td class=\"text-center border\">' + result[i].Table_Number__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Type__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Food_Item_Name__c + 
+                
+                '</td><td class=\"border text-center\">' + result[i].Quantity__c + 
+                
+                '</td><td class=\"border text-center\">' +
+                      '<button id=\"pickUpBtn\" class=\"btn\" onClick=\"pickupOrder(\'' +
+                             result[i].Id + '\',\'' +
+                             result[i].Food_Order__c + '\');\">Pick Up</button></td></tr>');  
+           }                                
+        }
+        
         (function($){
          $(document).ready(function() {
           
@@ -66,7 +88,7 @@
         window.onbeforeunload = disconnect;
     </script>
     
-    <body>
+    <body onLoad="getOrdersOnRefresh();">
         <div class="container">
             <div class="page-header" id="pageHeader">
                 Intern Cafe

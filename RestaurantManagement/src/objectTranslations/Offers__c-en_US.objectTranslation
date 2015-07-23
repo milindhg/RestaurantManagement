@@ -21,5 +21,9 @@
         <name>Food_Item__c</name>
         <relationshipLabel><!-- Offers --></relationshipLabel>
     </fields>
+    <fields>
+        <label><!-- Offer Image --></label>
+        <name>Offer_Image__c</name>
+    </fields>
     <startsWith>Vowel</startsWith>
 </CustomObjectTranslation>

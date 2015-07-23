@@ -6,8 +6,8 @@ global with sharing class Bill{
     public String SelectedOAE;
     public String likes;
     public String unlikes;
-   
-    
+    public String tip;
+  
     public String getSelectedFQ() {
         return SelectedFQ;
     }
@@ -15,7 +15,14 @@ global with sharing class Bill{
     public void setSelectedFQ(String recType) {
         this.SelectedFQ= recType;
     }
-    
+
+	 public String gettip() {
+        return tip;
+    }
+     
+    public void settip(String recType) {
+        this.tip= recType;
+    }    
     
     public String getSelectedService() {
         return SelectedService;
@@ -50,9 +57,7 @@ global with sharing class Bill{
     public void setunlikes(String recType) {
         this.unlikes= recType;
     }
-   
-   
-    
+     
     
     public Bill(){  }
     public List<DisplayCart> orderItemsList;
@@ -62,7 +67,7 @@ global with sharing class Bill{
     Food_Order__c fo = getFoodOrder();
     
     public Food_Order__c getFoodOrder(){
-    return [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
+    return [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.FinalPrice__c,f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
                         f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c,
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
@@ -129,6 +134,19 @@ global with sharing class Bill{
         return orderItemsList;
     }
     
+    public void inserttip()
+    {
+         Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, FinalPrice__c,TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
+         if(String.isBlank(tip))
+         { System.Debug('tip'+'NULL');
+             foodOrder.Tip__c=0;}
+        else{
+         foodOrder.Tip__c =Decimal.valueOf(tip);}
+         update foodOrder;
+         System.Debug('tip'+tip);
+         System.debug('price and tip'+foodOrder.FinalPrice__c);
+    }
+    
      public void insertfeedback()
     {
     Feedback__c fb = new Feedback__c();
@@ -138,9 +156,7 @@ global with sharing class Bill{
     fb.What_I_liked__c=likes;
     fb.What_must_have_been_there__c=unlikes;
     insert fb;
-        
-     
-     }
+    }
     
      public PageReference paidStatusUpdate(){
          Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];

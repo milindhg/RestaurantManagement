@@ -137,7 +137,9 @@
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
         <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+        <apex:includeScript value="{!$Resource.cometd}"/>
         <apex:includeScript value="{!$Resource.json2}"/>
+        <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
         <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
         
@@ -146,20 +148,29 @@
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 
 <script type="text/javascript">
     sforce.connection.sessionId = "{!$Api.Session_ID}";
     $j = jQuery.noConflict();
     
-
+    jQuery(document).ready(function() {
+        
+        sayHello();
+        jQuery.cometd.init({
+            url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+        });
+        
+        jQuery.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
+            alert('Hello');
+            $j('#bill_items').load(location.href + '#bill_items');
+        });
+    });
+    
     
     function sayHello(){
         }
 
-var jsonObj=null;
-
-//function updateChanges(jsonObj);
 
 </script>        
         
@@ -173,11 +184,10 @@ var jsonObj=null;
 
             <div class="container">
             
-<a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
-
 <div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
+                <apex:outputPanel id="modal_content">
                     <apex:form >
                         <div class="modal-header">
                              
@@ -189,30 +199,37 @@ var jsonObj=null;
                             </h4>
                         </div>
                         <div class="modal-body">
-                <apex:pageBlock id="billed_items_modal" title="Billed Items">
-                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                    <apex:pageBlock title="Placed Order">
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="list-group">
                                             <div class="list-group-item">
+                                                <div>
                                                 <a href="#" class="list-group-item active">
                                                     <span class="glyphicon">{!pitem.quantity}</span> 
-                                                        {!pitem.name} 
+                                                        {!pitem.name}
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
+                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
+                                                            <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
+                                                        </button>
+                                                    </apex:outputPanel>
                                                     <span class="badge">{!pitem.totalPrice}</span>
                                                 </a>
-                                                <apex:outputLabel rendered="{! if(pitem.status=='Pending',true,false)}">
+                                                </div>
+                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
                                                 <div class="row">
                 				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 				                        <div class="input-group">
                                                               <span class="input-group-btn">
-                                                                  <button type="button" class="btn btn-default btn-number" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-minus"></span>
                                                                   </button>
                                                               </span>
-                                                              <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" />
+                                                              <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                               <span class="input-group-btn">
-                                                                  <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-plus"></span>
                                                                   </button>
                                                               </span>
@@ -220,34 +237,115 @@ var jsonObj=null;
                 				                        </div>
                 				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 				                        <div style="text-align: right;">
-                                                          <button type="button" style="width:inherit;" class="btn btn-primary" aria-label="Delete">
+                                                          <button type="button" style="width:inherit;" class="btn btn-primary btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
                                                             <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                           </button>
                                                         </div>
                 				                    </div>
                 			                    </div>
-                			                    </apex:outputLabel>
+                			                    </apex:outputPanel>
                                             </div>
                                         </div>
-                                        <!--<apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}"> -->
-                                            <!-- <div class="list-group" > -->
-                                                <!--    <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                                   </apex:commandButton>   
-                                                   <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                                   </apex:commandButton> 
-                                                   <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                         <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                                   </apex:commandButton> -->
-                                            <!-- </div> -->
-        
-                                        <!-- </apex:outputPanel> -->
                                     </div>
                                 </div>
                             </div>
                         </apex:repeat>
-                </apex:pageBlock>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;">
+                                    <div class="list-group-item">
+                                        <div>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Current Bill
+                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+
+                    <apex:pageBlock title="Cart">
+
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat_cart_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div>
+                                                <a href="#" class="list-group-item active">
+                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                        {!pitem.name} 
+                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <div>
+                                                    <div class="row">
+                    				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    				                        <div class="input-group">
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-minus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                                  <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-plus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                              </div>
+                    				                        </div>
+                    				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    				                        <div style="text-align: right;">
+                                                              <button type="button" style="width:inherit;" class="btn btn-primary btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                                <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                              </button>
+                                                            </div>
+                    				                    </div>
+                    			                    </div>
+                			                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;">
+                                    <div class="list-group-item">
+                                        <div>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Estimated Bill
+                                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+                
 
                 
                             
@@ -260,11 +358,12 @@ var jsonObj=null;
                                 Close
                             </button> 
 
-                            <button type="button" class="btn btn-primary btn-save">
+                            <button type="button" class="btn btn-primary btn-save" onclick="btn_save_click(this)" data-dismiss="modal" disabled="true">
                                 Save changes
                             </button>
                         </div>
                     </apex:form>
+                </apex:outputPanel>
                     </div>
                     
                 </div>
@@ -275,7 +374,7 @@ var jsonObj=null;
                 <apex:pageBlock id="billed_items" title="Billed Items">
                     <apex:form >
                         <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
-                            <button type="button" class="btn btn-primary" aria-label="Edit Items">
+                            <button type="button" class="btn btn-primary btn-edit" aria-label="Edit Items" onclick="btn_edit_click()">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             Edit Items
                             </button>
@@ -289,21 +388,6 @@ var jsonObj=null;
                                         <span class="badge">{!pitem.totalPrice}</span>
                                     </a>
                                 </div>
-                                <!-- <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}"> -->
-                                    <!-- <div class="list-group" > -->
-                                        <!--<div class="list-group-item" style="margin:0px;padding:0px;">-->
-                                           <!-- <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton>   
-                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton> 
-                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton> -->
-                                        <!--</div>-->
-                                   <!-- </div>
-                                </apex:outputPanel> -->
                             </div>
                         </apex:repeat>
                     </apex:form>
@@ -315,11 +399,13 @@ var jsonObj=null;
                     <div class="bs-example">
                         <div class="list-group">
                             <a href="#" class="list-group-item active">
-                                <span class="glyphicon">Taxes</span> 
+                                <span class="glyphicon"></span> 
+                                Taxes
                                 <span class="badge">{!FoodOrder.Tax__c}</span>
                             </a>
                             <a href="#" class="list-group-item active">
-                                <span class="glyphicon">Current Bill</span> 
+                                <span class="glyphicon"></span> 
+                                Current Bill
                                 <span class="badge">{!FoodOrder.TotalPrice__c}</span>
                             </a>
                         </div>
@@ -330,7 +416,7 @@ var jsonObj=null;
                         <!-- Placeholder for div - cart_table pageblock -->
                 <apex:pageBlock id="cart_table" title="Cart">
                     <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  billed_items_modal"/>
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content"/>
                                     
                         <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
                             <div class="bs-example">
@@ -341,27 +427,12 @@ var jsonObj=null;
                                         <span class="badge">{!pitem.totalPrice}</span>
                                     </a>
                                 </div>
-                                <apex:outputPanel style="horizontal-align:center;" >
-                                    <div class="list-group" >
-                                        <div class="list-group-item" style="margin:0px;padding:0px;">
-                                            <apex:commandButton styleClass="btn btn-primary item-actions" value="+" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton>   
-                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="-" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton> 
-                                           <apex:commandButton styleClass="btn btn-primary item-actions" value="X" action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                                 <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                           </apex:commandButton>
-                                        </div>
-                                    </div>
-                                </apex:outputPanel>
                             </div>
                         </apex:repeat>
-                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>                                        
-                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </apex:form>
@@ -373,11 +444,13 @@ var jsonObj=null;
                     <div class="bs-example">
                         <div class="list-group">
                             <a href="#" class="list-group-item active">
-                                <span class="glyphicon">Taxes</span> 
+                                <span class="glyphicon"></span> 
+                                Taxes
                                 <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
                             </a>
                             <a href="#" class="list-group-item active">
-                                <span class="glyphicon">Estimated Bill</span> 
+                                <span class="glyphicon"></span> 
+                                Estimated Bill
                                 <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
                             </a>
                         </div>
@@ -398,11 +471,13 @@ var jsonObj=null;
 <script type="text/javascript" > 
     //plugin bootstrap minus and plus
 //http://jsfiddle.net/laelitenetwork/puJ6G/
-jQuery('.btn-number').click(function(e){
-    e.preventDefault();
+//jQuery('.btn-number').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_number_click(obj){
+    //e.preventDefault();
     
-    fieldName = jQuery(this).attr('data-field');
-    type      = jQuery(this).attr('data-type');
+    fieldName = jQuery(obj).attr('data-field');
+    type      = jQuery(obj).attr('data-type');
     var input = jQuery("input[name='"+fieldName+"']");
     var currentVal = parseInt(input.val());
     if (!isNaN(currentVal)) {
@@ -412,7 +487,7 @@ jQuery('.btn-number').click(function(e){
                 input.val(currentVal - 1).change();
             } 
             if(parseInt(input.val()) == input.attr('min')) {
-                jQuery(this).attr('disabled', true);
+                jQuery(obj).attr('disabled', true);
             }
 
         } else if(type == 'plus') {
@@ -421,55 +496,102 @@ jQuery('.btn-number').click(function(e){
                 input.val(currentVal + 1).change();
             }
             if(parseInt(input.val()) == input.attr('max')) {
-                jQuery(this).attr('disabled', true);
+                jQuery(obj).attr('disabled', true);
             }
 
         }
     } else {
         input.val(0);
     }
-});
-jQuery('.input-number').focusin(function(){
-   jQuery(this).data('oldValue', jQuery(this).val());
-});
-jQuery('.input-number').change(function() {
-    console.log(this);
-    fieldName = jQuery(this).attr('name');
-    fieldName = fieldName.substring(6,fieldName.length-1);
-    minValue =  parseInt(jQuery(this).attr('min'));
-    maxValue =  parseInt(jQuery(this).attr('max'));
-    valueCurrent = parseInt(jQuery(this).val());
+}
+
+//jQuery('.input-number').focusin(function(){
+//pass the "this" object in the call to get it in obj.
+function input_number_focusin(obj){
+   jQuery(obj).data('oldValue', jQuery(obj).val());
+}
+
+//jQuery('.input-number').change(function() {
+//pass the "this" object in the call to get it in obj.
+function input_number_change(obj){
+    //setting the changed flag true to enable the save button.
+    jQuery('.btn-save').attr('disabled',false);
+    console.log(obj);
     
-    name = jQuery(this).attr('name');
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('name');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    minValue =  parseInt(jQuery(obj).attr('min'));
+    maxValue =  parseInt(jQuery(obj).attr('max'));
+    valueCurrent = parseInt(jQuery(obj).val());
+    
+    name = jQuery(obj).attr('name');
     if(valueCurrent >= minValue) {
         jQuery(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
     } else {
         alert('Sorry, the minimum value was reached');
-        jQuery(this).val(jQuery(this).data('oldValue'));
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
     }
     if(valueCurrent <= maxValue) {
         jQuery(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
     } else {
         alert('Sorry, the maximum value was reached');
-        jQuery(this).val(jQuery(this).data('oldValue'));
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
     }
-    console.log(this);
-    console.log(parseInt(jQuery(this).val()));
-    createNewChangedObj(fieldName,parseInt(jQuery(this).val()));
+    console.log(obj);
+    console.log(parseInt(jQuery(obj).val()));
+    createNewChangedObj(fieldName,parseInt(jQuery(obj).val()),'edit');
 
-});
+}
 
-function createNewChangedObj(id,newQuantity){
+function btn_delete_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    element[0].innerHTML = 'TO be Deleted!!!';
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    createNewChangedObj(fieldName,null,'delete');
+    
+}
+
+function btn_deliver_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    //element[0].innerHTML = 'TO be Deleted!!!';
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    createNewChangedObj(fieldName,null,'deliver');
+    
+}
+
+function createNewChangedObj(id,newQuantity,operation){
     var orderItemObj = new sforce.SObject("Order_Item__c");
         orderItemObj.Id = id;
-        orderItemObj.Quantity__c = parseInt(newQuantity);
+        if(operation.toLowerCase()=='edit')
+            orderItemObj.Quantity__c = parseInt(newQuantity);
+        else if(operation.toLowerCase()=='delete')
+            orderItemObj.Delete_Status__c = 'Yes';
+        else if(operation.toLowerCase()=='delete')
+            orderItemObj.Status__c = 'Delivered';
         console.log(orderItemObj);
         console.log(o);
         o.changedOrderItemsMap[id] = orderItemObj;
         console.log(o.changedOrderItemsMap);
 }
 
-jQuery(".input-number").keydown(function (e) {
+
+//jQuery(".input-number").keydown(function (e) {
+//pass the "event" object in the call to get it in e.
+function input_number_keydown(e){
         // Allow: backspace, delete, tab, escape, enter and .
         if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
              // Allow: Ctrl+A
@@ -483,7 +605,7 @@ jQuery(".input-number").keydown(function (e) {
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
-    });
+    }
 
 var OrderedItems = function (){
     console.log('OrderedItems class instantiated');
@@ -493,49 +615,45 @@ var OrderedItems = function (){
     this.convertToArray = function() {
         this.changedOrderItems = jQuery.map(this.changedOrderItemsMap, function(value, index) {
         return [value];
-            //for(key in this.changedOrderItemsMap){
-                //this.changedOrderItems.push(this.changedOrderItemsMap[key]);
-            //}
         });
     }
 }
 
 var o = new OrderedItems();
 
-jQuery('.btn-save').click(function(e){
+//jQuery('.btn-save').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_save_click(obj){
     console.log('Changes saved');
     o.origOrderedItems = {! orderItemsListSerialized};
     console.log(OrderedItems.origOrderedItems);
-    //jsonObj=JSON.stringify(serialOrderItemsList);
-    //console.log(jsonObj);
-    /*var newRecords = new Array();
-    //for(i = 0; i<o.origOrderedItems.length; i++){
-        ..var orderItemObj = new sforce.SObject("Order_Item__c");
-        orderItemObj.Id = o.origOrderedItems[i].Id;
-        //orderItemObj.Name = records[i].Name;
-        orderItemObj.Quantity__c = i+1;
-        console.log(orderItemObj);
-        newRecords.push(orderItemObj);
-    }*/
     o.convertToArray();
     console.log(o.changedOrderItems);
-    //console.log(newRecords);
     var result = sforce.connection.update(o.changedOrderItems);
     console.log(result);
-    if (!result[0].getBoolean('success')) 
+    /*if (!result[0].getBoolean('success')) 
     { 
         alert('An error occurred updating this record:\n\n' + result[0].errors.message); 
-    }
-    sayHello();
+    }*/
     /*Visualforce.remoting.Manager.invokeAction(
         //'{!$RemoteAction.Cart.updateChanges}',
         o.changedOrderItems,
         function(result, event) {
           console.log(result);
         }); */
-});
 
+    //Calling the visualforce actionFunction called sayHello 
+    //to rerender the page components given in the actionFunction tag.
+    sayHello();
+    
+    //disable the save changes button again since the changes are saved now
+    jQuery('.btn-save').attr('disabled',true);
+    
+}
 
+function btn_edit_click(){
+    sayHello();
+}
 
 </script>
     </body>

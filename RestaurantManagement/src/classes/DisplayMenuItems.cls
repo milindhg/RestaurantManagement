@@ -2,6 +2,7 @@ public class DisplayMenuItems implements Comparable{
         private Food_Item__c item;
         private Decimal pricetag;
         private String imgurl;
+        private String offerimgurl;
         private PriceBook__c book;
         private Decimal numOfTimesOrdered;
    
@@ -78,8 +79,8 @@ public class DisplayMenuItems implements Comparable{
         public boolean isSpecial{
             get{return item.Special__c;}
         }
-    	
-    	 public String spiceLevel{
+        
+         public String spiceLevel{
             get{return item.Spice_Level__c;}
         }
     
@@ -100,6 +101,27 @@ public class DisplayMenuItems implements Comparable{
             s = s.mid(0,last).replace('&amp;','&');
             imgurl = s;
             return imgurl; 
+       }
+       
+       public String getofferimgurl(){
+           
+           Id fitem_id = item.Id;
+           System.debug('Item: '+fitem_id);
+           
+           Food_Item__c fitem = [SELECT Item_Image__c
+                                 FROM Food_Item__c
+                                 WHERE Id = :fitem_id];
+                                 
+           String s = fitem.Item_Image__c+'';
+           Integer st = s.indexOf('src');
+           s = s.substring(st+5);
+           Integer last = s.indexOf('\"');
+           s = s.mid(0,last).replace('&amp;','&');
+           offerimgurl = s;
+           
+           System.debug('Offer: '+offerimgurl);
+           return offerimgurl;                       
+                                
        }
         
         // public Object diet{

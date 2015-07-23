@@ -153,6 +153,7 @@ global class MenuItemListController {
             return;
         }
         else{
+            estimateDelivery();
             Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: foodOrderId];
             fo.Status__c = 'Pending';
             update fo;
@@ -296,7 +297,7 @@ global class MenuItemListController {
         if(offerList==null){
             
             offerList = new List<DisplayOffer>();
-            for(Offers__c offer : [Select o.Id, o.Food_Item__c, o.Food_Item__r.name,o.Discount__c, o.Description__c From Offers__c o]){
+            for(Offers__c offer : [Select o.Id, Offer_Image__c, o.Food_Item__c, o.Food_Item__r.name,o.Discount__c, o.Description__c From Offers__c o]){
                 //System.debug(item.Name);
                 //System.debug(selLocation);
                 offerList.add(new DisplayOffer(offer));
@@ -375,5 +376,69 @@ global class MenuItemListController {
     public PageReference getAllItems(){
         dietType=null;
         return null;
+    }
+    
+    public Integer estimateDelivery(){
+        Integer tableNo = Integer.valueOf(Apexpages.currentpage().getparameters().get('tableid'));
+        String  location = Apexpages.currentpage().getparameters().get('reqlocation');
+        Integer count = 0;
+        Integer MIN_VALUE = -100;
+        Integer max_time = MIN_VALUE;
+        Integer total_time = 0;
+        Integer curr_item_time = 0;
+        Integer prep_time = 0;
+        Boolean flag = false;
+        Integer est_del_time = 0;
+        
+        
+        List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
+        
+        List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, Status__c
+                                     FROM   Order_Item__c
+                                     WHERE  Status__c IN ('Pending','Accepted')
+                                     ORDER BY Status__c desc, CreatedDate];
+        
+        List<Order_Item__c> items = [SELECT Name, Type__c, Item_Prep_Time__c
+                                     FROM   Order_Item__c
+                                     WHERE  Status__c = 'New'
+                                     AND    Table_Number__c = :tableNo];
+                                     
+        Chef__c chef = [SELECT Total_Chefs__c
+                        FROM Chef__c
+                        WHERE Location__c = :location];                             
+                                     
+        Integer total_chefs = (Integer)chef.Total_Chefs__c;
+        
+        for(Order_Item__c o : queue){
+           count++;
+           prep_time = (Integer) o.Item_Prep_Time__c;
+           if(max_time < prep_time )
+               max_time = prep_time;
+           
+           if(Math.mod(count, total_chefs) == 0){
+              total_time+=max_time;
+              max_time = MIN_VALUE;
+           }   
+        }
+        
+        total_time+=max_time;                           
+                                     
+        for(String it_type : item_type){
+           for(Order_Item__c it : items){
+               if(it.Type__c == it_type){
+                  prep_time = (Integer) it.Item_Prep_Time__c;
+                  curr_item_time = prep_time;
+                  flag = true;
+                  break;
+                }
+            }
+            if(flag)
+              break;
+        }
+                                         
+        est_del_time = total_time + curr_item_time;
+        System.debug('Est Del Time: '+est_del_time );
+        return est_del_time;
+        
     }
 }
