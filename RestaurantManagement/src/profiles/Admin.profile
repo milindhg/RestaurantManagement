@@ -1436,6 +1436,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Order_Item__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Order_Item__c.Picked_Up_Time__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1567,6 +1572,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.WhoId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Location__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2151,6 +2161,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>Menu_Off</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>Menu_Shek</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -2204,6 +2218,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ZMenu</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>fly_test</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

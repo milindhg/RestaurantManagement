@@ -20,6 +20,8 @@
 
     <script type="text/javascript">
         sforce.connection.sessionId = "{!$Api.Session_ID}";
+        
+        var hash = new Object();
        
         function getOrdersOnRefresh(){
            var result = sforce.apex.execute("ChefListController",
@@ -61,7 +63,7 @@
        }
         
         function ready(orderItemId){
-             //alert('Order Item Id: ' + orderItemId);
+                                              //alert('Order Item Id: ' + orderItemId);
              var result  = sforce.apex.execute("ChefListController",
                                                "itemReadyUpdate",
                                                {orderItemId
@@ -80,28 +82,46 @@
            });
         
            $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-                $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
+               var result = 10;
+                //$('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
+               
+                var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '_' + new Date().getTime();
+               //alert(oid);
+                var item_name = JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "");
+                var del_status = JSON.stringify(message.data.sobject.Delete_Status__c).replace(/\"/g, "");
+                var item_qty = parseInt(JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, ""));
+                result = updateQty(item_name, item_qty);
                 
-                $('#tbody').append(
-                '<tr class=\"fontStyleTr border\" id=\"' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+               //alert('Return Value: '+result);
                 
-                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
-                
-                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
-                
-                '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
-                
-                '</td><td id=\"orderStatus_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"border text-center\">Pending'+
-                '</td><td class=\"border text-center\">' +
-                      '<button id=\"accept_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
-                             JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\'' +
-                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Accept</button>' + 
-                             
-                '<button disabled=\"disabled\" id=\"ready_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"readyBtn\" onClick=\"ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
-                             JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\" >Ready</button>' + '</td></tr>');   
-                             
-                if(JSON.stringify(message.data.sobject.Delete_Status__c).replace(/\"/g, "") == 'Yes'){
-                   $('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
+                if(del_status == 'No'){
+                    if(result == 0){
+                      removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
+                      result = item_qty;
+                     }
+                    
+                    $('#tbody').append(
+                    '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+                    
+                    '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
+                    
+                    '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
+                    
+                    '</td><td class=\"border text-center\">' + result + 
+                    
+                    '</td><td id=\"orderStatus_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"border text-center\">Pending'+
+                    '</td><td class=\"border text-center\">' +
+                          '<button id=\"accept_' + oid + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
+                                 oid + '\',\'' +
+                                 JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Accept</button>' + 
+                                 
+                    '<button disabled=\"disabled\" id=\"ready_' + oid + '\" class=\"readyBtn\" onClick=\"ready(\''+ oid + '\');\" >Ready</button>' + '</td></tr>');   
+                 
+
+
+                  }          
+                else{
+                   removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
                 }       
             });
             
@@ -111,6 +131,66 @@
         function disconnect() {
         $.cometd.disconnect();
         }
+        
+        function updateQty(item_name, item_qty){
+            
+            var result = 0;
+            var table = $("#chef_table");
+            //alert(item_qty);
+           
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    table_no = $tds.eq(0).text(),
+                    dish_name = $tds.eq(2).text();
+                   
+                //alert('Table No: '+table_no);
+                //  alert('Dish Name: '+dish_name);
+                   
+                    var hash_qty = hash[table_no+item_name];
+                    
+                //  alert('Hash Qty: '+hash_qty);
+                    if(typeof hash_qty !== 'undefined')
+                      { hash[table_no+item_name] = item_qty;
+                        if(hash_qty < item_qty){
+                            //        alert('Excess Qty: '+ (item_qty - hash_qty));
+                          
+                          result = item_qty - hash_qty;
+                          return false;
+                         }
+                        else{
+                           result = 0;
+                           return false;
+                         }
+                      }
+                    else
+                    {//alert('In else');
+                      hash[table_no+item_name] =  item_qty;   
+                        //alert('Value: '+hash[table_no+dish_name]);  
+                      result = 0; 
+                      return false;
+                     }
+               
+            });
+            
+            return result;
+         }
+         
+         function removeOldIds(old_id){
+             
+              var table = $("#chef_table");
+        
+                table.find('tr').each(function (i){
+                row_id = $(this).attr("id");
+                
+                    //alert('Row Id: '+row_id);
+                var index = row_id.indexOf('_');
+                
+                temp_id = row_id.substring(0,index);
+                if(old_id === temp_id)
+                   $(this).remove();
+             
+                });
+          }
         
         window.onbeforeunload = disconnect;
     </script>
@@ -124,7 +204,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">
-                        <table class="border table table-hover table-bordered">
+                        <table id="chef_table" class="border table table-hover table-bordered">
                             <thead>
                                 <tr class="border fontStyleThead">
                                     <th class="borderBottom text-center" scope="col">Table Number</th>

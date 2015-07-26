@@ -195,84 +195,12 @@
                                 ×
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                Modal title
+                                Edit Order
                             </h4>
                         </div>
                         <div class="modal-body">
-                    <apex:pageBlock title="Placed Order">
-                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="list-group">
-                                            <div class="list-group-item">
-                                                <div>
-                                                <a href="#" class="list-group-item active">
-                                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                                        {!pitem.name}
-                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
-                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
-                                                            <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
-                                                        </button>
-                                                    </apex:outputPanel>
-                                                    <span class="badge">{!pitem.totalPrice}</span>
-                                                </a>
-                                                </div>
-                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
-                                                <div class="row">
-                				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                				                        <div class="input-group">
-                                                              <span class="input-group-btn">
-                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
-                                                                      <span class="glyphicon glyphicon-minus"></span>
-                                                                  </button>
-                                                              </span>
-                                                              <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
-                                                              <span class="input-group-btn">
-                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
-                                                                      <span class="glyphicon glyphicon-plus"></span>
-                                                                  </button>
-                                                              </span>
-                                                          </div>
-                				                        </div>
-                				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                				                        <div style="text-align: right;">
-                                                          <button type="button" style="width:inherit;" class="btn btn-primary btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
-                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
-                                                          </button>
-                                                        </div>
-                				                    </div>
-                			                    </div>
-                			                    </apex:outputPanel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </apex:repeat>
-                        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="list-group" style="margin: Auto 15px;">
-                                    <div class="list-group-item">
-                                        <div>
-                                            <a href="#" class="list-group-item active">
-                                                <span class="glyphicon"></span> 
-                                                Taxes
-                                                <span class="badge">{!FoodOrder.Tax__c}</span>
-                                            </a>
-                                            <a href="#" class="list-group-item active">
-                                                <span class="glyphicon"></span> 
-                                                Current Bill
-                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </apex:pageBlock>
+                            <div class="row">
+                                <div class="col-md-6">
 
                     <apex:pageBlock title="Cart">
 
@@ -290,7 +218,7 @@
                                                 </a>
                                                 </div>
                                                 <div>
-                                                    <div class="row">
+                                                    <div class="row" style="margin-top:5px;">
                     				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     				                        <div class="input-group">
                                                                   <span class="input-group-btn">
@@ -298,7 +226,7 @@
                                                                           <span class="glyphicon glyphicon-minus"></span>
                                                                       </button>
                                                                   </span>
-                                                                  <input type="text" name="quant[{! pitem.id}]" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <input type="text" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-plus"></span>
@@ -308,7 +236,7 @@
                     				                        </div>
                     				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     				                        <div style="text-align: right;">
-                                                              <button type="button" style="width:inherit;" class="btn btn-primary btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
                                                                 <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                               </button>
                                                             </div>
@@ -345,7 +273,90 @@
                         </div>
                         
                     </apex:pageBlock>
-                
+                </div>
+
+                <div class="col-md-6">
+
+                    <apex:pageBlock title="Placed Order">
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div>
+                                                <a href="#" class="list-group-item active">
+                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                        {!pitem.name}
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
+                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
+                                                            <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
+                                                        </button>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                        <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                                    </apex:outputPanel>
+                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
+                                                <div class="row" style="margin-top:5px;">
+                				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                				                        <div class="input-group">
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                                  </button>
+                                                              </span>
+                                                              <input type="text" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                                  </button>
+                                                              </span>
+                                                          </div>
+                				                        </div>
+                				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                				                        <div style="text-align: right;">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                				                    </div>
+                			                    </div>
+                			                    </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;">
+                                    <div class="list-group-item">
+                                        <div>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Current Bill
+                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+
+                </div>
+            </div>
 
                 
                             
@@ -384,7 +395,10 @@
                                 <div class="list-group">
                                     <a href="#" class="list-group-item active">
                                         <span class="glyphicon">{!pitem.quantity}</span> 
-                                            {!pitem.name} 
+                                            {!pitem.name}
+                                            <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                            </apex:outputPanel>
                                         <span class="badge">{!pitem.totalPrice}</span>
                                     </a>
                                 </div>
@@ -549,7 +563,7 @@ function btn_delete_click(obj){
     jQuery('.btn-save').attr('disabled',false);
     var element = jQuery(obj).parent().parent().parent().parent().parent();
     console.log(element[0]);
-    element[0].innerHTML = 'TO be Deleted!!!';
+    element[0].innerHTML = 'To be Deleted!!!';
     
     //get the id of the order item to be modified or deleted
     fieldName = jQuery(obj).attr('data-field');
@@ -580,7 +594,7 @@ function createNewChangedObj(id,newQuantity,operation){
             orderItemObj.Quantity__c = parseInt(newQuantity);
         else if(operation.toLowerCase()=='delete')
             orderItemObj.Delete_Status__c = 'Yes';
-        else if(operation.toLowerCase()=='delete')
+        else if(operation.toLowerCase()=='deliver')
             orderItemObj.Status__c = 'Delivered';
         console.log(orderItemObj);
         console.log(o);

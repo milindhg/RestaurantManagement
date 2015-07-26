@@ -43,6 +43,10 @@
         <name>Item_Prep_Time__c</name>
     </fields>
     <fields>
+        <label><!-- Location --></label>
+        <name>Location__c</name>
+    </fields>
+    <fields>
         <label><!-- Picked Up Time --></label>
         <name>Picked_Up_Time__c</name>
     </fields>
@@ -61,6 +65,10 @@
         <picklistValues>
             <masterLabel>Accepted</masterLabel>
             <translation><!-- Accepted --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Delivered</masterLabel>
+            <translation><!-- Delivered --></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>New</masterLabel>
@@ -95,5 +103,12 @@
         <label><!-- Type --></label>
         <name>Type__c</name>
     </fields>
+    <layouts>
+        <layout>Order Item Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
     <startsWith>Vowel</startsWith>
 </CustomObjectTranslation>

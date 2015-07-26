@@ -8,21 +8,36 @@
         	background-color:white;
         }
         
+        .btn.focus, .btn:focus, .btn:hover{
+        	color:black;
+        }
+        
+        body .bRelatedList .pbTitle h3, 
+        body .bPageBlock .pbTitle h2, body .bPageBlock .pbTitle h3, 
+        body .bSubBlock h3.lbHeader{
+        	color:black;
+        	font-size:20px;
+        	margin-top:0px;
+        }
+        
         .ui-listview>li.ui-first-child, .ui-listview>li.ui-first-child>a.ui-btn{
-        background-color:white;
-        color:maroon;
+        background-color:maroon;
+        color:white;
         text-shadow:none;
+       padding:4px;
+        margin-bottom:0px;
+        border:none;
         }
         .orderitem{
-            height:30px;
+            height:40px;
         }
         .quant_label{
-            margin-top:2px;
+            margin-top:15px;
         }
         
         #quant{
-            height:25px;
-            margin-top:1px;
+            height:30px;
+            margin-top:2px;
         }
         .ui-input-text input, .ui-input-search input{
             font-size:12px;
@@ -60,6 +75,9 @@
         
         #billed_items{
         background-color:maroon;
+        color:black;
+        font-size:15px;
+        text-shadow:none;
         }
         
         .list-group-item.active.ui-link{
@@ -112,6 +130,7 @@
         max-height: 100%;
         height: 100%;
         width:100%;
+        padding-top:5px;
         }
         
         .flip {
@@ -343,7 +362,8 @@
         background-color:maroon !important;
         color:White;
         text-shadow:none;
-        margin-top:2px;
+        margin-top:5px;
+        height:30px;
         }
         
         #showdetail{
@@ -427,6 +447,8 @@
         <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         <apex:includeScript value="{!$Resource.spineditjs}"/>
         <apex:includeScript value="{!$Resource.swiperminjs}"/>
+         <apex:includeScript value="{!$Resource.flyoffmin}"/>
+         <apex:includeScript value="{!$Resource.flyofffull}"/>
         <apex:includeScript value="{!$Resource.slidemejs}"/>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
@@ -448,6 +470,39 @@
     sforce.connection.sessionId = "{!$Api.Session_ID}";
     
     $j = jQuery.noConflict();
+    function slideDown(elem) {
+	elem.style.maxHeight = '1000px';
+	// We're using a timer to set opacity = 0 because setting max-height = 0 doesn't (completely) hide the element.
+	elem.style.opacity   = '1';
+}
+
+/**
+ * Slide element up (like jQuery's slideUp)
+ * @param  {Node} elem Element
+ * @return {[type]}      [description]
+ */
+function slideUp(elem) {
+	elem.style.maxHeight = '0';
+	once( 1, function () {
+		elem.style.opacity = '0';
+	});
+}
+
+/**
+ * Call once after timeout
+ * @param  {Number}   seconds  Number of seconds to wait
+ * @param  {Function} callback Callback function
+ */
+function once (seconds, callback) {
+	var counter = 0;
+	var time = window.setInterval( function () {
+		counter++;
+		if ( counter >= seconds ) {
+			callback();
+			window.clearInterval( time );
+		}
+	}, 400 );
+}
     
     $(document).ready(function() {
         $.cometd.init({
@@ -483,6 +538,7 @@
     }
     
     function init(){
+    
         document.getElementById('all_appetizers').style.display='block';
         document.getElementById('veg_appetizer').style.display='block';
         document.getElementById('nonveg_appetizer').style.display='block';
@@ -502,31 +558,37 @@
             
         }
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            document.getElementById('place_order').style.width='120%';
-            document.getElementById('reset_order').style.width='120%';
-            document.getElementById('cart_container').style.width='80%';
+            document.getElementById('place_order').style.width='100%';
+            document.getElementById('reset_order').style.width='100%';
+            document.getElementById('place_order').style.color='black';
+            document.getElementById('reset_order').style.color='black';
+            document.getElementById('cart_container').style.width='100%';
             document.getElementById('menu_area').style.width='100%';
             document.getElementById('stmenu').style.width='100%';
             document.getElementById('cart_items').style.width='100%';
             document.getElementById('global_nav').style.width='100%';
             document.getElementById('stspecial').style.width='100%';
             document.getElementById('stspecial').style.marginTop='18px';
-            document.getElementById('cart_items').style.marginTop='18px';
-            document.getElementById('legends').style.marginTop='80px';
-            document.getElementById('global_nav').style.marginTop='110px';
-            document.getElementById('stmenu').style.marginTop='160px';
-            
+            document.getElementById('cart_items').style.marginTop='8px';
+            document.getElementById('legends').style.marginTop='268px';
+            document.getElementById('global_nav').style.marginTop='300px';
+            document.getElementById('stmenu').style.marginTop='350px';
+            document.getElementById('one').style.paddingBottom='300px';
+            document.getElementById('two').style.paddingBottom='300px';
+            document.getElementById('three').style.paddingBottom='300px';
+            document.getElementById('open_cart').style.marginLeft='80%';
+            document.getElementById('cart_items').style.paddingBottom='100px';
             var grp =     document.getElementsByClassName('list-group');
             for(i=0; i<grp.length; i++) {
-                grp[i].style.width =    '200px';
+                grp[i].style.width =    '100%';
             }
             
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 2,
-                slidesPerColumn: 3,
+                slidesPerColumn: 2,
                 paginationClickable: true,
-                spaceBetween: 20
+                spaceBetween: 10
             });
         }else{
             var grp =     document.getElementsByClassName('list-group');
@@ -542,10 +604,15 @@
             document.getElementById('global_nav').style.width='100%';
             document.getElementById('stspecial').style.width='100%';
             document.getElementById('stspecial').style.marginTop='35px';
-            document.getElementById('cart_items').style.marginTop='35px';
-            document.getElementById('legends').style.marginTop='70px';
-            document.getElementById('global_nav').style.marginTop='90px';
-            document.getElementById('stmenu').style.marginTop='140px';
+            document.getElementById('cart_items').style.marginTop='15px';
+            document.getElementById('legends').style.marginTop='235px';
+            document.getElementById('global_nav').style.marginTop='265px';
+            document.getElementById('stmenu').style.marginTop='320px';
+             document.getElementById('one').style.paddingBottom='200px';
+            document.getElementById('two').style.paddingBottom='200px';
+            document.getElementById('three').style.paddingBottom='200px';
+             document.getElementById('open_cart').style.marginLeft='91%';
+            
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 3,
@@ -604,6 +671,7 @@
     
     $(document).ready(function(){
         
+       
         var swiper = new Swiper('.swiper-container', {
             pagination: '.swiper-pagination',
             slidesPerView: 1,
@@ -625,6 +693,8 @@
     
     function AddOrder(event,name,table,location,price){
         var item = event.target.parentNode;
+        //var id =event.target.parentNode.Id();
+        //alert(item);
         var quantity = item.getElementsByTagName('input')[0].value;
         var result = sforce.apex.execute(
             "MenuItemListController",  //class name    
@@ -635,7 +705,28 @@
              location:location,
              price:price
             });
+        
+        var parent = event.target.parentNode.parentNode;
+        var drag= parent.cloneNode(true);
         sayHello();
+   var cart = $('#cart_items');
+
+   var imgtofly = $(parent);
+	if (imgtofly) {
+	var imgclone = imgtofly.clone()
+	.offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
+	.css({'opacity':'0.7', 'position':'absolute', 'height':'150px', 'width':'150px', 'z-index':'1000'})
+	.appendTo($('body'))
+	.animate({
+	'top':cart.offset().top-50,
+        //'left':cart.offset().left + 700,
+    'left':cart.offset().left+1200,
+	'width':200,
+	'height':200
+	}, 1900,'easeOutBounce');
+	imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
+	}
+        
     }
     
     function sayHello(){
@@ -710,29 +801,28 @@
                 <div data-role="header" style="position:fixed;top:0;left:0;right:0;z-index:100;">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
                     </h1>
-                   <a href="#nav-panel" data-icon="bars" style="margin:0px;position:absolute;left:0;top:0;" >View Deals</a>
-                    <a href="#cart-panel" data-icon="bars" style="margin:0px;position:absolute;right:0;top:0;" >View Cart</a>
+                    <a href="#cart-panel" id="open_cart" style="margin:0px;position:absolute;right:0;top:0;width:120px;background-color:maroon;color:white;text-shadow:none;padding:6px;"><apex:image value="{!$Resource.cart}" width="20px"/> View Cart</a>
                 </div>
-                <div role="main" class="ui-content jqm-content jqm-fullwidth" style="padding:0px;margin-left:0px;">
+                <div role="main" class="ui-content jqm-content jqm-fullwidth" style="padding:0px;margin-left:0px;height:100%;">
 
                 <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
                     <div id="stspecial" style="margin-left:0px;padding:0px;">
                         <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:0px;margin-right:auto;margin-top:0px;margin-top:0px;padding:0px;">
-                            <h2>
+                            <h2 style="font-size:20px;margin-bottom:5px;padding:5px;">
                                 Menu
                             </h2>  
                             
                         </div>
   
-                       <!-- <div id="foo" style="margin-top:1px;margin-bottom:0px;">
-                            <div style="background-color:maroon;background-size:cover;color:white;text-shadow:none;margin-bottom:0px;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;padding:0px;">
-                                <h2 style="font-size:20px;">
+                        <div id="foo" style="margin-top:1px;margin-bottom:0px;">
+                            <div style="background-color:maroon;background-size:cover;color:white;text-shadow:none;margin-bottom:0px;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;padding-bottom:0px;">
+                                <h2 style="font-size:20px;margin-top:5px;padding:0px;">
                                     Special Offers
                                 </h2>  
                             </div>
-                            <ul class="slideme" style="width:100%;margin-left:auto;margin-right:auto;">
-                                <apex:repeat value="{!offers}" id="offers" var="offer">
-                                    <li style="width:300px;height:110px;margin-left:10px;">
+                            <ul class="slideme" style="width:100%;margin-left:auto;margin-right:auto;margin-top:5px;">
+                                <apex:repeat value="{!offers}" id="spl_offers" var="offer">
+                                    <li style="width:300px;height:130px;margin-left:10px;">
                                         <div class="offerimage" style="width:250px;position:relative;background-image:url({!offer.imgurl});">
                                             <div id="discount" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:18px;color:black;font-weight:bold;">
                                                 <p style="float:left;padding-right:10px;opacity:1;"></p>
@@ -744,7 +834,7 @@
                                         </div></li>
                                 </apex:repeat>
                             </ul>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="col-xs-12" style="padding:0px;margin-left:0px;">
                         <div id="tabs" data-role="tabs" data-mini="true" data-position="fixed" style="padding:0px;">
@@ -764,7 +854,7 @@
                                 </ul>
                             </div>
                             <div id="stmenu" style="left:0;">
-                                <div id="one" class="container" style="clear:left;background-color:white;width:100%;padding-bottom:80px;">
+                                <div id="one" class="container" style="clear:left;background-color:white;width:100%;">
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                                             <ul>
@@ -1005,7 +1095,7 @@
                         </div>  <!-- row -->
                     </div>
                 </div>
-                <div id="two" class="container" style="clear:left;background-color:white;width:100%;padding-bottom:80px;">
+                <div id="two" class="container" style="clear:left;background-color:white;width:100%;">
                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                             <ul>
@@ -1245,7 +1335,7 @@
         </div>  <!-- row -->
     </div>
 </div>
-<div id="three" class="container" style="clear:left;background-color:white;width:100%;padding-bottom:80px;">
+<div id="three" class="container" style="clear:left;background-color:white;width:100%;">
     <div data-role="tabs" id="tabs" style="padding:0px;">   
         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
             <ul>
@@ -1510,15 +1600,17 @@
         </ul>
     </div>
 <div data-role="panel" data-display="push" data-theme="b" id="cart-panel" data-position="right">
-
+<ul data-role="listview">
+            <li data-icon="delete" id="close_cart"><a href="#" data-rel="close">Close Cart</a></li>
+    </ul>
 <div  id ="cart_items" data-role="main" class="ui-content" style="height:100%;background-color:white;padding-top:0px;font-size:14px;margin-top:35px;padding:0px;">
-    <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;margin-left:5px;">
-        <h2>
+    <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;">
+        <h2 style="margin-top:8px;padding:5px;font-size:20px;">
             Order
         </h2>  
     </div>
-    <div style="background-color:white;opacity:0.9;height:80%;">
-        <div class="container" style="padding:0px;margin:5px;" id="cart_container" >
+    <div style="background-color:white;opacity:0.9;height:100%;">
+        <div class="container" style="padding:0px;margin:0px;" id="cart_container" >
             
             <!-- Placeholder for div - bill_items pageblock -->
             <apex:pageBlock id="billed_items" title="Billed Items">

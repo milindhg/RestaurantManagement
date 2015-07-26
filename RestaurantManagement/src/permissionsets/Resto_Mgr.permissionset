@@ -74,15 +74,15 @@
     </classAccesses>
     <classAccesses>
         <apexClass>DisplayCart</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>DisplayMenuItems</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>DisplayOffer</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>Feedbackcontroller</apexClass>
@@ -98,7 +98,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ItemController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MenuItemListController</apexClass>
@@ -1424,6 +1424,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Order_Item__c.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Order_Item__c.Picked_Up_Time__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1559,6 +1564,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>User.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>User.agf__External_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1687,6 +1697,10 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>Menu_Off</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>Menu_Shek</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1740,6 +1754,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ZMenu</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>fly_test</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

@@ -16,6 +16,13 @@ global with sharing class Cart{
     public String selectedItems{get;set;}    
     
     public static final String PAID = 'Paid';
+    public static final String NAVA = 'New';
+    public static final String PENDING = 'Pending';
+    public static final String ACCEPTED = 'Accepted';
+    public static final String READY = 'Ready';
+    public static final String PICKEDUP = 'Picked Up';
+    public static final String DELIVERED = 'Delivered';
+    
     
     Food_Order__c fo = getFoodOrder();
     
@@ -52,7 +59,7 @@ global with sharing class Cart{
                                     AND o.Delete_Status__c <> 'Yes'
                                     order by o.Status__c, o.CreatedDate]){
                                     System.debug('Item Name' + item.Name + ' -- ' + item.LastModifiedDate);
-            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
+            if(item.Status__c == ACCEPTED || item.Status__c == PICKEDUP || item.Status__c == READY || item.Status__c == PENDING || item.Status__c == DELIVERED)
                 orderItemsList.add(new DisplayCart(item));
         }
         //fo = getFoodOrder();
@@ -86,7 +93,7 @@ global with sharing class Cart{
                                     where o.Food_order__c=:fo.id
                                     AND o.Delete_Status__c <> 'Yes'
                                     ORDER BY o.LastModifiedDate]){
-            if(item.Status__c == 'New')
+            if(item.Status__c == NAVA)
                 activeCartItems.add(new DisplayCart(item));
         }
         //fo = getFoodOrder();
@@ -130,12 +137,12 @@ global with sharing class Cart{
      public void placeOrder() {
         String id= system.CurrentPageReference().getParameters().get('id');  
         Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
-        fo.Status__c = 'Pending';
+        fo.Status__c = PENDING;
         update fo;
         
-        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New' AND oi.Delete_Status__c = 'No'];
+        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c =:NAVA AND oi.Delete_Status__c = 'No'];
         for(Order_Item__c o : orderItems){
-            o.Status__c = 'Pending';            
+            o.Status__c = PENDING;            
         }
         update orderItems;                                                                 
      }
@@ -143,10 +150,10 @@ global with sharing class Cart{
      public void resetCart() {
         String id= system.CurrentPageReference().getParameters().get('id');  
         Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
-        fo.Status__c = 'Pending';
+        fo.Status__c = PENDING;
         update fo;
         
-        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c = 'New'];
+        List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:id AND oi.Status__c =:NAVA];
         
         for(Order_Item__c o : orderItems){
             o.Delete_Status__c = 'Yes';            
@@ -168,7 +175,7 @@ global with sharing class Cart{
         
         List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
                                        FROM   Order_Item__c
-                                       WHERE  Status__c ='Delivered'
+                                       WHERE  Status__c =:DELIVERED
                                        AND    Table_Number__c = :tableNo];
 
         List<Food_Item__c> fitems = new List<Food_Item__c>();

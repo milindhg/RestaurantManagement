@@ -16,7 +16,7 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>1</majorNumber>
-        <minorNumber>8</minorNumber>
+        <minorNumber>9</minorNumber>
         <namespace>sf_chttr_apps</namespace>
     </packageVersions>
 </ApexPage>

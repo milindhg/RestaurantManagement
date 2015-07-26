@@ -205,5 +205,5 @@
     </nameField>
     <pluralLabel>Food Items</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
 </CustomObject>

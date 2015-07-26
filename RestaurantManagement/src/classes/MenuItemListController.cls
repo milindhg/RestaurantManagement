@@ -10,11 +10,21 @@ global class MenuItemListController {
     public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
     public Decimal tableNo= Decimal.valueOf(tableNumber);
     public Id foodOrderId;
+    
+    //initializing the fo object with the current table food order.
     public Food_Order__c fo = getFoodOrder();
     //public Cart(){  }
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
+
+    //public static strings for easy status string changes.
     public static final String PAID = 'Paid';
+    public static final String NAVA = 'New';
+    public static final String PENDING = 'Pending';
+    public static final String ACCEPTED = 'Accepted';
+    public static final String READY = 'Ready';
+    public static final String PICKEDUP = 'Picked Up';
+    public static final String DELIVERED = 'Delivered';
     //public static String table=ApexPages.currentPage().getParameters().get('tableid');
     
     public MenuItemListController(){
@@ -64,18 +74,30 @@ global class MenuItemListController {
             for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                        o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                        o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id and o.Delete_Status__c <> 'Yes'
-                                        order by o.Status__c]){
-                if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending')
+                                        order by o.Status__c, o.CreatedDate]){
+                if(item.Status__c == ACCEPTED || item.Status__c == PICKEDUP || item.Status__c == READY || item.Status__c == PENDING || item.Status__c == DELIVERED)
                     orderItemsList.add(new DisplayCart(item));
             }
             System.debug('orderItemsList is: !!!!' + orderItemsList);
             return orderItemsList;
         }
     }
+
+    //Method required for fetching the order items for modification in the modal popup. 
+    //This method returns the json object containing the orderitems in serialized format to the front end javscript function.
+    public String getOrderItemsListSerialized(){
+        System.debug('Entered orderItemsListSerialized');
+        System.debug('orderItemsList is: ' + orderItemsList);
+        String jsonString = JSON.serializePretty(this.orderItemsList);
+        System.debug('!!!!jsonString: ' + jsonString);
+        return jsonString;
+    }
+    
+    
     //Method to get the active cart items - which are not accepted yet.
     public List<DisplayCart> getActiveCartItems() {
         System.debug('FoodOrder is: !!!!' + fo);
@@ -97,8 +119,9 @@ global class MenuItemListController {
                                         o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id
-                                        AND o.Delete_Status__c <> 'Yes']){
-                if(item.Status__c == 'New')
+                                        AND o.Delete_Status__c <> 'Yes'
+                                        ORDER BY o.CreatedDate]){
+                if(item.Status__c == NAVA)
                     activeCartItems.add(new DisplayCart(item));
             }
             System.debug('activeCartItems is: !!!!' + activeCartItems);
@@ -147,22 +170,26 @@ global class MenuItemListController {
         }
      }
      
-     public void placeOrder() {
-        System.debug('foodOrderId is: !!!!' + foodOrderId);
-        if(foodOrderId==null){
-            return;
+     WebService static Integer placeOrder(String order_id, String location, String tableid) {
+        
+        if(order_id == null || order_id == ''){
+            return 0;
         }
         else{
-            estimateDelivery();
-            Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: foodOrderId];
-            fo.Status__c = 'Pending';
+            Integer tableNo = Integer.valueOf(tableid);
+            Integer est_del_time = estimateDelivery(location, tableNo);
+            
+            Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
+            fo.Status__c = PENDING;
             update fo;
             
-            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:foodOrderId AND oi.Status__c = 'New'];
+            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:order_id AND oi.Status__c =:NAVA AND oi.Delete_Status__c = 'No'];
             for(Order_Item__c o : orderItems){
-                o.Status__c = 'Pending';            
+                o.Status__c = PENDING;            
             }
-            update orderItems;                                                                 
+            update orderItems;    
+            
+            return est_del_time;                                                            
         }
      }
      
@@ -173,10 +200,10 @@ global class MenuItemListController {
         }
         else{
             Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: foodOrderId];
-            fo.Status__c = 'Pending';
+            fo.Status__c = PENDING;
             update fo;
             
-            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:foodOrderId AND oi.Status__c = 'New'];
+            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:foodOrderId AND oi.Status__c =: NAVA];
             
             for(Order_Item__c o : orderItems){
                 o.Delete_Status__c = 'Yes';            
@@ -199,7 +226,7 @@ global class MenuItemListController {
         
         List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
                                        FROM   Order_Item__c
-                                       WHERE  Status__c ='Delivered'
+                                       WHERE  Status__c =: DELIVERED
                                        AND    Table_Number__c = :tableNo];
 
         List<Food_Item__c> fitems = new List<Food_Item__c>();
@@ -344,6 +371,7 @@ global class MenuItemListController {
         orderitem.Price__c= price;
         orderitem.Food_Item__c= food_items[0].Id;
         orderitem.Food_Order__c= orders[0].Id;
+        orderitem.Location__c= location;
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
         
@@ -378,10 +406,9 @@ global class MenuItemListController {
         return null;
     }
     
-    public Integer estimateDelivery(){
-        Integer tableNo = Integer.valueOf(Apexpages.currentpage().getparameters().get('tableid'));
-        String  location = Apexpages.currentpage().getparameters().get('reqlocation');
+    static Integer estimateDelivery(String location, Integer tableNo){
         Integer count = 0;
+        Integer prep_factor = 2;
         Integer MIN_VALUE = -100;
         Integer max_time = MIN_VALUE;
         Integer total_time = 0;
@@ -390,28 +417,42 @@ global class MenuItemListController {
         Boolean flag = false;
         Integer est_del_time = 0;
         
-        
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
         
-        List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, Status__c
+        List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, 
+                                            Status__c, Quantity__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c IN ('Pending','Accepted')
-                                     ORDER BY Status__c desc, CreatedDate];
+                                     AND    Location__c = :location
+                                     AND    Delete_Status__c = 'No'
+                                     ORDER BY Status__c desc, CreatedDate];                          
         
         List<Order_Item__c> items = [SELECT Name, Type__c, Item_Prep_Time__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c = 'New'
-                                     AND    Table_Number__c = :tableNo];
-                                     
+                                     AND    Table_Number__c = :tableNo
+                                     AND    Delete_Status__c = 'No'
+                                     AND    Location__c = :location];
+                               
+         
         Chef__c chef = [SELECT Total_Chefs__c
                         FROM Chef__c
                         WHERE Location__c = :location];                             
-                                     
+        
         Integer total_chefs = (Integer)chef.Total_Chefs__c;
         
         for(Order_Item__c o : queue){
            count++;
-           prep_time = (Integer) o.Item_Prep_Time__c;
+            
+           if(o.Quantity__c > 1) {
+              prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
+              //System.debug('In greater than quantity '+prep_time );
+              }
+           else
+              prep_time = (Integer) o.Item_Prep_Time__c;
+              
+            
+               
            if(max_time < prep_time )
                max_time = prep_time;
            
@@ -421,7 +462,16 @@ global class MenuItemListController {
            }   
         }
         
-        total_time+=max_time;                           
+        System.debug('Count: '+count);
+        System.debug('Total Time before: '+total_time);
+        System.debug('Max Time: '+max_time);
+        
+        if(count >= total_chefs)
+           total_time+=max_time;                           
+        else
+           total_time = 0;                       
+        
+        System.debug('Total Time after: '+total_time);
                                      
         for(String it_type : item_type){
            for(Order_Item__c it : items){
@@ -435,6 +485,8 @@ global class MenuItemListController {
             if(flag)
               break;
         }
+         
+        System.debug('Curr Time: '+curr_item_time);
                                          
         est_del_time = total_time + curr_item_time;
         System.debug('Est Del Time: '+est_del_time );
