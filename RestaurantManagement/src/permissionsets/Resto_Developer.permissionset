@@ -964,6 +964,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Food_Order__c.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Food_Order__c.OrderDateTime__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1424,11 +1429,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Order_Item__c.Location__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Order_Item__c.Picked_Up_Time__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1763,6 +1763,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>ZMenu</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>css</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

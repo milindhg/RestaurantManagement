@@ -25,8 +25,16 @@
             <translation><!-- Indiana --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>New York</masterLabel>
+            <translation><!-- New York --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>Ohio</masterLabel>
             <translation><!-- Ohio --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Texas</masterLabel>
+            <translation><!-- Texas --></translation>
         </picklistValues>
     </fields>
     <fields>

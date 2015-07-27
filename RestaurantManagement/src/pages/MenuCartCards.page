@@ -183,7 +183,11 @@
 
 
             <div class="container">
-            
+            <apex:outputPanel id="cart_icon">
+                <span class="glyphicon glyphicon-shopping-cart" style="width:auto !important;font-size:x-large;margin-top:10px;" aria-hidden="true" >
+                    <span class="glyphicon badge" style="margin-top:-30px;margin-left:-10px;">{! CartSize}</span>
+                </span>
+            </apex:outputPanel>
 <div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -430,7 +434,7 @@
                         <!-- Placeholder for div - cart_table pageblock -->
                 <apex:pageBlock id="cart_table" title="Cart">
                     <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content"/>
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons, modal_content, cart_icon"/>
                                     
                         <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
                             <div class="bs-example">
@@ -443,10 +447,10 @@
                                 </div>
                             </div>
                         </apex:repeat>
-                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
+                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>                                        
-                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
+                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </apex:form>

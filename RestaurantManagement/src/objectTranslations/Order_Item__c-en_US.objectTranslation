@@ -43,10 +43,6 @@
         <name>Item_Prep_Time__c</name>
     </fields>
     <fields>
-        <label><!-- Location --></label>
-        <name>Location__c</name>
-    </fields>
-    <fields>
         <label><!-- Picked Up Time --></label>
         <name>Picked_Up_Time__c</name>
     </fields>

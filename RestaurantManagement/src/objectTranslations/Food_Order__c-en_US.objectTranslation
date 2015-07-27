@@ -17,6 +17,10 @@
         <name>FinalPrice__c</name>
     </fields>
     <fields>
+        <label><!-- Location --></label>
+        <name>Location__c</name>
+    </fields>
+    <fields>
         <label><!-- Order Date --></label>
         <name>OrderDateTime__c</name>
     </fields>

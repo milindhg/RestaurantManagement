@@ -1,0 +1,132 @@
+<apex:page >
+    <style>
+    
+     #menu_area{
+        float:left;padding:0px;margin:0px;
+        }
+      
+     .menu_title{
+        width:100%;
+        background-color:maroon;
+        background-size:cover;
+        color:white;
+        text-shadow:none;
+        width:100%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:0px;
+        margin-top:0px;
+        padding:0px;
+        }
+        
+        #foo{
+        margin-top:1px;
+        margin-bottom:0px;
+        }
+        
+        .spl_offers{
+        background-color:maroon;
+        background-size:cover;
+        color:white;
+        text-shadow:none;
+        margin-bottom:0px;
+        width:100%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:0px;
+        padding:0px;
+        }
+       
+        .offer_title{
+        font-size:20px;margin-top:0px;padding:0px;
+        }
+        
+        #offer_slider{
+        width:100%;margin-left:auto;margin-right:auto;
+        }
+        
+        .offer_list{
+        width:300px;height:110px;margin-left:10px;
+        }
+        
+        .offerimage{
+        width:250px;position:relative;
+        }
+        
+        #discount{
+        float:left;
+        position:absolute;
+        right:0;
+        bottom:0;
+        background-color:grey;
+        opacity:0.8;
+        font-size:18px;
+        color:black;
+        font-weight:bold;
+        }
+        
+        #discount_back{
+        float:left;padding-right:10px;opacity:1;
+        }
+        
+        #discount_price{
+        float:left;padding-right:10px;padding-left:10px;
+        }
+        
+        .desc2{
+        font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;padding:0px;
+        }
+        
+        #item_name{
+        color:White;font-weight:bold;font-size:20px;
+        }
+        
+        .col-xs-12{
+        padding:0px;
+        }
+        
+        #tabs{
+        padding:0px;
+        }
+        
+        #legends{
+        position:fixed;z-index:990;
+        }
+        
+        #global_nav{
+        height:20px;margin-left:auto;margin-right:auto;position:fixed;z-index:1000;
+        }
+        
+        #stmenu{
+        left:0;height:60%;overflow:scroll;
+        }
+        
+        #one{
+        clear:left;background-color:white;width:100%;
+        }
+        
+        .diet_nav{
+        width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;
+        }
+        
+        .diet_list{
+        width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;
+        }
+        
+        .cardimage{
+        position:relative;margin:0px;
+        width:100%;
+        }
+        
+        .price_div{
+        float:left;position:absolute;right:0;bottom:0;
+        background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;
+        }
+        
+        .price{
+        float:left;padding-right:10px;padding-left:10px;
+        }
+        
+        
+    </style>
+</apex:page>

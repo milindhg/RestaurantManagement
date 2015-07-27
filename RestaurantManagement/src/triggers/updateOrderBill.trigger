@@ -112,5 +112,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
             myFoodOrder.Status__c='New';
         }
         update(myFoodOrder);
-
+//trial comments written from tablet. .
+//comment end
+//
 }

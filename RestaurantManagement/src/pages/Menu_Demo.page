@@ -418,6 +418,8 @@
         <apex:includeScript value="{!$Resource.spineditjs}"/>
         <apex:includeScript value="{!$Resource.swiperminjs}"/>
         <apex:includeScript value="{!$Resource.slidemejs}"/>
+        <apex:includeScript value="{!$Resource.flyoffmin}"/>
+         <apex:includeScript value="{!$Resource.flyofffull}"/>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
@@ -558,7 +560,9 @@
     }
     
     function filter_entree(type){
-         var tab = document.getElementById('entTab');
+        document.getElementById('desTab').classList.remove("ui-btn-active")
+        document.getElementById('appTab').classList.remove("ui-btn-active")
+        var tab = document.getElementById('entTab');
         tab.classList.remove("ui-btn-active");
         tab.classList.add("ui-btn-active");
         document.getElementById(type).style.display='block';
@@ -629,12 +633,13 @@
              price:price
             });
         
+        sayHello();
         var parent = event.target.parentNode.parentNode;
         var drag= parent.cloneNode(true);
-        sayHello();
+       
         var cart = $('#cart_items');
         var imgtofly = $(parent);
-        /*if (imgtofly) {
+        if (imgtofly) {
         var imgclone = imgtofly.clone()
         .offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
         .css({'opacity':'0.7', 'position':'absolute', 'height':'150px', 'width':'150px', 'z-index':'1000'})
@@ -646,8 +651,9 @@
         'width':200,
         'height':200
         }, 1900,'easeOutBounce');
-        imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
-        }*/
+        imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach()
+                                                            });
+        }
         
     }
     
@@ -1230,8 +1236,8 @@
                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                             <ul>
                                 <li><a href="#vegan_entree"  onClick="filter_entree('vegan_entree');" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                                <li><a href="#veg_entree" onClick="filter_appitizer('veg_entree');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                                <li><a href="#nonveg_entree" onClick="filter_appitizer('nonveg_entree');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                                <li><a href="#veg_entree" onClick="filter_entree('veg_entree');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                                <li><a href="#nonveg_entree" onClick="filter_entree('nonveg_entree');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                             </ul>
                         </div>
                         <div id="vegan_entree"  class="ui-body-d ui-content">

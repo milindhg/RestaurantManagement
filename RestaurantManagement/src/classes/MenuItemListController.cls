@@ -36,10 +36,10 @@ global class MenuItemListController {
     
     public Food_Order__c getFoodOrder(){
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
-            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c,
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' ];
+                                     where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' and f.Location__c=:selLocation];
         System.debug('existingOrder is: !!!!' + existingOrder);
         if(existingOrder.isEmpty())
         {
@@ -49,7 +49,7 @@ global class MenuItemListController {
         {
     foodOrderId= existingOrder[0].Id;
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, 
+                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c,f.Location__c,
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -74,7 +74,7 @@ global class MenuItemListController {
             for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id,o.Food_Order__r.Location__c, 
                                         o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id and o.Delete_Status__c <> 'Yes'
@@ -100,6 +100,7 @@ global class MenuItemListController {
     
     //Method to get the active cart items - which are not accepted yet.
     public List<DisplayCart> getActiveCartItems() {
+        
         System.debug('FoodOrder is: !!!!' + fo);
         if(fo==null)
             return null;
@@ -340,7 +341,7 @@ global class MenuItemListController {
         //Decimal itemPrice = Decimal.valueOf(price); 
         System.debug(item);
         System.debug(quant);
-        List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
+        List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
@@ -350,10 +351,11 @@ global class MenuItemListController {
                 Food_Order__c order = new Food_Order__c();
                 order.Status__c='New';
                 order.TableNumber__c=tableid;
+            	order.Location__c= location;
                 insert order;  
         }               
         
-        List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
+        List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
@@ -371,7 +373,7 @@ global class MenuItemListController {
         orderitem.Price__c= price;
         orderitem.Food_Item__c= food_items[0].Id;
         orderitem.Food_Order__c= orders[0].Id;
-        orderitem.Location__c= location;
+        //orderitem.Location__c= location;
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
         
@@ -423,7 +425,7 @@ global class MenuItemListController {
                                             Status__c, Quantity__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c IN ('Pending','Accepted')
-                                     AND    Location__c = :location
+                                     AND    Food_Order__r.Location__c = :location
                                      AND    Delete_Status__c = 'No'
                                      ORDER BY Status__c desc, CreatedDate];                          
         
@@ -432,7 +434,7 @@ global class MenuItemListController {
                                      WHERE  Status__c = 'New'
                                      AND    Table_Number__c = :tableNo
                                      AND    Delete_Status__c = 'No'
-                                     AND    Location__c = :location];
+                                     AND    Food_Order__r.Location__c = :location];
                                
          
         Chef__c chef = [SELECT Total_Chefs__c
@@ -490,6 +492,9 @@ global class MenuItemListController {
                                          
         est_del_time = total_time + curr_item_time;
         System.debug('Est Del Time: '+est_del_time );
+        
+        System.debug('Total time: '+System.now()+est_del_time);
+        
         return est_del_time;
         
     }

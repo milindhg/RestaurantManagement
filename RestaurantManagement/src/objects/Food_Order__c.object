@@ -77,6 +77,16 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Location</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>OrderDateTime__c</fullName>
         <externalId>false</externalId>
         <label>Order Date</label>
@@ -228,6 +238,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <columns>TaxEstimate__c</columns>
         <columns>TotalPrice__c</columns>
         <columns>TotalPriceEstimate__c</columns>
+        <columns>Location__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
