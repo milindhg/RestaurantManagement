@@ -1408,6 +1408,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Order_Item__c.Avg_Delivery_Time__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Order_Item__c.Delete_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1504,6 +1509,36 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>RawMaterial__c.Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Apartment_Suite__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Branch__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Country__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Phone__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Restaurant_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1752,6 +1787,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>WaiterRestoSelect</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ZMenu</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1837,6 +1876,10 @@
     </tabSettings>
     <tabSettings>
         <tab>RawMaterial__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Restaurant__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

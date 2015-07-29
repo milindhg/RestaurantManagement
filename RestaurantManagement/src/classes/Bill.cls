@@ -1,6 +1,11 @@
 global with sharing class Bill{
 
-    public String foodOrderId = 'a0537000000RI9b';
+    //public String foodOrderId = 'a0537000000RI9b';
+    public String foodOrderId = ApexPages.currentPage().getParameters().get('orderId');
+    public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
+    public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
+    public Decimal tableNo= Decimal.valueOf(tableNumber);
+    
     public String SelectedFQ;
     public String SelectedService;
     public String SelectedOAE;
@@ -16,7 +21,7 @@ global with sharing class Bill{
         this.SelectedFQ= recType;
     }
 
-	 public String gettip() {
+     public String gettip() {
         return tip;
     }
      
@@ -97,9 +102,9 @@ global with sharing class Bill{
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById, o.Tax__c 
                                     From Order_Item__c o
-                                    where o.Food_order__c=:fo.id
+                                    where o.Food_order__c=:fo.id and o.Delete_Status__c <> 'Yes'
                                     order by o.Status__c]){
-            if(item.Status__c == 'Accepted' || item.Status__c == 'Picked Up' || item.Status__c == 'Ready' || item.Status__c == 'Pending'){
+            if(item.Status__c != 'New'){
                     DisplayCart displayCart = new DisplayCart(item);
                     System.debug('Map-----------------------------------');
                     System.debug(itemMap);
@@ -179,22 +184,31 @@ global with sharing class Bill{
 //            billItem.Tax__c = 3.4// TODO;
             insert billItem;   
             
-              
+            PriceBook__c priceBook = [SELECT NoItemsOrdered__c FROM PriceBook__c WHERE ID=:displayCart.priceBook];
+            priceBook.NoItemsOrdered__c += 1;
+            update priceBook;  
                       
        }     
        
          PageReference pageRef = Page.MenuCart;
+         
          pageRef.setRedirect(true);
          return pageRef;
      }
 
      public PageReference backToCart(){
-         PageReference pageRef = Page.MenuCart;
+         PageReference pageRef = Page.Menu_Demo;
+         pageRef.getParameters().put('reqlocation', selLocation);
+         pageRef.getParameters().put('tableid', tableNumber);
          pageRef.setRedirect(true);
          return pageRef;
      }
          
-    
+
+    public PageReference rerenderPage() {
+        return null;
+    }
+   
 
 
 }

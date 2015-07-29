@@ -55,7 +55,7 @@
                                     
                                       <apex:column headerValue="Menu Link">
                                         <apex:commandLink action="https://c.na31.visual.force.com/apex/Menu_Demo?reqlocation={!selectedLocation}&tableid={!s.tableNumber}" immediate="true" styleClass="btn" value="Menu" />
-                                    </apex:column>
+                                      </apex:column>
                                 </apex:pageBlockTable>
                             </div>
                         </div>

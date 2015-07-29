@@ -78,7 +78,7 @@ global class MenuItemListController {
                                         o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id and o.Delete_Status__c <> 'Yes'
-                                        order by o.Status__c, o.CreatedDate]){
+                                        order by o.Status__c desc, o.CreatedDate]){
                 if(item.Status__c == ACCEPTED || item.Status__c == PICKEDUP || item.Status__c == READY || item.Status__c == PENDING || item.Status__c == DELIVERED)
                     orderItemsList.add(new DisplayCart(item));
             }
@@ -171,14 +171,14 @@ global class MenuItemListController {
         }
      }
      
-     WebService static Integer placeOrder(String order_id, String location, String tableid) {
+     WebService static String placeOrder(String order_id, String location, String tableid) {
         
         if(order_id == null || order_id == ''){
-            return 0;
+            return '';
         }
         else{
             Integer tableNo = Integer.valueOf(tableid);
-            Integer est_del_time = estimateDelivery(location, tableNo);
+            String est_del_time = estimateDelivery(location, tableNo);
             
             Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
             fo.Status__c = PENDING;
@@ -201,7 +201,10 @@ global class MenuItemListController {
         }
         else{
             Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: foodOrderId];
-            fo.Status__c = PENDING;
+            if(fo.Status__c==DELIVERED)
+                fo.Status__c = DELIVERED;
+            else
+                fo.Status__c = PENDING;
             update fo;
             
             List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:foodOrderId AND oi.Status__c =: NAVA];
@@ -222,7 +225,7 @@ global class MenuItemListController {
      }
      
      public PageReference payBill() {
-        Double tableNo = Double.valueOf(ApexPages.CurrentPage().getParameters().get('tableid'));   
+ /*       Double tableNo = Double.valueOf(ApexPages.CurrentPage().getParameters().get('tableid'));   
         String loc = ApexPages.CurrentPage().getParameters().get('reqlocation');
         
         List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
@@ -250,9 +253,13 @@ global class MenuItemListController {
         }
         
         update fitems;
-     
-        PageReference pageRef = Page.Bill;
-        System.debug('PageRef------------------->'+pageRef);
+     */
+
+         PageReference pageRef = Page.Bill;
+         pageRef.getParameters().put('orderId', foodOrderId);
+         pageRef.getParameters().put('reqlocation', selLocation);
+         pageRef.getParameters().put('tableid', tableNumber);                  
+         System.debug('PageRef------------------->'+pageRef);
          pageRef.setRedirect(true);
          return pageRef;
          }
@@ -270,6 +277,9 @@ global class MenuItemListController {
 
      
      public Integer getCartSize(){
+         if(activeCartItems==null){
+             return 0;
+         }
          return activeCartItems.size();
      }
     
@@ -345,13 +355,13 @@ global class MenuItemListController {
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' ];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location];
                 
         if(existingOrder.isEmpty()){
                 Food_Order__c order = new Food_Order__c();
                 order.Status__c='New';
                 order.TableNumber__c=tableid;
-            	order.Location__c= location;
+                order.Location__c= location;
                 insert order;  
         }               
         
@@ -359,7 +369,7 @@ global class MenuItemListController {
             f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid'];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location ];
         String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
                                         f.Prep_Time__c,f.Calories__c, f.OwnerId, f.Name, f.LastViewedDate, 
@@ -383,10 +393,6 @@ global class MenuItemListController {
         
     }
     
-    public static String rerenderCart(){
-        return null;
-    }
-    
     //Dummy function to rerender the cart elements on selecting any item from the menu and clicking add.
     public PageReference sayHello() {
         //Call getFoodOrder to populate the current foodOrder and set it in global object.
@@ -408,16 +414,17 @@ global class MenuItemListController {
         return null;
     }
     
-    static Integer estimateDelivery(String location, Integer tableNo){
+    static String estimateDelivery(String location, Integer tableNo){
         Integer count = 0;
-        Integer prep_factor = 2;
+        Integer prep_factor = 5;
         Integer MIN_VALUE = -100;
         Integer max_time = MIN_VALUE;
-        Integer total_time = 0;
+        Integer prev_time = 0;
         Integer curr_item_time = 0;
         Integer prep_time = 0;
         Boolean flag = false;
         Integer est_del_time = 0;
+        String am_pm = 'AM';
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
         
@@ -429,7 +436,7 @@ global class MenuItemListController {
                                      AND    Delete_Status__c = 'No'
                                      ORDER BY Status__c desc, CreatedDate];                          
         
-        List<Order_Item__c> items = [SELECT Name, Type__c, Item_Prep_Time__c
+        List<Order_Item__c> items = [SELECT Name, Type__c, Item_Prep_Time__c, Quantity__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c = 'New'
                                      AND    Table_Number__c = :tableNo
@@ -446,10 +453,8 @@ global class MenuItemListController {
         for(Order_Item__c o : queue){
            count++;
             
-           if(o.Quantity__c > 1) {
+           if(o.Quantity__c > 1) 
               prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
-              //System.debug('In greater than quantity '+prep_time );
-              }
            else
               prep_time = (Integer) o.Item_Prep_Time__c;
               
@@ -459,27 +464,31 @@ global class MenuItemListController {
                max_time = prep_time;
            
            if(Math.mod(count, total_chefs) == 0){
-              total_time+=max_time;
+              prev_time+=max_time;
               max_time = MIN_VALUE;
            }   
         }
         
-        System.debug('Count: '+count);
-        System.debug('Total Time before: '+total_time);
-        System.debug('Max Time: '+max_time);
+        //System.debug('Count: '+count);
+        //System.debug('Total Time before: '+prev_time);
+        //System.debug('Max Time: '+max_time);
         
-        if(count >= total_chefs)
-           total_time+=max_time;                           
+        if(count >= total_chefs  && max_time > 0)
+           prev_time+=max_time;                           
         else
-           total_time = 0;                       
+           prev_time = 0;                       
         
-        System.debug('Total Time after: '+total_time);
+        //System.debug('Total Time after: '+prev_time);
                                      
         for(String it_type : item_type){
            for(Order_Item__c it : items){
                if(it.Type__c == it_type){
-                  prep_time = (Integer) it.Item_Prep_Time__c;
-                  curr_item_time = prep_time;
+                  if(it.Quantity__c > 1) 
+                     prep_time = ((Integer) it.Item_Prep_Time__c * (Integer)it.Quantity__c)/prep_factor;
+                  else
+                     prep_time = (Integer) it.Item_Prep_Time__c; 
+                  
+                   curr_item_time = prep_time;
                   flag = true;
                   break;
                 }
@@ -488,14 +497,25 @@ global class MenuItemListController {
               break;
         }
          
-        System.debug('Curr Time: '+curr_item_time);
-                                         
-        est_del_time = total_time + curr_item_time;
-        System.debug('Est Del Time: '+est_del_time );
+        //System.debug('Curr Time: '+curr_item_time);
+        //System.debug('Est Del Time: '+est_del_time);
         
-        System.debug('Total time: '+System.now()+est_del_time);
+        Integer hr = System.now().hour();
+        Integer min = System.now().minute(); 
         
-        return est_del_time;
+        min = prev_time + curr_item_time + min;
+        
+        if(min > 59){
+          hr+= min/60;
+          min=Math.mod(min,60);  
+         }
+        
+        if(hr>=12)
+          am_pm = 'PM';
+          
+        String result = hr+':'+min+' '+am_pm;
+       
+        return result;
         
     }
 }

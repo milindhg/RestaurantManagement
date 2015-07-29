@@ -10,10 +10,17 @@ public class DisplayCart {
         this.status = item.Status__c;
         this.type = item.Type__c;
         this.tableNumber = item.table_number__c;
+        this.priceBook = item.price__c;
     }
     
     //public Id id = apexpages.currentpage().getparameters().get('id');
     //public Id id = apexpages.currentpage().getparameters().get('id');
+    
+    public Id priceBook
+    {
+        get;
+        set;
+    }
     
     public Id id
     {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Select restaurant for specific order queue</description>
+    <label>WaiterRestoSelect</label>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>33</minorNumber>
+        <namespace>agf</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>18</minorNumber>
+        <namespace>al</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>9</minorNumber>
+        <namespace>sf_chttr_apps</namespace>
+    </packageVersions>
+</ApexPage>

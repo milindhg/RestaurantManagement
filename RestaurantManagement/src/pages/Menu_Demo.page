@@ -1,17 +1,17 @@
 <apex:page showheader="false" controller="MenuItemListController" standardstylesheets="false">
     <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
     <style type="text/css">
-        
+           
         .orderitem{
-            height:30px;
+            height:40px;
         }
         .quant_label{
-            margin-top:2px;
+            margin-top:5px;
         }
         
         #quant{
-            height:25px;
+            height:35px;
             margin-top:1px;
         }
         .ui-input-text input, .ui-input-search input{
@@ -334,6 +334,7 @@
         color:White;
         text-shadow:none;
         margin-top:2px;
+        height:35px;
         }
         
         #showdetail{
@@ -401,14 +402,14 @@
         margin:0px;
         }
         
-        /*@media screen and (max-width: 1400px) {
-        .btn {
-        width:100%;
-        }
-        }*/
         /**Styling for the new cart UI: End **/
         
-        
+        .est_del{
+          display:none;
+          font-size:17px;
+          font-weight:bold;
+          color:maroon;
+        }
     </style>
     <head>
         <apex:includeScript value="{!$Resource.cometd}"/>
@@ -430,6 +431,7 @@
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
         <apex:stylesheet value="{!$Resource.spineditcss}"/>
+        <!--<apex:stylesheet value="{!$Resource.styles}"/>-->
         <apex:stylesheet value="{!$Resource.swipermincss}"/>
         <apex:stylesheet value="{!$Resource.slidemecss}"/>
         <apex:stylesheet value="https://www.google.com/fonts#UsePlace:use/Collection:Dancing+Script:400,700"/>
@@ -476,16 +478,17 @@
     }
     
     function init(){
-        document.getElementById('all_appetizers').style.display='block';
-        document.getElementById('veg_appetizer').style.display='block';
-        document.getElementById('nonveg_appetizer').style.display='block';
-        document.getElementById('all_entrees').style.display='block';
-        document.getElementById('veg_entree').style.display='block';
-        document.getElementById('nonveg_entree').style.display='block';
-        document.getElementById('all_dessert').style.display='block';
-        document.getElementById('veg_dessert').style.display='block';
-        document.getElementById('nonveg_dessert').style.display='block';
+        $('#all_appetizers').css('display','block');
+        $('#veg_appetizer').css('display','block');
+        $('#nonveg_appetizer').css('display','block');
+        $('#all_entrees').css('display','block');
+        $('#veg_entree').css('display','block');
+        $('#nonveg_entree').css('display','block');
+        $('#all_dessert').css('display','block');
+        $('#veg_dessert').css('display','block');
+        $('#nonveg_dessert').css('display','block');
         
+                
         var list = document.getElementsByClassName('sliderex');
         for(var i=0; i< list.length;i++){
             
@@ -495,20 +498,21 @@
             
         }
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            document.getElementById('place_order').style.width='120%';
-            document.getElementById('reset_order').style.width='120%';
-            document.getElementById('cart_container').style.width='80%';
-            document.getElementById('menu_area').style.width='65%';
-            document.getElementById('stmenu').style.width='65%';
-            document.getElementById('cart_items').style.width='35%';
-            document.getElementById('global_nav').style.width='65%';
-            document.getElementById('stspecial').style.width='65%';
-            document.getElementById('stspecial').style.marginTop='18px';
-            document.getElementById('cart_items').style.marginTop='18px';
-            document.getElementById('legends').style.marginTop='230px';
-            document.getElementById('global_nav').style.marginTop='260px';
-            document.getElementById('stmenu').style.marginTop='308px';
-            
+            $('#place_order').width('100%');
+            $('#reset_order').width('100%');
+            $('#cart_container').width('95%');
+            $('#menu_area').width('65%');
+            $('#stmenu').width('65%');
+            $('#cart_items').width('35%');
+            $('#global_nav').width('65%');
+            $('#stspecial').width('65%');
+            $('#stspecial').css('margin-top',18);
+            $('#cart_items').css('margin-top',18);
+            $('#legends').css('margin-top',230);
+            $('#stmenu').css('margin-top',308);
+            $('#global_nav').css('margin-top',260);
+
+
             var grp =     document.getElementsByClassName('list-group');
             for(i=0; i<grp.length; i++) {
                 grp[i].style.width =    '200px';
@@ -526,19 +530,22 @@
             for(i=0; i<grp.length; i++) {
                 grp[i].style.width =    '100%';
             }
-            document.getElementById('place_order').style.width='100%';
-            document.getElementById('reset_order').style.width='100%';
-            document.getElementById('cart_container').style.width='100%';
-            document.getElementById('menu_area').style.width='75%';
-            document.getElementById('stmenu').style.width='75%';
-            document.getElementById('cart_items').style.width='25%';
-            document.getElementById('global_nav').style.width='75%';
-            document.getElementById('stspecial').style.width='75%';
-            document.getElementById('stspecial').style.marginTop='17px';
-            document.getElementById('cart_items').style.marginTop='17px';
-            document.getElementById('legends').style.marginTop='245px';
-            document.getElementById('global_nav').style.marginTop='280px';
-            document.getElementById('stmenu').style.marginTop='335px';
+            
+            $('#place_order').width('100%');
+            $('#reset_order').width('100%');
+            $('#cart_container').width('100%');
+            $('#menu_area').width('75%');
+            $('#stmenu').width('75%');
+            $('#cart_items').width('25%');
+            $('#global_nav').width('75%');
+            $('#stspecial').width('75%');
+            $('#stspecial').css('margin-top',17);
+            $('#cart_items').css('margin-top',17);
+            $('#legends').css('margin-top',245);
+            $('#stmenu').css('margin-top',335);
+            $('#global_nav').css('margin-top',280);
+
+            
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 3,
@@ -548,48 +555,43 @@
             });
         }
         
-        document.getElementById('vegan_appetizer').style.display='none';
-        document.getElementById('veg_appetizer').style.display='none';
-        document.getElementById('nonveg_appetizer').style.display='none';
-        document.getElementById('vegan_entree').style.display='none';
-        document.getElementById('veg_entree').style.display='none';
-        document.getElementById('nonveg_entree').style.display='none';
-        document.getElementById('vegan_dessert').style.display='none';
-        document.getElementById('veg_dessert').style.display='none';
-        document.getElementById('nonveg_dessert').style.display='none';
+        $('#vegan_appetizer').css('display','none');
+        $('#veg_appetizer').css('display','none');
+        $('#nonveg_appetizer').css('display','none');
+        $('#vegan_entree').css('display','none');
+        $('#veg_entree').css('display','none');
+        $('#nonveg_entree').css('display','none');
+        $('#vegan_dessert').css('display','none');
+        $('#veg_dessert').css('display','none');
+        $('#nonveg_dessert').css('display','none');
+
     }
     
-    function filter_entree(type){
-        document.getElementById('desTab').classList.remove("ui-btn-active")
-        document.getElementById('appTab').classList.remove("ui-btn-active")
-        var tab = document.getElementById('entTab');
-        tab.classList.remove("ui-btn-active");
-        tab.classList.add("ui-btn-active");
-        document.getElementById(type).style.display='block';
-        document.getElementById('all_entrees').style.display='none';
+    function filter_entree(type,event){
+        $('#entTab').addClass('ui-btn-active');
+        $('#'+type).css('display','block');
+        $('#all_entrees').css('display','none');
+       
         var item= event.target;
         var h = item.getAttribute('href');
         $j(h).effect( "slide", "slow" );
     }
     
-    function filter_dessert(type){
-        var tab = document.getElementById('desTab');
-        tab.classList.remove("ui-btn-active");
-        tab.classList.add("ui-btn-active");
-        document.getElementById(type).style.display='block';
-        document.getElementById('all_dessert').style.display='none';
+    function filter_dessert(type,event){
+        $('#desTab').addClass('ui-btn-active');
+        $('#'+type).css('display','block');
+        $('#all_dessert').css('display','none');
+        
         var item= event.target;
         var h = item.getAttribute('href');
         $j(h).effect( "slide", "slow" );
     }
     
-    function filter_appitizer(type){
-        var tab = document.getElementById('appTab');
-        tab.classList.remove("ui-btn-active");
-        tab.classList.add("ui-btn-active");
-        //alert(type);
-        document.getElementById(type).style.display='block';
-        document.getElementById('all_appetizers').style.display='none';
+    function filter_appitizer(type,event){
+        $('#appTab').addClass('ui-btn-active');
+        $('#'+type).css('display','block');
+        $('#all_appetizers').css('display','none');
+        
         var item= event.target;
         var h = item.getAttribute('href');
         $j(h).effect( "slide", "slow" );
@@ -636,7 +638,6 @@
         sayHello();
         var parent = event.target.parentNode.parentNode;
         var drag= parent.cloneNode(true);
-       
         var cart = $('#cart_items');
         var imgtofly = $(parent);
         if (imgtofly) {
@@ -654,9 +655,9 @@
         imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach()
                                                             });
         }
+       
         
     }
-    
     
     function flip_out(event) {
         var target = event.target.parentNode;     
@@ -724,25 +725,27 @@
                                         location,
                                         tableid});
                                         
-       alert('Result: '+result);                                 
+       //alert('Result: '+result);                                 
                                         
-       //if(result>0); 
-         //$('#cart_container').append('<p style=\"color:maroon;font-size:17px;font-weight:bold;\">Estimated Delivery by '+result+'</p>');
+       if(result!=''){
+         $('#id_est_del').text('Estimated Delivery at '+result);
+         $('#id_est_del').css('display','block');
+        }
                                        
-    
-    
     }   
     
     //Dummy function to rerender the cart
     function sayHello(){
+                                         
     }
     
     </script>
     <body onLoad="init();">
         <apex:pageBlock >
 
+<!-- Div for modal popup -->
 <div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+                <div class="modal-dialog">
                     <div class="modal-content">
                 <apex:outputPanel id="modal_content">
                     <apex:form >
@@ -769,37 +772,37 @@
                                             <div class="list-group-item">
                                                 <div>
                                                 <a href="#" class="list-group-item active">
-                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name} 
-                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                    <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
                                                 </a>
                                                 </div>
                                                 <div>
                                                     <div class="row" style="margin-top:5px;">
-                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                            <div class="input-group">
+                    				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    				                        <div class="input-group">
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-minus"></span>
                                                                       </button>
                                                                   </span>
-                                                                  <input type="text" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <input type="text" orderItemType="cart" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-plus"></span>
                                                                       </button>
                                                                   </span>
                                                               </div>
-                                                            </div>
-                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                            <div style="text-align: right;">
-                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                    				                        </div>
+                    				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    				                        <div style="text-align: right;">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
                                                                 <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                               </button>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                    				                    </div>
+                    			                    </div>
+                			                    </div>
                                             </div>
                                         </div>
                                     </div>
@@ -816,12 +819,12 @@
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Taxes
-                                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                                                <span class="badge" name="taxEstimate">{!FoodOrder.TaxEstimate__c}</span>
                                             </a>
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Estimated Bill
-                                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                                <span class="badge" name="totalPriceEstimate">{!FoodOrder.TotalPriceEstimate__c}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -843,7 +846,7 @@
                                             <div class="list-group-item">
                                                 <div>
                                                 <a href="#" class="list-group-item active">
-                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name}
                                                     <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
                                                         <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
@@ -853,35 +856,35 @@
                                                     <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
                                                         <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
                                                     </apex:outputPanel>
-                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                    <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
                                                 </a>
                                                 </div>
                                                 <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
                                                 <div class="row" style="margin-top:5px;">
-                                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                        <div class="input-group">
+                				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                				                        <div class="input-group">
                                                               <span class="input-group-btn">
                                                                   <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-minus"></span>
                                                                   </button>
                                                               </span>
-                                                              <input type="text" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <input type="text" orderItemType="placed" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                               <span class="input-group-btn">
                                                                   <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-plus"></span>
                                                                   </button>
                                                               </span>
                                                           </div>
-                                                        </div>
-                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                        <div style="text-align: right;">
-                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                				                        </div>
+                				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                				                        <div style="text-align: right;">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
                                                             <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                           </button>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                </apex:outputPanel>
+                				                    </div>
+                			                    </div>
+                			                    </apex:outputPanel>
                                             </div>
                                         </div>
                                     </div>
@@ -897,12 +900,12 @@
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Taxes
-                                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                                                <span class="badge" name="tax">{!FoodOrder.Tax__c}</span>
                                             </a>
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Current Bill
-                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                                                <span class="badge" name="totalPrice">{!FoodOrder.TotalPrice__c}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -915,10 +918,6 @@
                 </div>
             </div>
 
-                
-                            
-                            
-                            
                         </div>
                         <div class="modal-footer">
                              
@@ -994,10 +993,10 @@
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                                             <ul>
-                                                <li><a href="#vegan_appetizer"  onClick="filter_appitizer('vegan_appetizer');" data-ajax="false"
+                                                <li><a href="#vegan_appetizer"  onClick="filter_appitizer('vegan_appetizer',event);" data-ajax="false"
                                                        style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                                                <li><a href="#veg_appetizer" onClick="filter_appitizer('veg_appetizer');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                                                <li><a href="#nonveg_appetizer" onClick="filter_appitizer('nonveg_appetizer');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                                                <li><a href="#veg_appetizer" onClick="filter_appitizer('veg_appetizer',event);" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                                                <li><a href="#nonveg_appetizer" onClick="filter_appitizer('nonveg_appetizer',event);"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                                             </ul>
                                         </div>
                                         <div id="vegan_appetizer"  class="ui-body-d ui-content">
@@ -1235,9 +1234,9 @@
                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                             <ul>
-                                <li><a href="#vegan_entree"  onClick="filter_entree('vegan_entree');" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                                <li><a href="#veg_entree" onClick="filter_entree('veg_entree');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                                <li><a href="#nonveg_entree" onClick="filter_entree('nonveg_entree');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                                <li><a href="#vegan_entree"  onClick="filter_entree('vegan_entree',event);" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
+                                <li><a href="#veg_entree" onClick="filter_entree('veg_entree',event);" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                                <li><a href="#nonveg_entree" onClick="filter_entree('nonveg_entree',event);"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                             </ul>
                         </div>
                         <div id="vegan_entree"  class="ui-body-d ui-content">
@@ -1475,9 +1474,9 @@
     <div data-role="tabs" id="tabs" style="padding:0px;">   
         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
             <ul>
-                <li><a href="#vegan_dessert"  onClick="filter_dessert('vegan_dessert');" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                <li><a href="#veg_dessert" onClick="filter_dessert('veg_dessert');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                <li><a href="#nonveg_dessert" onClick="filter_dessert('nonveg_dessert');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                <li><a href="#vegan_dessert"  onClick="filter_dessert('vegan_dessert',event);" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
+                <li><a href="#veg_dessert" onClick="filter_dessert('veg_dessert',event);" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                <li><a href="#nonveg_dessert" onClick="filter_dessert('nonveg_dessert',event);"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
             </ul>
         </div>
         <div id="vegan_dessert"  class="ui-body-d ui-content">
@@ -1720,12 +1719,20 @@
     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;margin-left:5px;">
         <h2>
             Order
-        </h2>  
+        </h2>
+        <apex:outputPanel id="cart_icon">
+            <span class="glyphicon glyphicon-shopping-cart" style="width:auto !important;font-size:x-large;margin-top:10px;" aria-hidden="true" >
+                <span class="glyphicon badge" style="margin-top:-40px;margin-left:-35px;">{! CartSize}</span>
+            </span>
+        </apex:outputPanel>
+
     </div>
     <div style="background-color:white;opacity:0.9;height:80%;">
         <div class="container" style="padding:0px;margin:5px;" id="cart_container" >
-
-            <!-- Placeholder for div - bill_items pageblock -->
+            
+                <div id="id_est_del" class="est_del"></div>
+                
+                <!-- Placeholder for div - bill_items pageblock -->
                 <apex:pageBlock id="billed_items" title="Billed Items">
                     <apex:form >
                         <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
@@ -1770,7 +1777,7 @@
             <!-- Placeholder for div - cart_table pageblock -->
                 <apex:pageBlock id="cart_table" title="Cart">
                     <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content"/>
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content, complete_order"/>
                                     
                         <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
                             <div class="bs-example" style="cursor:default;">
@@ -1784,12 +1791,12 @@
                             </div>
                         </apex:repeat>
                     <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
-                        <apex:commandButton style="height:30px;width:100%" value="Place Order"  onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
+                        <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%" value="Place Order"  onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, complete_order">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
                     <div class ="row" style=" margin:3px 0 0 0;" id="reset_order">                                                                
-                        <apex:commandButton style="height:30px;width:100%;" value="Reset Cart"  rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
+                        <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%;" value="Reset Cart"  onclick="sayHello()" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, complete_order">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
@@ -1813,9 +1820,12 @@
                 </div>
             </apex:pageBlock>
             
+            <!-- Placeholder for the complete order button --> 
+            <apex:outputPanel id="complete_order">
             <apex:form >
-                <apex:commandLink styleClass="btn" action="{! payBill}" value="Pay Now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />                                            
+                <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
             </apex:form>
+            </apex:outputPanel>
             
             
         </div> 
@@ -1835,6 +1845,9 @@ $(document ).ready(function() {
     });
     
 });   
+
+
+//Below are the javascript functions for new cart UI with modal popup.
 
 //plugin bootstrap minus and plus
 //http://jsfiddle.net/laelitenetwork/puJ6G/
@@ -1879,8 +1892,6 @@ function input_number_focusin(obj){
 }
 
 
-//Below are the javascript functions for new cart UI with modal popup.
-
 //jQuery('.input-number').change(function() {
 //pass the "this" object in the call to get it in obj.
 function input_number_change(obj){
@@ -1911,21 +1922,95 @@ function input_number_change(obj){
     }
     console.log(obj);
     console.log(parseInt(jQuery(obj).val()));
+    
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
     createNewChangedObj(fieldName,parseInt(jQuery(obj).val()),'edit');
-
+    
+    //updating the quantity and price of the item being modified.
+    var totalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    //element = element.children(":first").children(":first").children(":last");
+    console.log('Old Total Price: ' + totalPriceElement[0].innerHTML);
+    console.log('Old Quantity: ' + quantityElement[0].innerHTML);
+    var oldTotalPrice = totalPriceElement[0].innerHTML;
+    var oldQuantity = quantityElement[0].innerHTML;
+    var rate = parseFloat(oldTotalPrice/oldQuantity);
+    var newQuantity = parseInt(jQuery(obj).val());
+    var newTotalPrice = newQuantity * rate;
+    newTotalPrice = newTotalPrice.toFixed(2);
+    totalPriceElement[0].innerHTML = newTotalPrice;
+    quantityElement[0].innerHTML = newQuantity;
+    
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate + ((newQuantity - oldQuantity) * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax + ((newQuantity - oldQuantity) * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    }
+    
 }
 
 function btn_delete_click(obj){ 
     jQuery('.btn-save').attr('disabled',false);
     var element = jQuery(obj).parent().parent().parent().parent().parent();
     console.log(element[0]);
-    element[0].innerHTML = 'To be Deleted!!!';
+ 
+    
     
     //get the id of the order item to be modified or deleted
     fieldName = jQuery(obj).attr('data-field');
     fieldName = fieldName.substring(6,fieldName.length-1);
     
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
+ 
     createNewChangedObj(fieldName,null,'delete');
+    
+    var itemTotalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    console.log(parseFloat(itemTotalPriceElement[0].innerHTML));
+    console.log(parseFloat(quantityElement[0].innerHTML));
+    var itemTotalPrice = parseFloat(itemTotalPriceElement[0].innerHTML);
+    var oldQuantity = parseFloat(quantityElement[0].innerHTML);
+    var rate = parseFloat(itemTotalPrice/oldQuantity);
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate - (oldQuantity * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate - (oldQuantity  * rate) - (oldQuantity * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax - (oldQuantity * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice - (oldQuantity * rate) - (oldQuantity * rate * taxRate);
+ 
+    }
+    
+    
+    element[0].innerHTML = 'To be Deleted!!!';
+ 
     
 }
 
@@ -1950,8 +2035,11 @@ function createNewChangedObj(id,newQuantity,operation){
             orderItemObj.Quantity__c = parseInt(newQuantity);
         else if(operation.toLowerCase()=='delete')
             orderItemObj.Delete_Status__c = 'Yes';
-        else if(operation.toLowerCase()=='deliver')
+        else if(operation.toLowerCase()=='deliver'){
             orderItemObj.Status__c = 'Delivered';
+            var dateObj = new Date().toISOString();
+            orderItemObj.Delivered_Time__c = dateObj ;
+        }
         console.log(orderItemObj);
         console.log(o);
         o.changedOrderItemsMap[id] = orderItemObj;

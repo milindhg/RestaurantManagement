@@ -160,9 +160,27 @@
     });
     
     
-    function sayHello(){
+    function handlePlaceOrder(order_id, location, tableid){
+        //alert('order id: '+order_id);
+        //alert('location: '+location);
+        //alert('table id: '+tableid);
+       var result = sforce.apex.execute("MenuItemListController",    
+                                        "placeOrder",      
+                                        {order_id,
+                                        location,
+                                        tableid});
+                                        
+       //alert('Result: '+result);                                 
+                                        
+       if(result!=''){
+         $('#id_est_del').text('Estimated Delivery at '+result);
+         $('#id_est_del').css('display','block');
         }
     
+    }   
+
+    function sayHello(){
+        }
     
     
     </script>
@@ -253,7 +271,7 @@
                                 </apex:outputPanel>
                             </div>
                         </apex:repeat>
-                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>                                        
                         <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">

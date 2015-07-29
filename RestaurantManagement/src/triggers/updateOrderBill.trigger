@@ -12,6 +12,14 @@
  */
 
 trigger updateOrderBill on Order_Item__c (after insert, after update, before delete) {
+        public static final String PAID = 'Paid';
+        public static final String NAVA = 'New';
+        public static final String PENDING = 'Pending';
+        public static final String ACCEPTED = 'Accepted';
+        public static final String READY = 'Ready';
+        public static final String PICKEDUP = 'Picked Up';
+        public static final String DELIVERED = 'Delivered';
+
         Integer i = 0;
         String intTest;
         Decimal taxRate = 0.075;
@@ -62,20 +70,28 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         Decimal newTotalPrice = 0;
         Decimal newTotalPriceEstimate = 0;
         Boolean orderStatusNewFlag = false;
+        Boolean orderStatusDeliveredFlag = true;
         
         for(Order_Item__c item : allOrderItems)
         {
             if(item.Total_Price__c!=null)
             {
                 newPriceEstimate += item.Total_Price__c;
-                if(item.Status__c == 'Accepted' || item.Status__c == 'Ready' || item.Status__c == 'Picked Up' || item.Status__c == 'Pending')
+                if(item.Status__c == ACCEPTED || item.Status__c == READY || item.Status__c == PICKEDUP || item.Status__c == PENDING || item.Status__c == DELIVERED)
                 {
                     newPrice += item.Total_Price__c;
                 }
-                if(item.Status__c == 'New' && orderStatusNewFlag==false)
+                //Logic for keeping the order status as delivered if and only if all the items in the order are delivered.
+                if(item.Status__c != DELIVERED && orderStatusDeliveredFlag==true)
+                {
+                    orderStatusDeliveredFlag=false;
+                }
+                //Logic for keeping the order status as delivered if and only if all the items in the order are delivered.
+                if(item.Status__c == NAVA && orderStatusNewFlag==false)
                 {
                     orderStatusNewFlag=true;
                 }
+                
             }
         }
         //If the current operation on orderItem is delete, 
@@ -107,9 +123,13 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         myFoodOrder.TotalPrice__c = newPrice + newTax;
         myFoodOrder.TotalPriceEstimate__c = newPriceEstimate + newTaxEstimate;
         
-        if(orderStatusNewFlag)
+        if(orderStatusDeliveredFlag)
         {
-            myFoodOrder.Status__c='New';
+            myFoodOrder.Status__c=DELIVERED;
+        }
+        else if(orderStatusNewFlag)
+        {
+            myFoodOrder.Status__c=NAVA;
         }
         update(myFoodOrder);
 //trial comments written from tablet. .

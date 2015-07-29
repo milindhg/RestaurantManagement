@@ -1,4 +1,4 @@
-<apex:page docType="html-5.0" controller="ChefListController" sidebar="false" showHeader="false">
+<apex:page controller="ChefListController" sidebar="false" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -9,8 +9,56 @@
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+        <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
         <apex:stylesheet value="{!$Resource.customStyle}"  />
         <apex:includeScript value="{!$Resource.jquery}"/>
+        
+        <style type="text/css">
+            thead{
+                color:white;
+                text-shadow: none;
+                }
+            tr {
+                border: 2px solid #ddd;
+                font-weight: bold;
+            }
+            td,th {
+                text-align:center;
+                border: 2px solid #ddd;
+            }
+        </style>
+        
+        <script type="text/javascript">
+           sforce.connection.sessionId = "{!$Api.Session_ID}";
+           
+           function fun(location){
+             if(location===''||location==null){
+               alert('Please select the location');
+               return false;
+             }
+             
+             var noOfChefs = $('#itext').val();
+             
+             if(noOfChefs==='' || noOfChefs==null){
+               alert('Please enter the Number of Chefs');
+               return false;
+             }
+             
+             var result = sforce.apex.execute('ChefListController',
+                                              'updateNoChefs',
+                                               {location,
+                                                noOfChefs});
+                                                
+             if(result==''){
+               alert('Chef information not available for Location: '+location+'. Please enter data through the Main Chef page.');
+               return false;
+             }
+                                                  
+             window.open('chef_pending_orders?reqlocation='+location+'&noofchefs='+noOfChefs);
+           }
+           
+        </script>
         
     </head>
     <body>
@@ -22,27 +70,31 @@
                 <apex:pageBlock >
                     <apex:outputPanel >
                         <div style="font-weight:bold;text-align:left;">Select your Location</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedlocation}" size="1">
+                        <apex:selectList id="slist" style="color:maroon;" value="{!selectedlocation}" size="1">
                             <apex:selectOptions value="{!Locationdata}"/>
-                            <apex:actionSupport event="onchange" reRender="main"/>
+                            <apex:actionSupport event="onchange" reRender="main2"/>
                         </apex:selectList>
+                        
+                        <apex:outputPanel id="main1">
+                           <div class="row">
+                             <div class="col-lg-12">
+                               <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
+                               <input type="text" id="itext" value='' />
+                             </div>
+                           </div>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="main2">  
+                          <div align="center">
+                              <apex:commandLink immediate="true" onclick="fun('{!selectedlocation}')"
+                                    styleClass="btn" style="margin-left:-20px;width:50px;font-weight:bold;font-size:14px;color:blue;" value="Next" />
+                                   
+                          </div>
+                        </apex:outputPanel>
                     </apex:outputPanel>
                     
-                    <apex:outputPanel >
-                        <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
-                       <!-- <apex:input type="number" value="{!noofchefs}"/>
-                        <apex:commandLink action="{!goToChefOrders}" immediate="true" styleClass="btn" value="Next"/> -->
-                        
-                        
-                        <apex:selectList style="color:maroon;" value="{!noofchefs}" size="1">
-                            
-                            <apex:selectOptions value="{!maxchefs}"/>
-                            <apex:actionSupport event="onchange" reRender="main"/>
-                        </apex:selectList>
-                          
-                    </apex:outputPanel>
                     
-                    <apex:outputPanel id="main"></apex:outputPanel>
+                    
                 </apex:pageBlock>
             </apex:form>
         

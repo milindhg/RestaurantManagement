@@ -1,0 +1,84 @@
+<apex:page controller="WaiterListController" sidebar="false" showHeader="false">
+
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+        <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+        <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+        <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
+        <apex:stylesheet value="{!$Resource.customStyle}"  />
+        <apex:includeScript value="{!$Resource.jquery}"/>
+        
+        <style type="text/css">
+            thead{
+                color:white;
+                text-shadow: none;
+                }
+            tr {
+                border: 2px solid #ddd;
+                font-weight: bold;
+            }
+            td,th {
+                text-align:center;
+                border: 2px solid #ddd;
+            }
+        </style>
+        
+        <script type="text/javascript">
+           sforce.connection.sessionId = "{!$Api.Session_ID}";
+           
+           function checkRestaurant(selectedRestaurant){
+             if(selectedRestaurant===''||selectedRestaurant==null){
+               alert('Please select the Restaurant');
+               return false;
+             }
+             
+            //var result = sforce.apex.execute('WaiterListController',{selectedRestaurant});
+                                                
+            /* if(result==''){
+               alert('Waiter information not available for Restaurant: '+location+'. Please enter data through the Main Waiter page.');
+               return false;
+             }*/
+                                                  
+             window.open('WaiterOrderPage?reqlocation='+selectedRestaurant);
+           }
+           
+        </script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header" id="pageHeader">
+            Intern Cafe
+            </div>
+            <apex:form >
+                <apex:pageBlock >
+                    <apex:outputPanel >
+                        <div style="font-weight:bold;text-align:left;">Select your Location</div>
+                        <apex:selectList id="slist" style="color:maroon;" value="{!selectedRestaurant}" size="1">
+                            <apex:selectOptions value="{!RestaurantData}"/>
+                            <apex:actionSupport event="onchange" reRender="main2"/>
+                        </apex:selectList>
+                        
+                        <apex:outputPanel id="main2">  
+                          <div align="center">
+                              <apex:commandLink immediate="true" onclick="checkRestaurant('{!selectedRestaurant}')"
+                                    styleClass="btn" style="margin-left:-20px;width:50px;font-weight:bold;font-size:14px;color:blue;" value="Next" />
+                                   
+                          </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    
+                    
+                </apex:pageBlock>
+            </apex:form>
+        
+        </div>
+    </body>
+</apex:page>

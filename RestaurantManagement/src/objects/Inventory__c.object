@@ -57,11 +57,6 @@
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
-        <filters>
-            <field>NAME</field>
-            <operation>equals</operation>
-            <value>Virginia</value>
-        </filters>
         <label>All</label>
     </listViews>
     <nameField>

@@ -128,6 +128,8 @@
 		margin: 0px auto;
   
 	}
+	
+	
 /**Styling for the new cart UI: End **/
 
     </style>
@@ -142,11 +144,15 @@
         <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
         <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"/>
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.min.js"/>
+
         
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
         <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.min.css"  />
         
 
 <script type="text/javascript">
@@ -167,8 +173,28 @@
         });
     });
     
-    
+    function handlePlaceOrder(order_id, location, tableid){
+        //alert('order id: '+order_id);
+        //alert('location: '+location);
+        //alert('table id: '+tableid);
+       var result = sforce.apex.execute("MenuItemListController",    
+                                        "placeOrder",      
+                                        {order_id,
+                                        location,
+                                        tableid});
+                                        
+       //alert('Result: '+result);                                 
+                                        
+       if(result!=''){
+         $('#id_est_del').text('Estimated Delivery at '+result);
+         $('#id_est_del').css('display','block');
+        }
+                                       
+    }   
+
+    //Dummy function to rerender the cart
     function sayHello(){
+        
         }
 
 
@@ -216,9 +242,9 @@
                                             <div class="list-group-item">
                                                 <div>
                                                 <a href="#" class="list-group-item active">
-                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name} 
-                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                    <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
                                                 </a>
                                                 </div>
                                                 <div>
@@ -230,7 +256,7 @@
                                                                           <span class="glyphicon glyphicon-minus"></span>
                                                                       </button>
                                                                   </span>
-                                                                  <input type="text" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <input type="text" orderItemType="cart" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-plus"></span>
@@ -240,7 +266,7 @@
                     				                        </div>
                     				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     				                        <div style="text-align: right;">
-                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
                                                                 <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                               </button>
                                                             </div>
@@ -263,12 +289,12 @@
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Taxes
-                                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                                                <span class="badge" name="taxEstimate">{!FoodOrder.TaxEstimate__c}</span>
                                             </a>
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Estimated Bill
-                                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                                <span class="badge" name="totalPriceEstimate">{!FoodOrder.TotalPriceEstimate__c}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -290,7 +316,7 @@
                                             <div class="list-group-item">
                                                 <div>
                                                 <a href="#" class="list-group-item active">
-                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name}
                                                     <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
                                                         <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
@@ -300,7 +326,7 @@
                                                     <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
                                                         <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
                                                     </apex:outputPanel>
-                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                    <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
                                                 </a>
                                                 </div>
                                                 <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
@@ -312,7 +338,7 @@
                                                                       <span class="glyphicon glyphicon-minus"></span>
                                                                   </button>
                                                               </span>
-                                                              <input type="text" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <input type="text" orderItemType="placed" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
                                                               <span class="input-group-btn">
                                                                   <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-plus"></span>
@@ -322,7 +348,7 @@
                 				                        </div>
                 				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 				                        <div style="text-align: right;">
-                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
                                                             <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                           </button>
                                                         </div>
@@ -344,12 +370,12 @@
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Taxes
-                                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                                                <span class="badge" name="tax">{!FoodOrder.Tax__c}</span>
                                             </a>
                                             <a href="#" class="list-group-item active">
                                                 <span class="glyphicon"></span> 
                                                 Current Bill
-                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                                                <span class="badge" name="totalPrice">{!FoodOrder.TotalPrice__c}</span>
                                             </a>
                                         </div>
                                     </div>
@@ -395,9 +421,9 @@
                             </button>
                         </a>
                         <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
-                            <div class="bs-example">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item active">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
                                         <span class="glyphicon">{!pitem.quantity}</span> 
                                             {!pitem.name}
                                             <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
@@ -414,14 +440,14 @@
                     
                     <!-- Placeholder for div - current_bill pageblock -->
                 <apex:pageBlock id="current_bill">
-                    <div class="bs-example">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item active">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
                                 <span class="glyphicon"></span> 
                                 Taxes
                                 <span class="badge">{!FoodOrder.Tax__c}</span>
                             </a>
-                            <a href="#" class="list-group-item active">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
                                 <span class="glyphicon"></span> 
                                 Current Bill
                                 <span class="badge">{!FoodOrder.TotalPrice__c}</span>
@@ -437,9 +463,9 @@
                     <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons, modal_content, cart_icon"/>
                                     
                         <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
-                            <div class="bs-example">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item active">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
                                         <span class="glyphicon">{!pitem.quantity}</span> 
                                             {!pitem.name} 
                                         <span class="badge">{!pitem.totalPrice}</span>
@@ -447,26 +473,30 @@
                                 </div>
                             </div>
                         </apex:repeat>
-                        <apex:commandButton styleClass="btn btn-primary" value="Place Order" action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon">
-                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
-                        </apex:commandButton>                                        
-                        <apex:commandButton styleClass="btn btn-primary" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon">
-                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
-                        </apex:commandButton>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%;" value="Place Order" onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>                                        
+                        </div>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%;" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>
+                        </div>
                     </apex:form>
                 </apex:pageBlock>
                 
                 <br/>
                     <!-- Placeholder for div - estimated_bill pageblock -->
                 <apex:pageBlock id="estimated_bill">
-                    <div class="bs-example">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item active">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
                                 <span class="glyphicon"></span> 
                                 Taxes
                                 <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
                             </a>
-                            <a href="#" class="list-group-item active">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
                                 <span class="glyphicon"></span> 
                                 Estimated Bill
                                 <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
@@ -475,10 +505,12 @@
                     </div>
                 </apex:pageBlock>
                 
-                <apex:form >
-                <apex:commandLink styleClass="btn" action="{! payBill}" value="Pay Now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />                                            
-                </apex:form>
-
+                <!-- Placeholder for the complete order button --> 
+                <apex:outputPanel id="complete_order">
+                    <apex:form >
+                        <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
+                    </apex:form>
+                </apex:outputPanel>
             </div>                        
               
         </apex:pageBlock>
@@ -559,21 +591,92 @@ function input_number_change(obj){
     }
     console.log(obj);
     console.log(parseInt(jQuery(obj).val()));
+    
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
     createNewChangedObj(fieldName,parseInt(jQuery(obj).val()),'edit');
-
+    
+    //updating the quantity and price of the item being modified.
+    var totalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    //element = element.children(":first").children(":first").children(":last");
+    console.log('Old Total Price: ' + totalPriceElement[0].innerHTML);
+    console.log('Old Quantity: ' + quantityElement[0].innerHTML);
+    var oldTotalPrice = totalPriceElement[0].innerHTML;
+    var oldQuantity = quantityElement[0].innerHTML;
+    var rate = parseFloat(oldTotalPrice/oldQuantity);
+    var newQuantity = parseInt(jQuery(obj).val());
+    var newTotalPrice = newQuantity * rate;
+    newTotalPrice = newTotalPrice.toFixed(2);
+    totalPriceElement[0].innerHTML = newTotalPrice;
+    quantityElement[0].innerHTML = newQuantity;
+    
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate + ((newQuantity - oldQuantity) * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax + ((newQuantity - oldQuantity) * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    }
+    
 }
 
 function btn_delete_click(obj){ 
     jQuery('.btn-save').attr('disabled',false);
     var element = jQuery(obj).parent().parent().parent().parent().parent();
     console.log(element[0]);
-    element[0].innerHTML = 'To be Deleted!!!';
+    
     
     //get the id of the order item to be modified or deleted
     fieldName = jQuery(obj).attr('data-field');
     fieldName = fieldName.substring(6,fieldName.length-1);
     
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
     createNewChangedObj(fieldName,null,'delete');
+    
+    var itemTotalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    console.log(parseFloat(itemTotalPriceElement[0].innerHTML));
+    console.log(parseFloat(quantityElement[0].innerHTML));
+    var itemTotalPrice = parseFloat(itemTotalPriceElement[0].innerHTML);
+    var oldQuantity = parseFloat(quantityElement[0].innerHTML);
+    var rate = parseFloat(itemTotalPrice/oldQuantity);
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate - (oldQuantity * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate - (oldQuantity  * rate) - (oldQuantity * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax - (oldQuantity * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice - (oldQuantity * rate) - (oldQuantity * rate * taxRate);
+    }
+    
+    
+    element[0].innerHTML = 'To be Deleted!!!';
+
     
 }
 
@@ -587,7 +690,9 @@ function btn_deliver_click(obj){
     fieldName = jQuery(obj).attr('data-field');
     fieldName = fieldName.substring(6,fieldName.length-1);
     
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
     createNewChangedObj(fieldName,null,'deliver');
+
     
 }
 
@@ -598,8 +703,11 @@ function createNewChangedObj(id,newQuantity,operation){
             orderItemObj.Quantity__c = parseInt(newQuantity);
         else if(operation.toLowerCase()=='delete')
             orderItemObj.Delete_Status__c = 'Yes';
-        else if(operation.toLowerCase()=='deliver')
+        else if(operation.toLowerCase()=='deliver'){
             orderItemObj.Status__c = 'Delivered';
+            var dateObj = new Date().toISOString();
+            orderItemObj.Delivered_Time__c = dateObj ;
+        }
         console.log(orderItemObj);
         console.log(o);
         o.changedOrderItemsMap[id] = orderItemObj;
@@ -653,12 +761,6 @@ function btn_save_click(obj){
     { 
         alert('An error occurred updating this record:\n\n' + result[0].errors.message); 
     }*/
-    /*Visualforce.remoting.Manager.invokeAction(
-        //'{!$RemoteAction.Cart.updateChanges}',
-        o.changedOrderItems,
-        function(result, event) {
-          console.log(result);
-        }); */
 
     //Calling the visualforce actionFunction called sayHello 
     //to rerender the page components given in the actionFunction tag.

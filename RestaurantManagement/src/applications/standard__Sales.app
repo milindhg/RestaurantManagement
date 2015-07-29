@@ -30,9 +30,9 @@
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
     <tab>PriceBook__c</tab>
-    <tab>Chef_Page</tab>
     <tab>MenuCart_TestPage</tab>
     <tab>BIll_Item__c</tab>
     <tab>MenuCarts_Modal</tab>
     <tab>Chef__c</tab>
+    <tab>Restaurant__c</tab>
 </CustomApplication>

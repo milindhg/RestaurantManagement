@@ -9,6 +9,10 @@
         <value>Order Items</value>
     </caseValues>
     <fields>
+        <label><!-- Avg Delivery Time --></label>
+        <name>Avg_Delivery_Time__c</name>
+    </fields>
+    <fields>
         <label><!-- Delete Status --></label>
         <name>Delete_Status__c</name>
         <picklistValues>

@@ -67,6 +67,10 @@
                 <behavior>Edit</behavior>
                 <field>Tax__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Avg_Delivery_Time__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>

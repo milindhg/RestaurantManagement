@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="Bill" >
+<apex:page showheader="false" controller="Bill">
  <style type="text/css">
              h1{
                     color:maroon;
@@ -94,13 +94,25 @@
                     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
                     <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
           </head>
-                
+          
+<script type="text/javascript">
+    //Dummy function to rerender the page
+    function rerenderPage(){
+                        
+    }
+
+    $(document).ready(function() {
+        rerenderPage();
+    });
+    
+</script>
                 <body>
       <apex:pageBlock id="total">
      
    
                                                                 <!-- Placeholder for div - billed_items -->
                                                                 <apex:form >
+                                                                <apex:actionFunction name="rerenderPage" action="{!rerenderPage}" reRender="total, clean"/>
                                                                 <apex:pageBlock title="Items">
                                                               <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
                                                              
@@ -136,7 +148,7 @@
                                                                     <apex:inputTextarea cols="4" value="{!tip}" >
                                                                     </apex:inputTextarea>       
                                                                      <apex:commandButton action="{!inserttip}" value="Check Total" reRender="total">
-                   													  </apex:commandButton>
+                                                                      </apex:commandButton>
                                                                 </div>
                                                                   
                                                                   

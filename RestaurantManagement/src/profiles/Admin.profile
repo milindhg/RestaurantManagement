@@ -1420,6 +1420,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Order_Item__c.Avg_Delivery_Time__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Order_Item__c.Delete_Status__c</field>
         <readable>true</readable>
@@ -1517,6 +1522,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>RawMaterial__c.Used__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Restaurant__c.Apartment_Suite__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Restaurant__c.Branch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Restaurant__c.Country__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Restaurant__c.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Restaurant__c.Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Restaurant__c.Restaurant_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1647,6 +1682,9 @@
         <layout>Chef__c-Chef Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>CollaborationGroup-Group Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1729,6 +1767,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>RawMaterial__c-RawMaterial Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Restaurant__c-Restaurant Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Resto__c-Resto Layout</layout>
@@ -2042,6 +2083,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Restaurant__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Resto__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -2217,6 +2267,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>WaiterRestoSelect</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ZMenu</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -2303,6 +2357,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>RawMaterial__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Restaurant__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

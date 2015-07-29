@@ -1,8 +1,23 @@
-<apex:page showheader="false" controller="MenuItemListController">
+<apex:page showheader="false" controller="MenuItemListController" standardstylesheets="false">
     <meta http-equiv="X-UA-Compatible" content="IE=8"/>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
     <style type="text/css">
         
+        .orderitem{
+            height:30px;
+        }
+        .quant_label{
+            margin-top:2px;
+        }
+        
+        #quant{
+            height:25px;
+            margin-top:1px;
+        }
+        .ui-input-text input, .ui-input-search input{
+            font-size:12px;
+            height:25px;
+        }
         .ui-btn-icon-bottom{
         padding-bottom:2em;
         }
@@ -20,18 +35,18 @@
         .ui-page-theme{
         background-color:green;
         }
-        .ui-link,.ui-btn{
-        background-color:green;
-        }
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
         .ui-input-text input, .ui-input-search input{
         min-height:20px;
         height:35px;
         margin-right:10px;
         }
         
-        .ui-link,.ui-btn{
-        background-color:green;
-        }
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
         
         #billed_items{
         background-color:maroon;
@@ -107,7 +122,8 @@
         
         .flip.in {
         -webkit-animation-name: flipintoright;
-        -webkit-animation-duration: 225ms;
+        -webkit-animation-duration
+        : 225ms;
         -moz-animation-name: flipintoright;
         -moz-animation-duration: 225ms;
         }
@@ -230,7 +246,7 @@
         background-size:100%;
         top:0;
         right:0;
-        height:100px;
+        height:100%;
         }
         
         #content2{
@@ -317,8 +333,7 @@
         background-color:maroon !important;
         color:White;
         text-shadow:none;
-        height:30px;
-        width:90px;
+        margin-top:2px;
         }
         
         #showdetail{
@@ -393,6 +408,13 @@
         }*/
         /**Styling for the new cart UI: End **/
         
+        .est_del{
+          display:none;
+          font-size:17px;
+          font-weight:bold;
+          color:maroon;
+        }
+        
         
     </style>
     <head>
@@ -403,6 +425,8 @@
         <apex:includeScript value="{!$Resource.spineditjs}"/>
         <apex:includeScript value="{!$Resource.swiperminjs}"/>
         <apex:includeScript value="{!$Resource.slidemejs}"/>
+        <apex:includeScript value="{!$Resource.flyoffmin}"/>
+         <apex:includeScript value="{!$Resource.flyofffull}"/>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
         <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
         <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
@@ -424,6 +448,7 @@
     
     $j = jQuery.noConflict();
     
+    sayHello();
     $(document).ready(function() {
         $.cometd.init({
             url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
@@ -516,17 +541,17 @@
             document.getElementById('cart_items').style.width='25%';
             document.getElementById('global_nav').style.width='75%';
             document.getElementById('stspecial').style.width='75%';
-            document.getElementById('stspecial').style.marginTop='35px';
-            document.getElementById('cart_items').style.marginTop='35px';
-            document.getElementById('legends').style.marginTop='210px';
-            document.getElementById('global_nav').style.marginTop='240px';
-            document.getElementById('stmenu').style.marginTop='288px';
+            document.getElementById('stspecial').style.marginTop='17px';
+            document.getElementById('cart_items').style.marginTop='17px';
+            document.getElementById('legends').style.marginTop='245px';
+            document.getElementById('global_nav').style.marginTop='280px';
+            document.getElementById('stmenu').style.marginTop='335px';
             var swiper = new Swiper('.swiper-container', {
                 pagination: '.swiper-pagination',
                 slidesPerView: 3,
                 slidesPerColumn: 2,
                 paginationClickable: true,
-                spaceBetween: 5
+                spaceBetween: 10
             });
         }
         
@@ -542,6 +567,11 @@
     }
     
     function filter_entree(type){
+       // document.getElementById('desTab').classList.remove("ui-btn-active")
+        //document.getElementById('appTab').classList.remove("ui-btn-active")
+        var tab = document.getElementById('entTab');
+        //tab.classList.remove("ui-btn-active");
+        tab.classList.add("ui-btn-active");
         document.getElementById(type).style.display='block';
         document.getElementById('all_entrees').style.display='none';
         var item= event.target;
@@ -550,6 +580,9 @@
     }
     
     function filter_dessert(type){
+        var tab = document.getElementById('desTab');
+        //tab.classList.remove("ui-btn-active");
+        tab.classList.add("ui-btn-active");
         document.getElementById(type).style.display='block';
         document.getElementById('all_dessert').style.display='none';
         var item= event.target;
@@ -558,11 +591,20 @@
     }
     
     function filter_appitizer(type){
-        document.getElementById(type).style.display='block';
-        document.getElementById('all_appetizers').style.display='none';
+        $('#appTab').addClass('ui-btn-active');
+        $('#'+type).css('display','block');
+        $('#all_appetizers').css('display','none');
+        //var tab = document.getElementById('appTab');
+       // tab.classList.remove("ui-btn-active");
+        //tab.classList.add("ui-btn-active");
+        //alert(type);
+        //document.getElementById(type).style.display='block';
+        //document.getElementById('all_appetizers').style.display='none';
         var item= event.target;
         var h = item.getAttribute('href');
         $j(h).effect( "slide", "slow" );
+        //document.getElementById("appTab").className += "ui-btn-active";
+        
     }
     
     $(document).ready(function(){
@@ -588,6 +630,8 @@
     
     function AddOrder(event,name,table,location,price){
         var item = event.target.parentNode;
+        //var id =event.target.parentNode.Id();
+        //alert(item);
         var quantity = item.getElementsByTagName('input')[0].value;
         var result = sforce.apex.execute(
             "MenuItemListController",  //class name    
@@ -598,17 +642,29 @@
              location:location,
              price:price
             });
+        
         sayHello();
-    }
-    
-    function sayHello(){
-    }
-    
-    function Alert(){
-        $j('#collapseOne').collapse('toggle');
-        $j('#collapseTwo').collapse('toggle');
-        $j('#open_cart').toggle();
-        $j('#close_cart').toggle();
+        var parent = event.target.parentNode.parentNode;
+        var drag= parent.cloneNode(true);
+       
+        var cart = $('#cart_items');
+        var imgtofly = $(parent);
+        if (imgtofly) {
+        var imgclone = imgtofly.clone()
+        .offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
+        .css({'opacity':'0.7', 'position':'absolute', 'height':'150px', 'width':'150px', 'z-index':'1000'})
+        .appendTo($('body'))
+        .animate({
+        'top':cart.offset().top-50,
+        //'left':cart.offset().left + 700,
+        'left':cart.offset().left+1200,
+        'width':200,
+        'height':200
+        }, 1900,'easeOutBounce');
+        imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach()
+                                                            });
+        }
+        
     }
     
     
@@ -665,10 +721,234 @@
         
         toHide.removeClass('flip in').addClass('flip out').hide();
         toShow.removeClass('flip out').addClass('flip in').show();
-    }    
+    } 
+    
+    
+    function handlePlaceOrder(order_id, location, tableid){
+        //alert('order id: '+order_id);
+        //alert('location: '+location);
+        //alert('table id: '+tableid);
+       var result = sforce.apex.execute("MenuItemListController",    
+                                        "placeOrder",      
+                                        {order_id,
+                                        location,
+                                        tableid});
+                                        
+       //alert('Result: '+result);                                 
+                                        
+       if(result!=''){
+         $('#id_est_del').text('Estimated Delivery at '+result);
+         $('#id_est_del').css('display','block');
+        }
+    
+    }   
+    
+    //Dummy function to rerender the cart
+    function sayHello(){
+    }
+    
     </script>
     <body onLoad="init();">
         <apex:pageBlock >
+
+<div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+                    <div class="modal-content">
+                <apex:outputPanel id="modal_content">
+                    <apex:form >
+                        <div class="modal-header">
+                             
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                Edit Order
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                    <apex:pageBlock title="Cart">
+
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat_cart_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div>
+                                                <a href="#" class="list-group-item active">
+                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                        {!pitem.name} 
+                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <div>
+                                                    <div class="row" style="margin-top:5px;">
+                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            <div class="input-group">
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-minus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                                  <input type="text" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-plus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                              </div>
+                                                            </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                            <div style="text-align: right;">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                                <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                              </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;">
+                                    <div class="list-group-item">
+                                        <div>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Estimated Bill
+                                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+                </div>
+
+                <div class="col-md-6">
+
+                    <apex:pageBlock title="Placed Order">
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div>
+                                                <a href="#" class="list-group-item active">
+                                                    <span class="glyphicon">{!pitem.quantity}</span> 
+                                                        {!pitem.name}
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
+                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
+                                                            <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
+                                                        </button>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                        <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                                    </apex:outputPanel>
+                                                    <span class="badge">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
+                                                <div class="row" style="margin-top:5px;">
+                                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                        <div class="input-group">
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                                  </button>
+                                                              </span>
+                                                              <input type="text" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                                  </button>
+                                                              </span>
+                                                          </div>
+                                                        </div>
+                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                        <div style="text-align: right;">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" onclick="btn_delete_click(this)">
+                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;">
+                                    <div class="list-group-item">
+                                        <div>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active">
+                                                <span class="glyphicon"></span> 
+                                                Current Bill
+                                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+
+                </div>
+            </div>
+
+                
+                            
+                            
+                            
+                        </div>
+                        <div class="modal-footer">
+                             
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button> 
+
+                            <button type="button" class="btn btn-primary btn-save" onclick="btn_save_click(this)" data-dismiss="modal" disabled="true">
+                                Save changes
+                            </button>
+                        </div>
+                    </apex:form>
+                </apex:outputPanel>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+        
             <div data-role="page" id="pageone" style="padding:0px;" >
                 <div data-role="header" style="position:fixed;top:0;left:0;right:0;z-index:100;">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
@@ -676,20 +956,20 @@
                 </div>
                 <div class="row" style="float:left;padding:0px;margin:0px;" id="menu_area">
                     <div id="stspecial">
-                        <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;">
+                        <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;margin-top:0px;padding:0px;">
                             <h2>
                                 Menu
                             </h2>  
                         </div>
                         <div id="foo" style="margin-top:1px;margin-bottom:0px;">
                             <div style="background-color:maroon;background-size:cover;color:white;text-shadow:none;margin-bottom:0px;width:100%;margin-left:auto;margin-right:auto;margin-top:0px;padding:0px;">
-                                <h2 style="font-size:20px;">
+                                <h2 style="font-size:20px;margin-top:0px;padding:0px;">
                                     Special Offers
                                 </h2>  
                             </div>
                             <ul class="slideme" style="width:100%;margin-left:auto;margin-right:auto;">
                                 <apex:repeat value="{!offers}" id="offers" var="offer">
-                                    <li style="width:300px;height:100px;margin-left:10px;">
+                                    <li style="width:300px;height:110px;margin-left:10px;">
                                         <div class="offerimage" style="width:250px;position:relative;background-image:url({!offer.imgurl});">
                                             <div id="discount" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:18px;color:black;font-weight:bold;">
                                                 <p style="float:left;padding-right:10px;opacity:1;"></p>
@@ -724,9 +1004,10 @@
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                                             <ul>
-                                                <li><a href="#vegan_appetizer"  onClick="filter_appitizer('vegan_appetizer');" data-ajax="false"  id="appTab" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                                                <li><a href="#veg_appetizer" onClick="filter_appitizer('veg_appetizer');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" id="entTab" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                                                <li><a href="#nonveg_appetizer" onClick="filter_appitizer('nonveg_appetizer');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false"  id="desTab">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                                                <li><a href="#vegan_appetizer"  onClick="filter_appitizer('vegan_appetizer');" data-ajax="false"
+                                                       style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
+                                                <li><a href="#veg_appetizer" onClick="filter_appitizer('veg_appetizer');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                                                <li><a href="#nonveg_appetizer" onClick="filter_appitizer('nonveg_appetizer');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                                             </ul>
                                         </div>
                                         <div id="vegan_appetizer"  class="ui-body-d ui-content">
@@ -772,11 +1053,11 @@
                                                                                 </div> 
                                                                             </div> 
                                                                         </div>
-                                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                                            <input type="number"  min="1" max="10" value="1" id="quant" class="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -830,11 +1111,11 @@
                                                                             </div> 
                                                                         </div> 
                                                                     </div>
-                                                                    <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                                        <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                                    <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                                        <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                                         <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -887,11 +1168,11 @@
                                                                         </div> 
                                                                     </div> 
                                                                 </div>
-                                                                <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                                    <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                                <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                                    <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                                     <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -944,11 +1225,11 @@
                                                                 </div> 
                                                             </div> 
                                                         </div>
-                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -964,9 +1245,9 @@
                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                             <ul>
-                                <li><a href="#vegan_entree"  onClick="filter_entree('vegan_entree');" data-ajax="false"  id="appTab" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                                <li><a href="#veg_entree" onClick="filter_appitizer('veg_entree');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" id="entTab" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                                <li><a href="#nonveg_entree" onClick="filter_appitizer('nonveg_entree');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false"  id="desTab">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                                <li><a href="#vegan_entree"  onClick="filter_entree('vegan_entree');" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
+                                <li><a href="#veg_entree" onClick="filter_entree('veg_entree');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                                <li><a href="#nonveg_entree" onClick="filter_entree('nonveg_entree');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                             </ul>
                         </div>
                         <div id="vegan_entree"  class="ui-body-d ui-content">
@@ -1012,11 +1293,11 @@
                                                                 </div> 
                                                             </div> 
                                                         </div>
-                                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1070,11 +1351,11 @@
                                                             </div> 
                                                         </div> 
                                                     </div>
-                                                    <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                        <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                    <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                        <label  for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                         <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:50%;" >ADD</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1127,11 +1408,11 @@
                                                         </div> 
                                                     </div> 
                                                 </div>
-                                                <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                                    <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                                <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                    <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                                     <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1184,11 +1465,11 @@
                                                 </div> 
                                             </div> 
                                         </div>
-                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1204,9 +1485,9 @@
     <div data-role="tabs" id="tabs" style="padding:0px;">   
         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
             <ul>
-                <li><a href="#vegan_dessert"  onClick="filter_dessert('vegan_dessert');" data-ajax="false"  id="appTab" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
-                <li><a href="#veg_dessert" onClick="filter_dessert('veg_dessert');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" id="entTab" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
-                <li><a href="#nonveg_dessert" onClick="filter_dessert('nonveg_dessert');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false"  id="desTab">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
+                <li><a href="#vegan_dessert"  onClick="filter_dessert('vegan_dessert');" data-ajax="false" style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
+                <li><a href="#veg_dessert" onClick="filter_dessert('veg_dessert');" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
+                <li><a href="#nonveg_dessert" onClick="filter_dessert('nonveg_dessert');"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
             </ul>
         </div>
         <div id="vegan_dessert"  class="ui-body-d ui-content">
@@ -1252,11 +1533,11 @@
                                                 </div> 
                                             </div> 
                                         </div>
-                                        <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                            <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                             <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                            <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1310,11 +1591,11 @@
                                             </div> 
                                         </div> 
                                     </div>
-                                    <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                        <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                    <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                        <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                         <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                        <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                        <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                     </div>
                                 </div>
                             </div>
@@ -1367,11 +1648,11 @@
                                         </div> 
                                     </div> 
                                 </div>
-                                <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                    <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                    <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                     <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                 </div>
                             </div>
                         </div>
@@ -1424,11 +1705,11 @@
                                         </div> 
                                     </div> 
                                 </div>
-                                <div style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;height:50px;">
-                                    <label for="spin" style="color:White;float:left;padding-right:10px;margin-top:12px;float:left;">Quantity</label>
+                                <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                    <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
                                     <!--<input type="number" data-role="spinbox" name="spin" data-options='{"type":"horizontal"}' value="0" min="0" max="100" /> -->
-                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;margin-top:8px;float:left;padding-right:10px;"/>
-                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:120px;" >ADD</a>
+                                    <input type="number"  min="1" max="10" value="1" id="quant" size='4' style="background-color:white;size:4;width:50px;float:left;padding-right:10px;"/>
+                                    <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:40%;" >ADD</a>
                                 </div>
                             </div>
                         </div>
@@ -1453,102 +1734,79 @@
     </div>
     <div style="background-color:white;opacity:0.9;height:80%;">
         <div class="container" style="padding:0px;margin:5px;" id="cart_container" >
-            
-            <!-- Placeholder for div - bill_items pageblock -->
-            <apex:pageBlock id="billed_items" title="Billed Items">
-                <apex:form >
-                    <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat" >
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name} 
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
-                            </div>
-                            <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}">
-                                <div class="list-group" >
-                                    <div class="list-group-item" style="margin:0px;padding:0px;">
-                                        <apex:commandButton value="+" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>   
-                                        <apex:commandButton value="-" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                        <apex:commandButton value="X" style="border-radius:50%;color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                    </div>
+
+            <div id="id_est_del" class="est_del"></div>
+                <apex:pageBlock id="billed_items" title="Billed Items">
+                    
+                    <apex:form >
+                        <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
+                            <button type="button" class="btn btn-primary btn-edit" aria-label="Edit Items" onclick="btn_edit_click()">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            Edit Items
+                            </button>
+                        </a>
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name}
+                                            <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                            </apex:outputPanel>
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
                                 </div>
-                            </apex:outputPanel>
-                        </div>
-                    </apex:repeat>
-                </apex:form>
-            </apex:pageBlock>
-            
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
             
             <!-- Placeholder for div - current_bill pageblock -->
-            <apex:pageBlock id="current_bill">
-                <div class="bs-example" style="cursor:default;">
-                    <div class="list-group" style="cursor:default;">
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon">Taxes</span> 
-                            <span class="badge">{!FoodOrder.Tax__c}</span>
-                        </a>
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon">Current Bill</span> 
-                            <span class="badge">{!FoodOrder.TotalPrice__c}</span>
-                        </a>
+                <apex:pageBlock id="current_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span>Taxes<span class="badge">{!FoodOrder.Tax__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span>Current Bill<span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </apex:pageBlock>
-            
+                </apex:pageBlock>
+
             
             <!-- Placeholder for div - cart_table pageblock -->
-            <apex:pageBlock id="cart_table" title="Cart">
-                <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons"/>
-                    
-                    <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name} 
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
-                            </div>
-                            <apex:outputPanel style="horizontal-align:center;" >
-                                <div class="list-group" >
-                                    <div class="list-group-item" style="margin:0px;padding:0px;">
-                                        <apex:commandButton value="+" style="border-radius:50%;font:bold 15px;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>   
-                                        <apex:commandButton value="-" style="border-radius:50%; font-weight:bold;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                        <apex:commandButton value="X" style="border-radius:50%; color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>
-                                    </div>
+                <apex:pageBlock id="cart_table" title="Cart">
+                    <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content"/>
+                                    
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
                                 </div>
-                            </apex:outputPanel>
-                        </div>
-                    </apex:repeat>
-                    
+                            </div>
+                        </apex:repeat>
                     <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
-                        <apex:commandButton style="height:30px;width:100%" value="Place Order"  action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton style="height:30px;width:100%" value="Place Order"  onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
                     <div class ="row" style=" margin:3px 0 0 0;" id="reset_order">                                                                
-                        <apex:commandButton style="height:30px;width:100%;" value="Reset Cart"  rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton style="height:30px;width:100%;" value="Reset Cart"  rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
-                </apex:form>
-            </apex:pageBlock>
-            
+                    </apex:form>
+                </apex:pageBlock>
+                
             
             <!-- Placeholder for div - estimated_bill pageblock -->
             <apex:pageBlock id="estimated_bill">
@@ -1588,6 +1846,190 @@ $(document ).ready(function() {
     });
     
 });   
+
+//plugin bootstrap minus and plus
+//http://jsfiddle.net/laelitenetwork/puJ6G/
+//jQuery('.btn-number').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_number_click(obj){
+    //e.preventDefault();
+    
+    fieldName = jQuery(obj).attr('data-field');
+    type      = jQuery(obj).attr('data-type');
+    var input = jQuery("input[name='"+fieldName+"']");
+    var currentVal = parseInt(input.val());
+    if (!isNaN(currentVal)) {
+        if(type == 'minus') {
+            
+            if(currentVal > input.attr('min')) {
+                input.val(currentVal - 1).change();
+            } 
+            if(parseInt(input.val()) == input.attr('min')) {
+                jQuery(obj).attr('disabled', true);
+            }
+
+        } else if(type == 'plus') {
+
+            if(currentVal < input.attr('max')) {
+                input.val(currentVal + 1).change();
+            }
+            if(parseInt(input.val()) == input.attr('max')) {
+                jQuery(obj).attr('disabled', true);
+            }
+
+        }
+    } else {
+        input.val(0);
+    }
+}
+
+//jQuery('.input-number').focusin(function(){
+//pass the "this" object in the call to get it in obj.
+function input_number_focusin(obj){
+   jQuery(obj).data('oldValue', jQuery(obj).val());
+}
+
+
+//Below are the javascript functions for new cart UI with modal popup.
+
+//jQuery('.input-number').change(function() {
+//pass the "this" object in the call to get it in obj.
+function input_number_change(obj){
+    //setting the changed flag true to enable the save button.
+    jQuery('.btn-save').attr('disabled',false);
+    console.log(obj);
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('name');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    minValue =  parseInt(jQuery(obj).attr('min'));
+    maxValue =  parseInt(jQuery(obj).attr('max'));
+    valueCurrent = parseInt(jQuery(obj).val());
+    
+    name = jQuery(obj).attr('name');
+    if(valueCurrent >= minValue) {
+        jQuery(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the minimum value was reached');
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
+    }
+    if(valueCurrent <= maxValue) {
+        jQuery(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the maximum value was reached');
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
+    }
+    console.log(obj);
+    console.log(parseInt(jQuery(obj).val()));
+    createNewChangedObj(fieldName,parseInt(jQuery(obj).val()),'edit');
+
+}
+
+function btn_delete_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    element[0].innerHTML = 'To be Deleted!!!';
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    createNewChangedObj(fieldName,null,'delete');
+    
+}
+
+function btn_deliver_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    //element[0].innerHTML = 'TO be Deleted!!!';
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    createNewChangedObj(fieldName,null,'deliver');
+    
+}
+
+function createNewChangedObj(id,newQuantity,operation){
+    var orderItemObj = new sforce.SObject("Order_Item__c");
+        orderItemObj.Id = id;
+        if(operation.toLowerCase()=='edit')
+            orderItemObj.Quantity__c = parseInt(newQuantity);
+        else if(operation.toLowerCase()=='delete')
+            orderItemObj.Delete_Status__c = 'Yes';
+        else if(operation.toLowerCase()=='deliver')
+            orderItemObj.Status__c = 'Delivered';
+        console.log(orderItemObj);
+        console.log(o);
+        o.changedOrderItemsMap[id] = orderItemObj;
+        console.log(o.changedOrderItemsMap);
+}
+
+
+//jQuery(".input-number").keydown(function (e) {
+//pass the "event" object in the call to get it in e.
+function input_number_keydown(e){
+        // Allow: backspace, delete, tab, escape, enter and .
+        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    }
+
+var OrderedItems = function (){
+    console.log('OrderedItems class instantiated');
+    this.origOrderedItems;
+    this.changedOrderItemsMap = {};
+    this.changedOrderItems=new Array();
+    this.convertToArray = function() {
+        this.changedOrderItems = jQuery.map(this.changedOrderItemsMap, function(value, index) {
+        return [value];
+        });
+    }
+}
+
+var o = new OrderedItems();
+
+//jQuery('.btn-save').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_save_click(obj){
+    console.log('Changes saved');
+    o.origOrderedItems = {! orderItemsListSerialized};
+    console.log(OrderedItems.origOrderedItems);
+    o.convertToArray();
+    console.log(o.changedOrderItems);
+    var result = sforce.connection.update(o.changedOrderItems);
+    console.log(result);
+    /*if (!result[0].getBoolean('success')) 
+    { 
+        alert('An error occurred updating this record:\n\n' + result[0].errors.message); 
+    }*/
+
+    //Calling the visualforce actionFunction called sayHello 
+    //to rerender the page components given in the actionFunction tag.
+    sayHello();
+    
+    //disable the save changes button again since the changes are saved now
+    jQuery('.btn-save').attr('disabled',true);
+    
+}
+
+function btn_edit_click(){
+    sayHello();
+}
+
 
 </script>
 

@@ -49,8 +49,8 @@
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
-    <enableReports>false</enableReports>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
@@ -60,6 +60,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -73,6 +74,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -82,6 +84,7 @@
         <label>Location</label>
         <length>20</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -91,6 +94,7 @@
         <externalId>false</externalId>
         <label>Order Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
@@ -99,6 +103,7 @@
         <displayFormat>O-{00000000}</displayFormat>
         <externalId>false</externalId>
         <label>Order Id</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>AutoNumber</type>
     </fields>
@@ -112,6 +117,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -124,6 +130,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -150,6 +157,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
@@ -160,6 +168,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>true</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -173,6 +182,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -185,6 +195,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -195,6 +206,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -208,6 +220,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -220,6 +233,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -244,6 +258,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
     </listViews>
     <nameField>
         <label>Food Order Name</label>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Food Orders</pluralLabel>

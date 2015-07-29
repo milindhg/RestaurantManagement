@@ -55,6 +55,20 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>Avg_Delivery_Time__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Delivered_Time__c  -  Picked_Up_Time__c)*1440</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Avg Delivery Time</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Delete_Status__c</fullName>
         <description>Used if the order item is deleted by the customer</description>
         <externalId>false</externalId>

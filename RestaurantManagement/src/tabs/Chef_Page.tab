@@ -3,5 +3,5 @@
     <label>Chef Page</label>
     <mobileReady>false</mobileReady>
     <motif>Custom18: Form</motif>
-    <page>Chef_Pending_Orders</page>
+    <page>Chef_Page</page>
 </CustomTab>
