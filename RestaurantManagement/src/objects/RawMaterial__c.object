@@ -56,7 +56,7 @@
     <fields>
         <fullName>Available__c</fullName>
         <externalId>false</externalId>
-        <formula>QuantityRollup__c  -  Used__c</formula>
+        <formula>QuantityRollup__c  -   Used_till_now__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Available</label>
         <precision>18</precision>
@@ -68,20 +68,8 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Inventory__c</fullName>
-        <externalId>false</externalId>
-        <label>Inventory</label>
-        <referenceTo>Inventory__c</referenceTo>
-        <relationshipName>RawMaterials</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Name__c</fullName>
+        <caseSensitive>false</caseSensitive>
         <externalId>false</externalId>
         <label>Name</label>
         <length>20</length>
@@ -89,7 +77,7 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>QuantityRollup__c</fullName>
@@ -103,12 +91,49 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Restaurant__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Restaurant</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>Raw Materials</relationshipLabel>
+        <relationshipName>Raw_Materials</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Used__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
-        <label>Used</label>
+        <label>Used now</label>
         <precision>18</precision>
         <required>false</required>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Used_till_now__c</fullName>
+        <externalId>false</externalId>
+        <label>Used till now</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>threshold__c</fullName>
+        <externalId>false</externalId>
+        <label>threshold</label>
+        <precision>18</precision>
+        <required>true</required>
         <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -125,11 +150,6 @@
         <fullName>Indiana</fullName>
         <columns>NAME</columns>
         <filterScope>Everything</filterScope>
-        <filters>
-            <field>Inventory__c</field>
-            <operation>equals</operation>
-            <value>Indiana</value>
-        </filters>
         <label>Indiana</label>
     </listViews>
     <nameField>
@@ -139,5 +159,5 @@
     </nameField>
     <pluralLabel>Raw Materials</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

@@ -1,4 +1,4 @@
-<apex:page sidebar="false" controller="ChefListController" showHeader="false">
+<apex:page sidebar="false" controller="Copy_ChefListController" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -24,32 +24,54 @@
         var hash = new Object();
        
         function getOrdersOnRefresh(){
-           var result = sforce.apex.execute("ChefListController",
+           var result = sforce.apex.execute("Copy_ChefListController",
                                              "handleRefreshPage",
                                              {});
                                              
            for(i=0;i<result.length;i++){
-               $('#tbody').append(
-                '<tr class=\"fontStyleTr border\" id=\"' + result[i].Id + '\"><td class=\"text-center border\">' + result[i].Table_Number__c + 
+               if(result[i].Status__c == 'Pending'){
+                   $('#tbody').append(
+                    '<tr class=\"fontStyleTr border\" id=\"' + result[i].Id + '\"><td class=\"text-center border\">' + result[i].Table_Number__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Type__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Food_Item_Name__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Quantity__c + 
+                    
+                    '</td><td id=\"orderStatus_' + result[i].Id + '\" class=\"border text-center\">Pending'+
+                    '</td><td class=\"border text-center\">' +
+                          '<button id=\"accept_' + result[i].Id + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
+                                 result[i].Id + '\',\'' +
+                                 result[i].Food_Order__c + '\',\'' +
+                                 result[i].Id + '\');\">Accept</button>' + 
+                                 
+                    '<button disabled=\"disabled\" id=\"ready_' + result[i].Id + '\" class=\"readyBtn\" onClick=\"ready(\''+ result[i].Id + '\',\'' + result[i].Id + '\');\" >Ready</button>' + '</td></tr>');  
+                 }
+                else{
+                    $('#tbody').append(
+                    '<tr class=\"fontStyleTr border\" id=\"' + result[i].Id + '\"><td class=\"text-center border\">' + result[i].Table_Number__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Type__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Food_Item_Name__c + 
+                    
+                    '</td><td class=\"border text-center\">' + result[i].Quantity__c + 
+                    
+                    '</td><td id=\"orderStatus_' + result[i].Id + '\" class=\"border text-center\">Pending'+
+                    '</td><td class=\"border text-center\">' +
+                          '<button id=\"accept_' + result[i].Id + '\" class=\"acceptBtn\" disabled=\"disabled\" onClick=\"accept(\'' +
+                                 result[i].Id + '\',\'' +
+                                 result[i].Food_Order__c + '\',\''+
+                                 result[i].Id + '\');\">Accept</button>' + 
+                                 
+                    '<button id=\"ready_' + result[i].Id + '\" class=\"readyBtn\" onClick=\"ready(\''+ result[i].Id + '\',\'' + result[i].Id + '\');\" >Ready</button>' + '</td></tr>');  
                 
-                '</td><td class=\"border text-center\">' + result[i].Type__c + 
-                
-                '</td><td class=\"border text-center\">' + result[i].Food_Item_Name__c + 
-                
-                '</td><td class=\"border text-center\">' + result[i].Quantity__c + 
-                
-                '</td><td id=\"orderStatus_' + result[i].Id + '\" class=\"border text-center\">Pending'+
-                '</td><td class=\"border text-center\">' +
-                      '<button id=\"accept_' + result[i].Id + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
-                             result[i].Id + '\',\'' +
-                             result[i].Food_Order__c + '\');\">Accept</button>' + 
-                             
-                '<button disabled=\"disabled\" id=\"ready_' + result[i].Id + '\" class=\"readyBtn\" onClick=\"ready(\''+ result[i].Id + '\',\''+
-                             result[i].Food_Order__c + '\');\" >Ready</button>' + '</td></tr>');  
+                }
            }                                 
         }
         
-        function accept(orderItemId, foodOrderId){
+        function accept(orderItemId, foodOrderId, oid){
            //alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
         
            var result = sforce.apex.execute("ChefListController",
@@ -57,19 +79,19 @@
                                              {orderItemId, foodOrderId
                                              });
                                              
-           document.getElementById("accept_"+orderItemId).disabled = true;
-           $('#orderStatus_'+orderItemId).text('Preparing');
-           $('#ready_'+orderItemId).removeAttr('disabled');
+           document.getElementById("accept_"+oid).disabled = true;
+           $('#orderStatus_'+oid).text('Preparing');
+           $('#ready_'+oid).removeAttr('disabled');
        }
         
-        function ready(orderItemId){
-                                              //alert('Order Item Id: ' + orderItemId);
+        function ready(orderItemId, oid){
+             //alert('Order Item Id: ' + orderItemId);
              var result  = sforce.apex.execute("ChefListController",
                                                "itemReadyUpdate",
                                                {orderItemId
                                                });
-            $('#orderStatus_'+orderItemId).text('Ready');
-            $('#'+orderItemId).remove();
+            $('#orderStatus_'+oid).text('Ready');
+            $('#'+oid).remove();
 
         }
         
@@ -82,47 +104,46 @@
            });
         
            $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-               var result = 10;
-                //$('#' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "")).remove();
-               
+                var result = 10;
+                var user_resto_id = '{!$User.Restaurant_Id__c}';
+                 
                 var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '_' + new Date().getTime();
-               //alert(oid);
+                
+                //alert(oid);
                 var item_name = JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "");
                 var del_status = JSON.stringify(message.data.sobject.Delete_Status__c).replace(/\"/g, "");
                 var item_qty = parseInt(JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, ""));
+                var item_resto_id = JSON.stringify(message.data.sobject.Restaurant_Id__c).replace(/\"/g, "");
+                
                 result = updateQty(item_name, item_qty);
                 
-               //alert('Return Value: '+result);
-                
-                if(del_status == 'No'){
-                    if(result == 0){
-                      removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
-                      result = item_qty;
-                     }
-                    
-                    $('#tbody').append(
-                    '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center\">' + result + 
-                    
-                    '</td><td id=\"orderStatus_' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\" class=\"border text-center\">Pending'+
-                    '</td><td class=\"border text-center\">' +
-                          '<button id=\"accept_' + oid + '\" class=\"acceptBtn\" onClick=\"accept(\'' +
-                                 oid + '\',\'' +
-                                 JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Accept</button>' + 
-                                 
-                    '<button disabled=\"disabled\" id=\"ready_' + oid + '\" class=\"readyBtn\" onClick=\"ready(\''+ oid + '\');\" >Ready</button>' + '</td></tr>');   
-                 
-
-
-                  }          
-                else{
-                   removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
-                }       
+                if(user_resto_id == item_resto_id){
+                    if(del_status == 'No'){
+                        if(result == 0){
+                          removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
+                          result = item_qty;
+                         }
+                        
+                        $('#tbody').append(
+                        '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center\">' + result + 
+                        
+                        '</td><td id=\"orderStatus_' + oid + '\" class=\"border text-center\">Pending'+
+                        '</td><td class=\"border text-center\">' +
+                              '<button id=\"accept_' + oid + '\" class=\"acceptBtn\" onClick=\"accept(\'' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\'' + JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\',\''+oid+'\');\">Accept</button>' + 
+                                     
+                        '<button disabled=\"disabled\" id=\"ready_' + oid + '\" class=\"readyBtn\" onClick=\"ready(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+oid+'\');\" >Ready</button>' + '</td></tr>');   
+                     
+                       }          
+                    else{
+                       removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
+                    } 
+                 }      
             });
             
         });

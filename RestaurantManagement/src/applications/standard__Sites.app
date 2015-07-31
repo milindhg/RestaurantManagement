@@ -20,4 +20,6 @@
     <tab>MenuCarts_Modal</tab>
     <tab>Chef__c</tab>
     <tab>Restaurant__c</tab>
+    <tab>Tables_New</tab>
+    <tab>Bill__c</tab>
 </CustomApplication>

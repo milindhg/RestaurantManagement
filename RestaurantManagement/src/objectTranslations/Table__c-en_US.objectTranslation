@@ -37,6 +37,12 @@
         <name>No_of_seats__c</name>
     </fields>
     <fields>
+        <help><!-- Restaurant Branch --></help>
+        <label><!-- Restaurant Branch --></label>
+        <name>Restaurant_Branch__c</name>
+        <relationshipLabel><!-- Tables --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
         <picklistValues>

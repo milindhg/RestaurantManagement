@@ -36,7 +36,7 @@ global class MenuItemListController {
     
     public Food_Order__c getFoodOrder(){
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
-            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c,
+            f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c,
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' and f.Location__c=:selLocation];
@@ -49,7 +49,7 @@ global class MenuItemListController {
         {
     foodOrderId= existingOrder[0].Id;
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c,f.Location__c,
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c,f.Location__c,
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -352,27 +352,35 @@ global class MenuItemListController {
         System.debug(item);
         System.debug(quant);
         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
-            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location];
                 
         if(existingOrder.isEmpty()){
+            	List<Restaurant__c> resto_list=[Select r.Zip__c, r.SystemModstamp, r.Street_Address__c, r.State__c,
+                                     r.Restaurant_ID__c, r.Phone__c, r.OwnerId, r.Name, r.Manager__c,
+                                    r.LastViewedDate, r.LastReferencedDate, r.LastModifiedDate, 
+                                    r.LastModifiedById, r.LastActivityDate, r.IsDeleted, r.Id, 
+                                    r.Email__c, r.CreatedDate, r.CreatedById, r.Country__c, r.City__c, 
+                                    r.Branch__c, r.Apartment_Suite__c From Restaurant__c r where r.Branch__c='Sawmill'];
+                    
                 Food_Order__c order = new Food_Order__c();
                 order.Status__c='New';
                 order.TableNumber__c=tableid;
                 order.Location__c= location;
+            	order.Restaurant_Branch__c =resto_list[0].Id;
                 insert order;  
         }               
         
         List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
-            f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Name, 
+            f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location ];
         String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
-                                        f.Prep_Time__c,f.Calories__c, f.OwnerId, f.Name, f.LastViewedDate, 
+                                        f.Prep_Time__c,f.Calories__c,  f.Name, f.LastViewedDate, 
                                         f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
                                         f.IsDeleted, f.Id, f.Description__c, f.CreatedDate, f.CreatedById, 
                                         f.Category__c From Food_Item__c f where f.Name=:item_name];
@@ -384,6 +392,7 @@ global class MenuItemListController {
         orderitem.Food_Item__c= food_items[0].Id;
         orderitem.Food_Order__c= orders[0].Id;
         //orderitem.Location__c= location;
+        orderitem.Restaurant_Id__c= 'R-0000';
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
         

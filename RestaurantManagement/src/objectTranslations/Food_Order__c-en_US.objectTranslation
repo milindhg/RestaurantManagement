@@ -39,6 +39,12 @@
         <name>Price__c</name>
     </fields>
     <fields>
+        <help><!-- Branch from which the food was ordered --></help>
+        <label><!-- Restaurant Branch --></label>
+        <name>Restaurant_Branch__c</name>
+        <relationshipLabel><!-- Food Orders --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Status --></label>
         <name>Status__c</name>
         <picklistValues>

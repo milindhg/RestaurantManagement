@@ -31,7 +31,7 @@
             <name>Alert_to_make_a_Purchase</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>RawMaterial__c.Available__c</field>
             <operation>lessThan</operation>

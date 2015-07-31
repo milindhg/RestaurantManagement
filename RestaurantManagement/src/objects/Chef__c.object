@@ -264,6 +264,18 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Restaurant_Id__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Restaurant Id</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>Chefs</relationshipLabel>
+        <relationshipName>Chefs</relationshipName>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Total_Chefs__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
@@ -278,6 +290,11 @@
     <label>Chef</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>OBJECT_ID</columns>
+        <columns>NAME</columns>
+        <columns>Location__c</columns>
+        <columns>Restaurant_Id__c</columns>
+        <columns>Total_Chefs__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

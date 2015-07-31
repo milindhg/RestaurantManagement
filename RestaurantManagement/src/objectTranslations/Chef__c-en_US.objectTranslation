@@ -213,6 +213,11 @@
         </picklistValues>
     </fields>
     <fields>
+        <label><!-- Restaurant Id --></label>
+        <name>Restaurant_Id__c</name>
+        <relationshipLabel><!-- Chefs --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Total Chefs --></label>
         <name>Total_Chefs__c</name>
     </fields>

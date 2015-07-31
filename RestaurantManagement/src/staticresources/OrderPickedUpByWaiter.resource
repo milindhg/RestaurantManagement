@@ -1,7 +1,7 @@
 PushTopic pushTopic = new PushTopic();
 pushTopic.Name = 'OrderPickedUpByWaiter';
 pushTopic.Query = ' SELECT Id, Table_Number__c, Food_Item_Name__c, ' +
-                  '        Type__c, Quantity__c, Food_Order__c ' +
+                  '        Type__c, Quantity__c, Food_Order__c, Restaurant_Id__c ' +
                   ' FROM   Order_Item__c ' +
                   ' WHERE  Status__c = \'Ready\'' +
     			  ' AND    Delete_Status__c = \'No\'';

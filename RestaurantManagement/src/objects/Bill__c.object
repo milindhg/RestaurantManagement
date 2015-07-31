@@ -82,6 +82,19 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Restaurant_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Restaurant ID</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>Bills</relationshipLabel>
+        <relationshipName>Bills</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
         <fullName>TableNumber__c</fullName>
         <externalId>false</externalId>
         <label>TableNumber</label>
@@ -103,11 +116,16 @@
         <type>Currency</type>
     </fields>
     <label>Bill</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Bill Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Bills</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

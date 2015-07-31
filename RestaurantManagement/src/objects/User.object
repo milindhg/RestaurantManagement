@@ -87,6 +87,17 @@
         <type>Hierarchy</type>
     </fields>
     <fields>
+        <fullName>Restaurant_Id__c</fullName>
+        <defaultValue>&apos;NA&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Restaurant Id</label>
+        <length>100</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>agf__External_ID__c</fullName>
         <caseSensitive>true</caseSensitive>
         <deprecated>false</deprecated>

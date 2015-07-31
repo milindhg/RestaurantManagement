@@ -26,6 +26,10 @@
                 <behavior>Required</behavior>
                 <field>Food_Item__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Restaurant_Branch__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
@@ -60,6 +64,11 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Food_Order__c</fields>
+        <fields>Quantity__c</fields>
+        <fields>Restaurant_Id__c</fields>
+        <fields>Table_Number__c</fields>
+        <fields>Status__c</fields>
         <relatedList>Order_Item__c.Price__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

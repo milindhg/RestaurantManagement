@@ -1,0 +1,1068 @@
+<!-- /**
+ * @author Akshay Jarandikar and Milind Gokhale
+ * Creation Date: July 7, 2015
+ * This class is the front end visualforce page created for parallel development of MenuCart functionality,
+ * This code is to be periodically integrated with the frontend visualforce menu page. 
+ */
+ -->
+
+<apex:page showheader="false" controller="Cart_New"  standardstylesheets="false">
+    <style type="text/css">
+           
+        .orderitem{
+            height:40px;
+        }
+        .quant_label{
+            margin-top:5px;
+        }
+        
+        #quant{
+            height:35px;
+            margin-top:1px;
+        }
+        .ui-input-text input, .ui-input-search input{
+            font-size:12px;
+            height:25px;
+        }
+        .ui-btn-icon-bottom{
+        padding-bottom:2em;
+        }
+        .tablist-left {
+        width: 25%;
+        display: inline-block;
+        }
+        .tablist-content {
+        width: 60%;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 5%;
+        }
+        
+        .ui-page-theme{
+        background-color:green;
+        }
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
+        .ui-input-text input, .ui-input-search input{
+        min-height:20px;
+        height:35px;
+        margin-right:10px;
+        }
+        
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
+        
+        #billed_items{
+        background-color:maroon;
+        }
+        
+        .list-group-item.active.ui-link{
+        color:white;
+        text-shadow:none;
+        font-size:12px;
+        }
+        
+        .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+        background-image:none;
+        background-color:maroon;
+        border-color:white;
+        font-size:12px;
+        }
+        
+        .list-group{
+        background-color:maroon;
+        color:maroon;
+        font-size:12px;
+        }
+        
+        #panel_body1 {
+        padding:0px;
+        position: absolute;   
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        }
+        
+        .panel_body1 {
+        padding:0px;
+        position: absolute;   
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        }
+        
+        .page1 {
+        width: 100%;
+        background: white;
+        position: relative;
+        }
+        .page2 {
+        width: 100%;
+        background: white;
+        position: relative;
+        display: none;
+        }
+        
+        .slideme {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        width:100%;
+        }
+        
+        .flip {
+        -webkit-backface-visibility:hidden;
+        -webkit-transform:translateX(0); 
+        -moz-backface-visibility:hidden;
+        -moz-transform:translateX(0);
+        }
+        
+        .flip.out {
+        -webkit-transform: rotateY(-90deg) scale(.9);
+        -webkit-animation-name: flipouttoleft;
+        -webkit-animation-duration: 175ms;
+        -moz-transform: rotateY(-90deg) scale(.9);
+        -moz-animation-name: flipouttoleft;
+        -moz-animation-duration: 175ms;
+        }
+        
+        .flip.in {
+        -webkit-animation-name: flipintoright;
+        -webkit-animation-duration
+        : 225ms;
+        -moz-animation-name: flipintoright;
+        -moz-animation-duration: 225ms;
+        }
+        
+        .flip.out.reverse {
+        -webkit-transform: rotateY(90deg) scale(.9);
+        -webkit-animation-name: flipouttoright;
+        -moz-transform: rotateY(90deg) scale(.9);
+        -moz-animation-name: flipouttoright;
+        }
+        
+        .flip.in.reverse {
+        -webkit-animation-name: flipintoleft;
+        -moz-animation-name: flipintoleft;
+        }
+        
+        @-webkit-keyframes flipouttoleft {
+        from { -webkit-transform: rotateY(0); }
+        to { -webkit-transform: rotateY(-90deg) scale(.9); }
+        }
+        
+        @-moz-keyframes flipouttoleft {
+        from { -moz-transform: rotateY(0); }
+        to { -moz-transform: rotateY(-90deg) scale(.9); }
+        }
+        
+        @-webkit-keyframes flipouttoright {
+        from { -webkit-transform: rotateY(0) ; }
+        to { -webkit-transform: rotateY(90deg) scale(.9); }
+        }
+        
+        @-moz-keyframes flipouttoright {
+        from { -moz-transform: rotateY(0); }
+        to { -moz-transform: rotateY(90deg) scale(.9); }
+        }
+        
+        @-webkit-keyframes flipintoleft {
+        from { -webkit-transform: rotateY(-90deg) scale(.9); }
+        to { -webkit-transform: rotateY(0); }
+        }
+        
+        @-moz-keyframes flipintoleft {
+        from { -moz-transform: rotateY(-90deg) scale(.9); }
+        to { -moz-transform: rotateY(0); }
+        }
+        
+        @-webkit-keyframes flipintoright {
+        from { -webkit-transform: rotateY(90deg) scale(.9); }
+        to { -webkit-transform: rotateY(0); }
+        }
+        
+        @-moz-keyframes flipintoright {
+        from { -moz-transform: rotateY(90deg) scale(.9); }
+        to { -moz-transform: rotateY(0); }
+        }
+        
+        h1{
+        color:maroon;
+        font-weight:bold;
+        text-shadow:none; 
+        }
+        
+        .swiper-container {
+        width: 100%;
+        height: 100%;
+        margin-left:auto;
+        margin-right:auto;
+        padding-bottom:100px;
+        }
+        
+        .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        height: 245px;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        }
+        
+        .col-sm-6{
+        margin-top:20px;
+        padding-top:0px;
+        }
+        
+        .panel-body {
+        background-color:white !important;
+        text-align:left !important;
+        padding:0px;
+        }
+        
+        .cardimage{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:cover;
+        top:0;
+        right:0;
+        height:180px;
+        }
+        
+        .offerimage{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.offer}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:100%;
+        }
+        
+        #content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
+        .content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
+        
+        #desc{
+        padding:10px;
+        height:50%;
+        font-size:16px;
+        text-shadow:none;
+        }
+        
+        desc{
+        padding:10px;
+        height:50%;
+        font-size:16px;
+        text-shadow:none;
+        }
+        
+        .panel-body > .text-center{
+        background-color:grey;
+        }
+        
+        #quantity_desc{
+        width:100%;
+        float:left;
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:160px;
+        }
+        
+        .quantity_desc{
+        width:100%;
+        float:left;
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:160px;
+        }
+        
+        .panel-default >.panel-heading {
+        background-image:none;
+        }
+        
+        .panel-default >.panel-heading > .panel-title {
+        color:white;
+        }
+        
+        #menu_btn, #view_cart_btn{
+        background-image:none;
+        background-color:maroon;
+        text-shadow:none;
+        width: 100%;
+        height: 50px;
+        }
+        
+        #open_cart{
+        background-color:maroon;
+        color:white;
+        text-shadow:none;
+        }
+        
+        #addorder{
+        padding:0px;
+        background-color:maroon !important;
+        color:White;
+        text-shadow:none;
+        margin-top:2px;
+        height:35px;
+        }
+        
+        #showdetail{
+        margin:auto;
+        padding:0px;
+        font-size:20px;
+        width:10px;
+        height:20px;
+        }
+        
+        #cart_items {
+        position:fixed;
+        overflow: scroll;
+        right:0;
+        width:100%;
+        z-index:55;
+        }     
+        
+        #stspecial {
+        position:fixed;
+        padding:0px;
+        left:0;  
+        }
+        
+        #stmenu{
+        height:100%;
+        position:fixed;
+        margin-top:335px;
+        left:0;
+        overflow:scroll;
+        }
+        
+        #menu_link, #view_cart_link{
+        text-align:left;
+        background-image:none;
+        color: black;
+        font-size: 18px;
+        text-shadow:none;
+        color:white;
+        width:100%;
+        height:50px;
+        padding:5px;
+        margin:0px;
+        }
+        
+        .ui-input-text{
+        margin:0px;
+        }
+        
+        /**Styling for the new cart UI: Starts **/
+        .list-group{
+        /* width: 200px;*/
+        margin-bottom:0px;
+        }
+        
+        .bs-example{
+        margin-bottom: 10px;
+        }
+        
+        .bPageBlock{
+        border:0px;
+        }
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+        margin:0px;
+        }
+        
+        .list-group-item.active>.badge, .nav-pills>.active>a>.badge {
+           color: #800000;
+        }
+        
+        /**Styling for the new cart UI: End **/
+        
+        .est_del{
+          display:none;
+          font-size:17px;
+          font-weight:bold;
+          color:maroon;
+        }
+    </style>
+    <head>
+        
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.0/jquery-ui.js" />
+        <apex:includeScript value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" />
+        <apex:includeScript value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" />
+        <apex:includeScript value="{!$Resource.cometd}"/>
+        <apex:includeScript value="{!$Resource.json2}"/>
+        <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+        <apex:includeScript value="/soap/ajax/29.0/connection.js"/>
+        <apex:includeScript value="/soap/ajax/29.0/apex.js"/>
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"/>
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.min.js"/>
+
+        
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"  />
+        <apex:stylesheet value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"  />
+        <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.min.css"  />
+        
+
+<script type="text/javascript">
+    sforce.connection.sessionId = "{!$Api.Session_ID}";
+    $j = jQuery.noConflict();
+    
+    jQuery(document).ready(function() {
+        
+        sayHello();
+        jQuery.cometd.init({
+            url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+        });
+        
+        jQuery.cometd.subscribe('/topic/OrderAcceptedByChef', function(message) {
+            sayHello();
+        });
+    });
+    
+    function handlePlaceOrder(order_id, location, tableid){
+        //alert('order id: '+order_id);
+        //alert('location: '+location);
+        //alert('table id: '+tableid);
+       var result = sforce.apex.execute("Cart_New",    
+                                        "placeOrder",      
+                                        {order_id,
+                                        location,
+                                        tableid});
+                                        
+       //alert('Result: '+result);                                 
+                                        
+       if(result!=''){
+         $j('#id_est_del').text('Estimated Delivery at '+result);
+         $j('#id_est_del').css('display','block');
+        }
+        sayHello();                              
+    }   
+
+    //Dummy function to rerender the cart
+    function sayHello(){
+        
+        }
+
+
+</script>        
+        
+    </head>
+    <body>
+
+
+
+        <apex:pageBlock >
+
+
+            <div class="container">
+            <apex:outputPanel id="cart_icon">
+                <span class="glyphicon glyphicon-shopping-cart" style="width:auto !important;font-size:x-large;margin-top:10px;" aria-hidden="true" >
+                    <span class="glyphicon badge" style="margin-top:-30px;margin-left:-10px;">{! CartSize}</span>
+                </span>
+            </apex:outputPanel>
+<!-- Div for modal popup -->
+<div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                <apex:outputPanel id="modal_content">
+                    <apex:form >
+                        <div class="modal-header">
+                             
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                Edit Order
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                    <apex:pageBlock title="Cart">
+
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat_cart_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group" style="cursor:default;">
+                                            <div class="list-group-item" style="cursor:default;">
+                                                <div>
+                                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
+                                                        {!pitem.name} 
+                                                    <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <div>
+                                                    <div class="row" style="margin-top:5px;">
+                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            <div class="input-group">
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-minus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                                  <input type="text" orderItemType="cart" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-plus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                              </div>
+                                                            </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                            <div style="text-align: right;">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
+                                                                <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                              </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;cursor:default;">
+                                    <div class="list-group-item" style="cursor:default;">
+                                        <div>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge" name="taxEstimate">{!FoodOrder.TaxEstimate__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Estimated Bill
+                                                <span class="badge" name="totalPriceEstimate">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+                </div>
+
+                <div class="col-md-6">
+
+                    <apex:pageBlock title="Placed Order">
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group" style="cursor:default;">
+                                            <div class="list-group-item" style="cursor:default;">
+                                                <div>
+                                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
+                                                        {!pitem.name}
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
+                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
+                                                            <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
+                                                        </button>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                        <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                                    </apex:outputPanel>
+                                                    <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
+                                                <div class="row" style="margin-top:5px;">
+                                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                        <div class="input-group">
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                                  </button>
+                                                              </span>
+                                                              <input type="text" orderItemType="placed" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                                  </button>
+                                                              </span>
+                                                          </div>
+                                                        </div>
+                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                        <div style="text-align: right;">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
+                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;cursor:default;">
+                                    <div class="list-group-item" style="cursor:default;">
+                                        <div>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge" name="tax">{!FoodOrder.Tax__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Current Bill
+                                                <span class="badge" name="totalPrice">{!FoodOrder.TotalPrice__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+
+                </div>
+            </div>
+
+                
+                            
+                            
+                            
+                        </div>
+                        <div class="modal-footer">
+                             
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button> 
+
+                            <button type="button" class="btn btn-default btn-save" onclick="btn_save_click(this)" data-dismiss="modal" disabled="true">
+                                Save changes
+                            </button>
+                        </div>
+                    </apex:form>
+                </apex:outputPanel>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+                        <!-- Placeholder for div - bill_items pageblock -->
+                <apex:pageBlock id="billed_items" title="Billed Items">
+                    <apex:form >
+                        <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
+                            <button type="button" class="btn btn-default btn-edit" aria-label="Edit Items" onclick="btn_edit_click()">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            Edit Items
+                            </button>
+                        </a>
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name}
+                                            <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                            </apex:outputPanel>
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
+                    
+                    <!-- Placeholder for div - current_bill pageblock -->
+                <apex:pageBlock id="current_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Taxes
+                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Current Bill
+                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                            </a>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+
+                        <!-- Placeholder for div - cart_table pageblock -->
+                <apex:pageBlock id="cart_table" title="Cart">
+                    <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons, modal_content, cart_icon, complete_order"/>
+                                    
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Place Order" disabled="{! if(CartSize <=0,true,false)}" onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>                                        
+                        </div>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>
+                        </div>
+                    </apex:form>
+                </apex:pageBlock>
+                
+                <br/>
+                    <!-- Placeholder for div - estimated_bill pageblock -->
+                <apex:pageBlock id="estimated_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Taxes
+                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Estimated Bill
+                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                            </a>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+                
+                <!-- Placeholder for the complete order button --> 
+                <apex:outputPanel id="complete_order">
+                    <apex:form >
+                        <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
+                    </apex:form>
+                </apex:outputPanel>
+            </div>                        
+              
+        </apex:pageBlock>
+        
+
+<!-- src="{!$Resource.PlusMinusJs}" -->
+
+<script type="text/javascript" > 
+    //plugin bootstrap minus and plus
+//http://jsfiddle.net/laelitenetwork/puJ6G/
+//jQuery('.btn-number').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_number_click(obj){
+    //e.preventDefault();
+    
+    fieldName = jQuery(obj).attr('data-field');
+    type      = jQuery(obj).attr('data-type');
+    var input = jQuery("input[name='"+fieldName+"']");
+    var currentVal = parseInt(input.val());
+    if (!isNaN(currentVal)) {
+        if(type == 'minus') {
+            
+            if(currentVal > input.attr('min')) {
+                input.val(currentVal - 1).change();
+            } 
+            if(parseInt(input.val()) == input.attr('min')) {
+                jQuery(obj).attr('disabled', true);
+            }
+
+        } else if(type == 'plus') {
+
+            if(currentVal < input.attr('max')) {
+                input.val(currentVal + 1).change();
+            }
+            if(parseInt(input.val()) == input.attr('max')) {
+                jQuery(obj).attr('disabled', true);
+            }
+
+        }
+    } else {
+        input.val(0);
+    }
+}
+
+//jQuery('.input-number').focusin(function(){
+//pass the "this" object in the call to get it in obj.
+function input_number_focusin(obj){
+   jQuery(obj).data('oldValue', jQuery(obj).val());
+}
+
+//jQuery('.input-number').change(function() {
+//pass the "this" object in the call to get it in obj.
+function input_number_change(obj){
+    //setting the changed flag true to enable the save button.
+    jQuery('.btn-save').attr('disabled',false);
+    console.log(obj);
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('name');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    minValue =  parseInt(jQuery(obj).attr('min'));
+    maxValue =  parseInt(jQuery(obj).attr('max'));
+    valueCurrent = parseInt(jQuery(obj).val());
+    
+    name = jQuery(obj).attr('name');
+    if(valueCurrent >= minValue) {
+        jQuery(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the minimum value was reached');
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
+    }
+    if(valueCurrent <= maxValue) {
+        jQuery(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+    } else {
+        alert('Sorry, the maximum value was reached');
+        jQuery(obj).val(jQuery(obj).data('oldValue'));
+    }
+    console.log(obj);
+    console.log(parseInt(jQuery(obj).val()));
+    
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
+    createNewChangedObj(fieldName,parseInt(jQuery(obj).val()),'edit');
+    
+    //updating the quantity and price of the item being modified.
+    var totalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    //element = element.children(":first").children(":first").children(":last");
+    console.log('Old Total Price: ' + totalPriceElement[0].innerHTML);
+    console.log('Old Quantity: ' + quantityElement[0].innerHTML);
+    var oldTotalPrice = totalPriceElement[0].innerHTML;
+    var oldQuantity = quantityElement[0].innerHTML;
+    var rate = parseFloat(oldTotalPrice/oldQuantity);
+    var newQuantity = parseInt(jQuery(obj).val());
+    var newTotalPrice = newQuantity * rate;
+    newTotalPrice = newTotalPrice.toFixed(2);
+    totalPriceElement[0].innerHTML = newTotalPrice;
+    quantityElement[0].innerHTML = newQuantity;
+    
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate + ((newQuantity - oldQuantity) * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax + ((newQuantity - oldQuantity) * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice + ((newQuantity - oldQuantity) * rate) + ((newQuantity - oldQuantity) * rate * taxRate);
+    }
+    
+}
+
+function btn_delete_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
+    createNewChangedObj(fieldName,null,'delete');
+    
+    var itemTotalPriceElement = jQuery('span[name="totalPrice['+fieldName+']"]');
+    var quantityElement = jQuery('span[name="quantity['+fieldName+']"]');
+    console.log(parseFloat(itemTotalPriceElement[0].innerHTML));
+    console.log(parseFloat(quantityElement[0].innerHTML));
+    var itemTotalPrice = parseFloat(itemTotalPriceElement[0].innerHTML);
+    var oldQuantity = parseFloat(quantityElement[0].innerHTML);
+    var rate = parseFloat(itemTotalPrice/oldQuantity);
+    
+    //updating the total price estimate and tax estimate on the modification of the cart item.
+    var taxRate = 0.075;
+    var taxElement = jQuery('span[name="tax"]');
+    var totalPriceElement = jQuery('span[name="totalPrice"]');
+    var taxEstimateElement = jQuery('span[name="taxEstimate"]');
+    var totalPriceEstimateElement = jQuery('span[name="totalPriceEstimate"]');
+    oldTax = parseFloat(taxElement[0].innerHTML);
+    oldTotalPrice = parseFloat(totalPriceElement[0].innerHTML);
+    oldTaxEstimate = parseFloat(taxEstimateElement[0].innerHTML);
+    oldPriceEstimate = parseFloat(totalPriceEstimateElement[0].innerHTML);
+    taxEstimateElement[0].innerHTML = oldTaxEstimate - (oldQuantity * rate * taxRate);
+    totalPriceEstimateElement[0].innerHTML = oldPriceEstimate - (oldQuantity  * rate) - (oldQuantity * rate * taxRate);
+    
+    //updating the total price and tax on the modification of the placed item.
+    var orderItemType = jQuery(obj).attr('orderItemType');
+    if(orderItemType=='placed'){
+        taxElement[0].innerHTML = oldTax - (oldQuantity * rate * taxRate);
+        totalPriceElement[0].innerHTML = oldTotalPrice - (oldQuantity * rate) - (oldQuantity * rate * taxRate);
+    }
+    
+    
+    element[0].innerHTML = 'To be Deleted!!!';
+
+    
+}
+
+function btn_deliver_click(obj){ 
+    jQuery('.btn-save').attr('disabled',false);
+    var element = jQuery(obj).parent().parent().parent().parent().parent();
+    console.log(element[0]);
+    //element[0].innerHTML = 'TO be Deleted!!!';
+    
+    //get the id of the order item to be modified or deleted
+    fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+    
+    //adding the currently modified object to the list of items to be modified on clicking save changes.
+    createNewChangedObj(fieldName,null,'deliver');
+
+    
+}
+
+function createNewChangedObj(id,newQuantity,operation){
+    var orderItemObj = new sforce.SObject("Order_Item__c");
+        orderItemObj.Id = id;
+        if(operation.toLowerCase()=='edit')
+            orderItemObj.Quantity__c = parseInt(newQuantity);
+        else if(operation.toLowerCase()=='delete')
+            orderItemObj.Delete_Status__c = 'Yes';
+        else if(operation.toLowerCase()=='deliver'){
+            orderItemObj.Status__c = 'Delivered';
+            var dateObj = new Date().toISOString();
+            orderItemObj.Delivered_Time__c = dateObj ;
+        }
+        console.log(orderItemObj);
+        console.log(o);
+        o.changedOrderItemsMap[id] = orderItemObj;
+        console.log(o.changedOrderItemsMap);
+}
+
+
+//jQuery(".input-number").keydown(function (e) {
+//pass the "event" object in the call to get it in e.
+function input_number_keydown(e){
+        // Allow: backspace, delete, tab, escape, enter and .
+        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    }
+
+var OrderedItems = function (){
+    console.log('OrderedItems class instantiated');
+    this.origOrderedItems;
+    this.changedOrderItemsMap = {};
+    this.changedOrderItems=new Array();
+    this.convertToArray = function() {
+        this.changedOrderItems = jQuery.map(this.changedOrderItemsMap, function(value, index) {
+        return [value];
+        });
+    }
+}
+
+var o = new OrderedItems();
+
+//jQuery('.btn-save').click(function(e){
+//pass the "this" object in the call to get it in obj.
+function btn_save_click(obj){
+    console.log('Changes saved');
+    o.origOrderedItems = {! orderItemsListSerialized};
+    console.log(OrderedItems.origOrderedItems);
+    o.convertToArray();
+    console.log(o.changedOrderItems);
+    var result = sforce.connection.update(o.changedOrderItems);
+    console.log(result);
+    /*if (!result[0].getBoolean('success')) 
+    { 
+        alert('An error occurred updating this record:\n\n' + result[0].errors.message); 
+    }*/
+
+    //Calling the visualforce actionFunction called sayHello 
+    //to rerender the page components given in the actionFunction tag.
+    sayHello();
+    
+    //disable the save changes button again since the changes are saved now
+    jQuery('.btn-save').attr('disabled',true);
+    
+}
+
+function btn_edit_click(){
+    sayHello();
+}
+
+</script>
+    </body>
+</apex:page>

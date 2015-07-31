@@ -91,6 +91,16 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>Restaurant_ID__c</fields>
+        <fields>Name</fields>
+        <fields>Manager__c</fields>
+        <fields>Branch__c</fields>
+        <fields>Street_Address__c</fields>
+        <fields>State__c</fields>
+        <fields>City__c</fields>
+        <fields>Zip__c</fields>
+    </miniLayout>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.WHO_NAME</fields>
@@ -112,6 +122,35 @@
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Price__c</fields>
+        <fields>Food_Item__c</fields>
+        <relatedList>PriceBook__c.Restaurant_Branch__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Table_Number__c</fields>
+        <fields>Waiter__c</fields>
+        <fields>No_of_seats__c</fields>
+        <relatedList>Table__c.Restaurant_Branch__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Chef__c.Restaurant_Id__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Food_Order__c.Restaurant_Branch__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Bill__c.Restaurant_ID__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>RawMaterial__c.Restaurant__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

@@ -107,7 +107,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         
         //Get the Food Order object and update it with the newly calculated bill amounts.
         Food_Order__c myFoodOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, 
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c, 
                         f.Name, f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, 
                         f.LastModifiedById, f.IsDeleted, f.Id, f.DeliveryTime__c, 
                         f.CreatedDate, f.CreatedById 

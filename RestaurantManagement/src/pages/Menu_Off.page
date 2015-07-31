@@ -1580,106 +1580,90 @@ function once (seconds, callback) {
     <div style="width:100%;background-color:maroon;background-size:cover;color:white;text-shadow:none;padding:0px;margin:0px;margin-left:5px;">
         <h2>
             Order
-        </h2>  
+        </h2>
+        <apex:outputPanel id="cart_icon">
+            <span class="glyphicon glyphicon-shopping-cart" style="width:auto !important;font-size:x-large;margin-top:10px;" aria-hidden="true" >
+                <span class="glyphicon badge" style="margin-top:-40px;margin-left:-35px;">{! CartSize}</span>
+            </span>
+        </apex:outputPanel>
+
     </div>
     <div style="background-color:white;opacity:0.9;height:80%;">
         <div class="container" style="padding:0px;margin:5px;" id="cart_container" >
             
-            <!-- Placeholder for div - bill_items pageblock -->
-            <apex:pageBlock id="billed_items" title="Billed Items">
-                <apex:form >
-                    <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat" >
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name} 
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
-                            </div>
-                            <apex:outputPanel style="horizontal-align:center;" rendered="{!if(pitem.status == 'Pending', true, false)}">
-                                <div class="list-group" >
-                                    <div class="list-group-item" style="margin:0px;padding:0px;">
-                                        <apex:commandButton value="+" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" rendered="{!pitem.status == 'Pending'}" disabled="{!if(OR(pitem.quantity > 4, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>   
-                                        <apex:commandButton value="-" style="border-radius:50%;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" rendered="{!pitem.status == 'Pending'}"  disabled="{!if(OR(pitem.quantity < 2, pitem.status != 'Pending'), true, false)}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                        <apex:commandButton value="X" style="border-radius:50%;color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rendered="{!pitem.status == 'Pending'}" disabled="{!pitem.status != 'Pending'}" rerender="billed_items, cart_table, current_bill, estimated_bill, milind">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                    </div>
+                <div id="id_est_del" class="est_del"></div>
+                
+                <!-- Placeholder for div - bill_items pageblock -->
+                <apex:pageBlock id="billed_items" title="Billed Items">
+                    <apex:form >
+                        <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
+                            <button type="button" class="btn btn-primary btn-edit" aria-label="Edit Items" onclick="btn_edit_click()">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            Edit Items
+                            </button>
+                        </a>
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name}
+                                            <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                            </apex:outputPanel>
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
                                 </div>
-                            </apex:outputPanel>
-                        </div>
-                    </apex:repeat>
-                </apex:form>
-            </apex:pageBlock>
-            
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
             
             <!-- Placeholder for div - current_bill pageblock -->
-            <apex:pageBlock id="current_bill">
-                <div class="bs-example" style="cursor:default;">
-                    <div class="list-group" style="cursor:default;">
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon">Taxes</span> 
-                            <span class="badge">{!FoodOrder.Tax__c}</span>
-                        </a>
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon">Current Bill</span> 
-                            <span class="badge">{!FoodOrder.TotalPrice__c}</span>
-                        </a>
+                <apex:pageBlock id="current_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span>Taxes<span class="badge">{!FoodOrder.Tax__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span>Current Bill<span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </apex:pageBlock>
-            
+                </apex:pageBlock>
+
             
             <!-- Placeholder for div - cart_table pageblock -->
-            <apex:pageBlock id="cart_table" title="Cart">
-                <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons"/>
-                    
-                    <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name} 
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
-                            </div>
-                            <apex:outputPanel style="horizontal-align:center;" >
-                                <div class="list-group" >
-                                    <div class="list-group-item" style="margin:0px;padding:0px;">
-                                        <apex:commandButton value="+" style="border-radius:50%;font:bold 15px;width:25px;margin-left:10px;margin-right:10px;" action="{!onAdd}" disabled="{!pitem.quantity > 4}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>   
-                                        <apex:commandButton value="-" style="border-radius:50%; font-weight:bold;width:25px;margin-left:10px;margin-right:10px;" action="{!onRemove}" disabled="{!pitem.quantity < 2}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton> 
-                                        <apex:commandButton value="X" style="border-radius:50%; color:red;width:25px;margin-left:10px;margin-right:10px;"  action="{!onDelete}" rerender="billed_items, cart_table, current_bill, estimated_bill">
-                                            <apex:param name="Id" value="{!pitem.id}"/>                                  
-                                        </apex:commandButton>
-                                    </div>
+                <apex:pageBlock id="cart_table" title="Cart">
+                    <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons,  modal_content, complete_order"/>
+                                    
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
                                 </div>
-                            </apex:outputPanel>
-                        </div>
-                    </apex:repeat>
-                    
+                            </div>
+                        </apex:repeat>
                     <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
-                        <apex:commandButton style="height:30px;width:100%" value="Place Order"  action="{!placeOrder}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%" value="Place Order"  onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, complete_order">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
                     <div class ="row" style=" margin:3px 0 0 0;" id="reset_order">                                                                
-                        <apex:commandButton style="height:30px;width:100%;" value="Reset Cart"  rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill">
+                        <apex:commandButton styleClass="btn btn-primary" style="height:30px;width:100%;" value="Reset Cart"  onclick="sayHello()" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, complete_order">
                             <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
                         </apex:commandButton>
                     </div>
-                </apex:form>
-            </apex:pageBlock>
-            
+                    </apex:form>
+                </apex:pageBlock>
+                
             
             <!-- Placeholder for div - estimated_bill pageblock -->
             <apex:pageBlock id="estimated_bill">
@@ -1697,9 +1681,12 @@ function once (seconds, callback) {
                 </div>
             </apex:pageBlock>
             
+            <!-- Placeholder for the complete order button --> 
+            <apex:outputPanel id="complete_order">
             <apex:form >
-                <apex:commandLink styleClass="btn" action="{! payBill}" value="Pay Now" rendered="{!FoodOrder.Status__c=='Delivered' }"  />                                            
+                <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
             </apex:form>
+            </apex:outputPanel>
             
             
         </div> 

@@ -55,6 +55,7 @@
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>DeliveryTime__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Delivery Time</label>
         <precision>18</precision>
@@ -116,7 +117,7 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <label>Price Estimate</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -129,10 +130,26 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <label>Price</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Restaurant_Branch__c</fullName>
+        <description>Branch from which the food was ordered</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Branch from which the food was ordered</inlineHelpText>
+        <label>Restaurant Branch</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>Food Orders</relationshipLabel>
+        <relationshipName>Food_Orders</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
@@ -248,11 +265,12 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
         <columns>PriceEstimate__c</columns>
         <columns>Status__c</columns>
         <columns>TableNumber__c</columns>
-        <columns>Tax__c</columns>
-        <columns>TaxEstimate__c</columns>
         <columns>TotalPrice__c</columns>
         <columns>TotalPriceEstimate__c</columns>
         <columns>Location__c</columns>
+        <columns>FinalPrice__c</columns>
+        <columns>Restaurant_Branch__c</columns>
+        <columns>Tip__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -263,5 +281,5 @@ i.e. the summation of the prices of all the items in the order plus the tax appl
     </nameField>
     <pluralLabel>Food Orders</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

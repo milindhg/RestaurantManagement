@@ -21,6 +21,11 @@
         <name>Price__c</name>
     </fields>
     <fields>
+        <label><!-- Restaurant ID --></label>
+        <name>Restaurant_ID__c</name>
+        <relationshipLabel><!-- Bills --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- TableNumber --></label>
         <name>TableNumber__c</name>
     </fields>

@@ -13,11 +13,6 @@
         <name>Available__c</name>
     </fields>
     <fields>
-        <label><!-- Inventory --></label>
-        <name>Inventory__c</name>
-        <relationshipLabel><!-- Raw Materials --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- Name --></label>
         <name>Name__c</name>
     </fields>
@@ -26,8 +21,21 @@
         <name>QuantityRollup__c</name>
     </fields>
     <fields>
-        <label><!-- Used --></label>
+        <label><!-- Restaurant --></label>
+        <name>Restaurant__c</name>
+        <relationshipLabel><!-- Raw Materials --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Used now --></label>
         <name>Used__c</name>
+    </fields>
+    <fields>
+        <label><!-- Used till now --></label>
+        <name>Used_till_now__c</name>
+    </fields>
+    <fields>
+        <label><!-- threshold --></label>
+        <name>threshold__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

@@ -73,7 +73,7 @@ global with sharing class Bill{
     
     public Food_Order__c getFoodOrder(){
     return [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.FinalPrice__c,f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c,
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c,
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -152,7 +152,7 @@ global with sharing class Bill{
          System.debug('price and tip'+foodOrder.FinalPrice__c);
     }
     
-     public void insertfeedback()
+     public PageReference insertfeedback()
     {
     Feedback__c fb = new Feedback__c();
     fb.Food_Quality__c=SelectedFQ;
@@ -161,6 +161,11 @@ global with sharing class Bill{
     fb.What_I_liked__c=likes;
     fb.What_must_have_been_there__c=unlikes;
     insert fb;
+         PageReference pageRef = Page.thankyou;
+      //   pageRef.getParameters().put('reqlocation', selLocation);
+       //  pageRef.getParameters().put('tableid', tableNumber);
+         pageRef.setRedirect(true);
+         return pageRef;
     }
     
      public PageReference paidStatusUpdate(){
@@ -183,7 +188,7 @@ global with sharing class Bill{
             billItem.Bill__c = bill.Id;
 //            billItem.Tax__c = 3.4// TODO;
             insert billItem;   
-            
+            System.debug('current item pricebook is: ' + DisplayCart.pricebook);
             PriceBook__c priceBook = [SELECT NoItemsOrdered__c FROM PriceBook__c WHERE ID=:displayCart.priceBook];
             priceBook.NoItemsOrdered__c += 1;
             update priceBook;  

@@ -180,9 +180,14 @@
     <tab>MenuCarts_Modal</tab>
     <tab>Chef__c</tab>
     <tab>Restaurant__c</tab>
+    <tab>Tables_New</tab>
+    <tab>Bill__c</tab>
     <workspaceMappings>
         <mapping>
             <tab>BIll_Item__c</tab>
+        </mapping>
+        <mapping>
+            <tab>Bill__c</tab>
         </mapping>
         <mapping>
             <tab>Chef__c</tab>
@@ -231,6 +236,9 @@
         </mapping>
         <mapping>
             <tab>Tables</tab>
+        </mapping>
+        <mapping>
+            <tab>Tables_New</tab>
         </mapping>
         <mapping>
             <tab>standard-Account</tab>

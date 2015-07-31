@@ -10,6 +10,8 @@ global with sharing class Cart{
 
 
     public String foodOrderId = 'a0537000000RI9b';
+    public String tableNumber = '20';
+    public String location = 'a0237000000yCdw';
     public Cart(){ selectedItems=''; }
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
@@ -28,7 +30,7 @@ global with sharing class Cart{
     
     public Food_Order__c getFoodOrder(){
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OwnerId, f.OrderId__c, f.OrderDateTime__c, f.Location__c, 
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Location__c, 
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -209,6 +211,8 @@ global with sharing class Cart{
      public PageReference payBill() {
          PageReference pageRef = Page.Bill;
          pageRef.getParameters().put('orderId', foodOrderId);
+         pageRef.getParameters().put('reqlocation', location);
+         pageRef.getParameters().put('tableid', tableNumber);
          System.debug('PageRef------------------->'+pageRef);
          pageRef.setRedirect(true);
          return pageRef;

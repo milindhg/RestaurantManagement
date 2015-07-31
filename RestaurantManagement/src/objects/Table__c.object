@@ -98,6 +98,21 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Restaurant_Branch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Restaurant Branch</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Restaurant Branch</inlineHelpText>
+        <label>Restaurant Branch</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>Tables</relationshipLabel>
+        <relationshipName>Tables</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Status__c</fullName>
         <description>Status of table in resto- acc. to location</description>
         <externalId>false</externalId>
@@ -158,6 +173,21 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Tables</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Table_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Restaurant_Branch__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Waiter__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>No_of_seats__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Table_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>No_of_seats__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Waiter__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Table_Number__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Restaurant_Branch__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Waiter__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>No_of_seats__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Table_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>No_of_seats__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Waiter__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

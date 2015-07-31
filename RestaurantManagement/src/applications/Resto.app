@@ -27,4 +27,7 @@
     <tab>Chef__c</tab>
     <tab>Chef_Page</tab>
     <tab>Restaurant__c</tab>
+    <tab>WaiterPageNew</tab>
+    <tab>Tables_New</tab>
+    <tab>Bill__c</tab>
 </CustomApplication>

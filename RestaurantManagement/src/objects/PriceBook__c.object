@@ -123,6 +123,21 @@
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
+    <fields>
+        <fullName>Restaurant_Branch__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Restaurant Branch</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Restaurant Branch</inlineHelpText>
+        <label>Restaurant Branch</label>
+        <referenceTo>Restaurant__c</referenceTo>
+        <relationshipLabel>PriceBooks</relationshipLabel>
+        <relationshipName>PriceBooks</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
     <label>PriceBook</label>
     <listViews>
         <fullName>All</fullName>
@@ -151,7 +166,22 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>PriceBooks</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Price__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Food_Item__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Restaurant_Branch__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Price__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Food_Item__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Restaurant_Branch__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Food_Item__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Restaurant_Branch__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Restaurant_Branch__c</searchFilterFields>
+        <searchFilterFields>Food_Item__c</searchFilterFields>
+        <searchResultsAdditionalFields>Food_Item__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Price__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Restaurant_Branch__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Validate_Location</fullName>

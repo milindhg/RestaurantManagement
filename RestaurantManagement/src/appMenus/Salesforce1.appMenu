@@ -64,4 +64,8 @@
         <name>MenuCarts_Modal</name>
         <type>CustomTab</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>Tables_New</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>

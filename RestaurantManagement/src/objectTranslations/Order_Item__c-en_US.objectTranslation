@@ -13,6 +13,10 @@
         <name>Avg_Delivery_Time__c</name>
     </fields>
     <fields>
+        <label><!-- Diet Type --></label>
+        <name>Category__c</name>
+    </fields>
+    <fields>
         <label><!-- Delete Status --></label>
         <name>Delete_Status__c</name>
         <picklistValues>
@@ -58,6 +62,11 @@
     <fields>
         <label><!-- Quantity --></label>
         <name>Quantity__c</name>
+    </fields>
+    <fields>
+        <help><!-- Id of the Restaurant --></help>
+        <label><!-- Restaurant Id --></label>
+        <name>Restaurant_Id__c</name>
     </fields>
     <fields>
         <label><!-- Status --></label>

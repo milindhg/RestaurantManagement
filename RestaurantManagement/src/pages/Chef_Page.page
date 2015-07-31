@@ -1,4 +1,4 @@
-<apex:page controller="ChefListController" sidebar="false" showHeader="false">
+<apex:page controller="Copy_ChefListController" sidebar="false" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -31,31 +31,29 @@
         
         <script type="text/javascript">
            sforce.connection.sessionId = "{!$Api.Session_ID}";
+          
            
-           function fun(location){
+           function getmaxchefs(location, noOfChefs){
              if(location===''||location==null){
                alert('Please select the location');
                return false;
              }
              
-             var noOfChefs = $('#itext').val();
-             
              if(noOfChefs==='' || noOfChefs==null){
-               alert('Please enter the Number of Chefs');
+               alert('Please select the Number of Chefs');
                return false;
              }
              
-             var result = sforce.apex.execute('ChefListController',
+             var result = sforce.apex.execute('Copy_ChefListController',
                                               'updateNoChefs',
-                                               {location,
-                                                noOfChefs});
-                                                
+                                               {noOfChefs});
+                                               
              if(result==''){
                alert('Chef information not available for Location: '+location+'. Please enter data through the Main Chef page.');
                return false;
              }
                                                   
-             window.open('chef_pending_orders?reqlocation='+location+'&noofchefs='+noOfChefs);
+             window.open('chef_pending_orders?reqlocation='+result+'&noofchefs='+noOfChefs);
            }
            
         </script>
@@ -75,18 +73,15 @@
                             <apex:actionSupport event="onchange" reRender="main2"/>
                         </apex:selectList>
                         
-                        <apex:outputPanel id="main1">
-                           <div class="row">
-                             <div class="col-lg-12">
-                               <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
-                               <input type="text" id="itext" value='' />
-                             </div>
-                           </div>
-                        </apex:outputPanel>
+                        <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
+                        <apex:selectList style="color:maroon;" value="{!selectedNoChefs}" size="1">
+                            <apex:selectOptions value="{!noofchefs}"/>
+                            <apex:actionSupport event="onchange" reRender="main2"/>
+                        </apex:selectList>
                         
                         <apex:outputPanel id="main2">  
                           <div align="center">
-                              <apex:commandLink immediate="true" onclick="fun('{!selectedlocation}')"
+                              <apex:commandLink immediate="true" onclick="getmaxchefs('{!selectedlocation}','{!selectedNoChefs}')"
                                     styleClass="btn" style="margin-left:-20px;width:50px;font-weight:bold;font-size:14px;color:blue;" value="Next" />
                                    
                           </div>

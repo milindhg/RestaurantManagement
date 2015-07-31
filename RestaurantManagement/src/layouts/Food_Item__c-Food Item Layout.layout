@@ -85,10 +85,16 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Quantity__c</fields>
+        <fields>Restaurant_Id__c</fields>
+        <fields>Table_Number__c</fields>
+        <fields>Status__c</fields>
         <relatedList>Order_Item__c.Food_Item__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Price__c</fields>
+        <fields>Restaurant_Branch__c</fields>
         <relatedList>PriceBook__c.Food_Item__c</relatedList>
     </relatedLists>
     <relatedLists>

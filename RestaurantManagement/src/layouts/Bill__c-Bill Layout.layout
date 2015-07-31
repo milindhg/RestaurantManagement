@@ -30,13 +30,12 @@
                 <behavior>Edit</behavior>
                 <field>TableNumber__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>OwnerId</field>
+                <behavior>Required</behavior>
+                <field>Restaurant_ID__c</field>
             </layoutItems>
         </layoutColumns>
+        <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -69,6 +68,9 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>LAST_UPDATE</fields>
+        <fields>CREATED_DATE</fields>
+        <fields>TotalPrice__c</fields>
         <relatedList>BIll_Item__c.Bill__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

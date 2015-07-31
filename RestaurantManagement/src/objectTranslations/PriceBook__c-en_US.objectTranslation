@@ -45,6 +45,12 @@
         <label><!-- Price --></label>
         <name>Price__c</name>
     </fields>
+    <fields>
+        <help><!-- Restaurant Branch --></help>
+        <label><!-- Restaurant Branch --></label>
+        <name>Restaurant_Branch__c</name>
+        <relationshipLabel><!-- PriceBooks --></relationshipLabel>
+    </fields>
     <startsWith>Consonant</startsWith>
     <validationRules>
         <errorMessage><!-- Please select a location --></errorMessage>

@@ -30,6 +30,10 @@
                 <behavior>Required</behavior>
                 <field>Waiter__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Restaurant_Branch__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
