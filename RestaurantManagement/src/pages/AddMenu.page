@@ -1,0 +1,74 @@
+<apex:page showheader="false" controller="AddMenu">
+
+
+
+
+
+
+   <body>
+  
+
+  
+  <div id="feedback">
+        <apex:form >
+   
+                    <apex:pageBlock id="clean">
+  
+  
+                      <div class="row" id="feedback_section">
+
+                       <table >   
+                                
+                                   <tr>
+                                   <td> <apex:outputPanel style="font-weight:bold"> Item Name: </apex:outputPanel>     </td>
+                                   <td>  <apex:inputText /> </td>
+                                   </tr>
+                                  
+                                   <tr>
+                                   <td> <apex:outputPanel style="font-weight:bold"> Do you want to add it to all locations: </apex:outputPanel>     </td>
+                                   
+                                   <td>  
+                                        <input type="radio" name="checkLoc" value="Yes" onClick="checkLocFn('yes')" />Yes
+                                        <input type="radio" name="checkLoc" value="No" onClick="checkLocFn('no')" />No
+                                   </td>
+                                   </tr>
+    
+                                  <tr>
+                                  <td> 
+                                  <apex:outputPanel style="font-weight:bold"> Select locations: </apex:outputPanel>  </td>
+                                  <td> 
+                                   <apex:outputPanel > 
+                                   <apex:selectList id="locationValue" value="{!location}" multiselect="true">
+                                        <apex:selectOptions value="{!Locationdata}"></apex:selectOptions> 
+                                        </apex:selectList>
+                                   </apex:outputPanel> 
+                                  </td>
+                                  </tr>
+                                  
+                                 
+                       </table>
+                       
+                     </div>
+  
+  
+                    </apex:pageBlock>
+       </apex:form>  
+  </div>
+  
+    <script type="text/javascript">
+
+function checkLocFn(value) {
+    alert('sdffgsdg');
+    if(value == 'yes'){
+//        documents.getElementById("locationValue").disabled = false;
+            alert('yes');
+    }
+    else {
+        documents.getElementById("locationValue").disabled = false;
+    }
+    
+}
+</script>
+  </body>
+  
+</apex:page>

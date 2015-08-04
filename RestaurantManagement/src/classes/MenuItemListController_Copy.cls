@@ -175,17 +175,15 @@ global class MenuItemListController_Copy {
         
         if(order_id == null || order_id == ''){
             return '';
-        }
+         }            
         else
           { Integer tableNo = Integer.valueOf(tableid);
+            String est_del_time = '';
+            Food_Order__c fo = [SELECT DeliveryTime__c, Status__c
+                                FROM  Food_Order__c
+                                WHERE Id = :order_id];
             
-            Food_Order__c food_order = [SELECT DeliveryTime__c
-                                        FROM Food_Order__c
-                                        WHERE Id = :order_id];
-
-            String est_del_time = estimateDelivery(location, tableNo, order_id);
-            
-            Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
+            //Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
             fo.Status__c = PENDING;
             update fo;
             
@@ -193,7 +191,15 @@ global class MenuItemListController_Copy {
             for(Order_Item__c o : orderItems){
                 o.Status__c = PENDING;            
             }
-            update orderItems;    
+            update orderItems;  
+            
+            System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
+            
+            List<String> result= estimateDelivery(location, tableNo, order_id);
+            est_del_time = result[0];
+            fo.DeliveryTimeBy__c = est_del_time;
+            fo.DeliveryTime__c = Integer.valueOf(result[1]);
+            update fo;  
             
             return est_del_time;                                                            
         }
@@ -405,7 +411,9 @@ global class MenuItemListController_Copy {
         return null;
     }
     
-    Webservice static String getFoodOrderStatus(String tableid, String location){
+    Webservice static List<String> getFoodOrderStatus(String tableid, String location){
+      List<String> result_list = new List<String>();
+      
       Restaurant__c r = [SELECT Id
                          FROM Restaurant__c
                          WHERE Restaurant_Id__c = :location];
@@ -413,16 +421,20 @@ global class MenuItemListController_Copy {
       Id resto_id = r.Id;                   
       Decimal table_no = Decimal.valueOf(tableid); 
       
-      Food_Order__c f = [SELECT Status__c
-                         FROM Food_Order__c
-                         WHERE TableNumber__c = :table_no 
-                         AND   Restaurant_Branch__c = :resto_id];
-                         
-      return f.Status__c;                   
+      Food_Order__c f = [SELECT Id, Status__c, DeliveryTimeBy__c
+                         FROM   Food_Order__c
+                         WHERE  TableNumber__c = :table_no 
+                         AND    Restaurant_Branch__c = :resto_id
+                         AND    Status__c != 'Paid'];
+      
+      result_list.add(f.Status__c);
+      result_list.add(f.DeliveryTimeBy__c);                   
+      
+      return result_list;                   
     
     }
     
-    static String estimateDelivery(String location, Integer tableNo, String order_id){
+    static List<String> estimateDelivery(String location, Integer tableNo, String order_id){
         Integer count = 0;
         Integer prep_factor = 5;
         Integer MIN_VALUE = -100;
@@ -437,7 +449,7 @@ global class MenuItemListController_Copy {
         String zero_min = '';
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
-        
+        List<String> result_list = new List<String>();
         //System.debug('Order Id: '+foodOrderId);
         
         List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, 
@@ -458,10 +470,6 @@ global class MenuItemListController_Copy {
         Restaurant__c resto = [SELECT Id
                                FROM   Restaurant__c
                                WHERE  Restaurant_Id__c = :location];
-                               
-        Food_Order__c food_order = [SELECT DeliveryTime__c
-                                    FROM Food_Order__c
-                                    WHERE Id = :order_id];
         
         Id resto_id = resto.id;
         
@@ -481,8 +489,7 @@ global class MenuItemListController_Copy {
                   prep_time = (Integer) o.Item_Prep_Time__c;
                   
                 
-                   
-               if(max_time < prep_time )
+               if(max_time < prep_time)
                    max_time = prep_time;
                
                if(Math.mod(count, total_chefs) == 0){
@@ -526,8 +533,6 @@ global class MenuItemListController_Copy {
             Integer min = System.now().minute(); 
             
             min = prev_time + curr_item_time + min;
-            food_order.DeliveryTime__c = prev_time + curr_item_time;
-            update food_order;
             
             if(min > 59){
               hr+= min/60;
@@ -550,12 +555,15 @@ global class MenuItemListController_Copy {
               zero_min = '0'+min;
             else
               zero_min = min+''; 
-                  
+            
+            
             String result = zero_hr+':'+zero_min+' '+am_pm;
-            return result;
+            result_list.add(result);
+            result_list.add(prev_time + curr_item_time+'');  
+            return result_list;
           }
         else
-           return '';   
+           return result_list;   
           
     }
 }

@@ -3,7 +3,6 @@
     <alerts>
         <fullName>Alert</fullName>
         <ccEmails>shruthi_katapally@persistent.com</ccEmails>
-        <ccEmails>shrukata@indiana.edu</ccEmails>
         <description>Alert trial</description>
         <protected>false</protected>
         <recipients>

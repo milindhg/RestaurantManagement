@@ -511,7 +511,8 @@
         
     }
     
-    function init(){
+    function init(location, tableid){
+        
         $('#all_appetizers').css('display','block');
         $('#veg_appetizer').css('display','block');
         $('#nonveg_appetizer').css('display','block');
@@ -594,6 +595,18 @@
         $('#veg_dessert').css('display','none');
         $('#nonveg_dessert').css('display','none');
         
+        
+         var result_list = sforce.apex.execute("MenuItemListController_Copy",
+                                              "getFoodOrderStatus",
+                                              {tableid,location}
+                                             );
+        
+        alert(result_list[1]);                                     
+        if(result_list[0] == 'Pending' && result_list[1]!=null){
+           $('#id_est_del').text('Estimated Delivery at '+result_list[1]);
+           $('#id_est_del').css('display','block');
+        }
+                                                     
     }
     
     function filter_entree(type,event){
@@ -754,14 +767,13 @@
                                           location,
                                           tableid});
                                           
-                                          //alert('Result: '+result);                                 
-                                          
-        if(result!='' && result!='-1'){
-          $('#id_est_del').text('Estimated Delivery at '+result);
-          $('#id_est_del').css('display','block');
-         }
-        else if(result == '-1')
-                $('#id_est_del').css('display','none');
+        //alert('Result: '+result);                                 
+        
+        if(result!='' && $('#id_est_del').css('display')=='none'){                                
+            $('#id_est_del').text('Estimated Delivery at '+result);
+            $('#id_est_del').css('display','block');
+        }
+        
          
          sayHello();
           
@@ -771,7 +783,7 @@
       function sayHello(){}
                                           
                                           </script>
-    <body onLoad="init();">
+    <body onLoad="init('{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');">
         <apex:pageBlock >
             
             <!-- Div for modal popup -->
@@ -2204,12 +2216,12 @@ function btn_save_click(obj, tableid, location){
     }*/
     
     //alert(tableid+","+location);
-    var status = sforce.apex.execute("MenuItemListController_Copy",
-                                     "getFoodOrderStatus",
-                                     {tableid,location}
-                                    );
+    var result_list = sforce.apex.execute("MenuItemListController_Copy",
+                                          "getFoodOrderStatus",
+                                          {tableid,location}
+                                         );
     //alert('Status: '+status);                
-    if(status == 'Delivered')                                
+    if(result_list[0] == 'Delivered')                                
        $('#id_est_del').css('display','none');
       
     //Calling the visualforce actionFunction called sayHello 

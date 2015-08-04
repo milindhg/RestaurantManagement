@@ -161,6 +161,8 @@ global with sharing class BillNew{
     fb.What_I_liked__c=likes;
     fb.What_must_have_been_there__c=unlikes;
     insert fb;
+    finish();
+    
     }
     
     /*public static String getRestoId(){

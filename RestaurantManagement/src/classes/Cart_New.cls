@@ -9,8 +9,8 @@
 global with sharing class Cart_New{
 
 
-    public String foodOrderId = 'a0537000000RI9b';
-    public String tableNumber = '20';
+    public String foodOrderId = 'a0537000000So4p';
+    public String tableNumber = '12';
     public String location = 'R-0000';
 
     public Cart_New(){ selectedItems=''; }
@@ -74,7 +74,7 @@ global with sharing class Cart_New{
     }
     
     public String getOrderItemsListSerialized(){
-        System.debug('Entered orderItemsListSerialized');
+        System.debug('Entered getOrderItemsListSerialized');
         System.debug('orderItemsList is: ' + orderItemsList);
         String jsonString = JSON.serializePretty(this.orderItemsList);
         System.debug('!!!!jsonString: ' + jsonString);
@@ -98,8 +98,8 @@ global with sharing class Cart_New{
                     for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                        o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                        o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id
                                         AND o.Delete_Status__c <> 'Yes'
@@ -113,7 +113,15 @@ global with sharing class Cart_New{
 
     }
     
-     public void onAdd() {
+    public String getActiveCartItemsSerialized(){
+        System.debug('Entered getActiveCartItemsListSerialized');
+        System.debug('activeCartItems is: ' + activeCartItems);
+        String jsonString = JSON.serializePretty(this.activeCartItems);
+        System.debug('!!!!jsonString: ' + jsonString);
+        return jsonString;
+    }
+
+    public void onAdd() {
            String id= system.CurrentPageReference().getParameters().get('id');
   
 

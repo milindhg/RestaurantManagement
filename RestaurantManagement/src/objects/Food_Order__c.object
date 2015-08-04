@@ -54,6 +54,18 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>DeliveryTimeBy__c</fullName>
+        <description>The time at which the order will be delivered</description>
+        <externalId>false</externalId>
+        <label>Delivery Time By</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>DeliveryTime__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>

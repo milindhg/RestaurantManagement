@@ -9,6 +9,10 @@
         <value>Food Orders</value>
     </caseValues>
     <fields>
+        <label><!-- Delivery Time By --></label>
+        <name>DeliveryTimeBy__c</name>
+    </fields>
+    <fields>
         <label><!-- Delivery Time --></label>
         <name>DeliveryTime__c</name>
     </fields>

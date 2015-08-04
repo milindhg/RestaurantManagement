@@ -71,6 +71,10 @@
                 <behavior>Required</behavior>
                 <field>Restaurant_Branch__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>DeliveryTimeBy__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
