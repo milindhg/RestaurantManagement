@@ -600,8 +600,9 @@
                                               "getFoodOrderStatus",
                                               {tableid,location}
                                              );
-                                             
-        if(result_list[0] == 'Pending' && result_list[1]!='0'){
+        
+        alert(result_list[1]);                                     
+        if(result_list[0] == 'Pending' && result_list[1]!=null){
            $('#id_est_del').text('Estimated Delivery at '+result_list[1]);
            $('#id_est_del').css('display','block');
         }
@@ -767,11 +768,11 @@
                                           tableid});
                                           
         //alert('Result: '+result);                                 
-                                          
-        if(result!='' ){
-          $('#id_est_del').text('Estimated Delivery at '+result);
-          $('#id_est_del').css('display','block');
-         }
+        
+        if(result!='' && $('#id_est_del').css('display')=='none'){                                
+            $('#id_est_del').text('Estimated Delivery at '+result);
+            $('#id_est_del').css('display','block');
+        }
         
          
          sayHello();
@@ -1235,13 +1236,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ui-grid-b">
+    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
+    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
+    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
+    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
+    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
+    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
+    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
+</div>
                         <div id="all_appetizers">
                             <div class="row">
-                                <div class="swiper-container">
-                                    <div class="swiper-wrapper" >
+                               <!-- <div class="swiper-container">-->
+                                   <!-- <div class="swiper-wrapper" >-->
+                               <div class="ui-grid-b" >
                                         <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer" var="item">
-                                            <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;">
-                                                <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" > 
+                                           
+                                           <!-- <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;">-->
+                                                <div class="col-sm-6 col-md-6 col-lg-4" style=" {!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;width:100%;" > 
                                                     <div class="panel panel-default">
                                                         <div id="panel_body" class="panel-body text-center" >
                                                             <div class="page1" id="page1" onClick="flip_in(event);">
@@ -1290,11 +1304,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                      <!-- </div>-->
                                     </apex:repeat> 
                                 </div>
-                            </div>
-                        </div>  <!-- row -->
+                           </div>
+                       <!-- </div>-->  <!-- row -->
                     </div>
                 </div>
                 <div id="two" class="container" style="clear:left;background-color:white;width:100%;">

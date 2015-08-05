@@ -2171,6 +2171,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>MenuCart_New</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Restaurant__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>

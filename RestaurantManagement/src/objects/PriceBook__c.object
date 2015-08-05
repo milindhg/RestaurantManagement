@@ -185,7 +185,7 @@
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Validate_Location</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>IF( ISPICKVAL(Location__c  , &apos;&apos;), TRUE, FALSE)</errorConditionFormula>
         <errorDisplayField>Location__c</errorDisplayField>
         <errorMessage>Please select a location</errorMessage>

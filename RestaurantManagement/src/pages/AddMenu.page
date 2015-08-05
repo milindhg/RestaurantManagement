@@ -1,73 +1,149 @@
 <apex:page showheader="false" controller="AddMenu">
 
-
-
-
-
-
-   <body>
-  
-
-  
-  <div id="feedback">
+ <body>  
+  <div id="items">
         <apex:form >
-   
-                    <apex:pageBlock id="clean">
-  
-  
-                      <div class="row" id="feedback_section">
-
-                       <table >   
-                                
-                                   <tr>
-                                   <td> <apex:outputPanel style="font-weight:bold"> Item Name: </apex:outputPanel>     </td>
-                                   <td>  <apex:inputText /> </td>
-                                   </tr>
+        <apex:actionFunction name="sayHello" action="{!displayName}" reRender="item_name"/>
+                                    
+                       
+            <apex:pageBlock id="clean">
+                <div class="row" id="feedback_section">
+                     <table >   
+                          <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Item Name: </apex:outputPanel>     </td>
+                               <td>  <apex:inputText styleClass="item_text" id="item_text" value="{!itemName}"/> </td>
+                          </tr>
                                   
-                                   <tr>
-                                   <td> <apex:outputPanel style="font-weight:bold"> Do you want to add it to all locations: </apex:outputPanel>     </td>
-                                   
-                                   <td>  
-                                        <input type="radio" name="checkLoc" value="Yes" onClick="checkLocFn('yes')" />Yes
-                                        <input type="radio" name="checkLoc" value="No" onClick="checkLocFn('no')" />No
-                                   </td>
-                                   </tr>
+                          <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Do you want to add it to all locations: </apex:outputPanel>     </td>                              
+                               <td>  
+                                        <input type="radio" name="checkLoc" value="Yes" onClick="disableLoc()" />Yes
+                                        <input type="radio" name="checkLoc" value="No" onClick="enableLoc()" />No
+                               </td>
+                          </tr>
     
-                                  <tr>
-                                  <td> 
-                                  <apex:outputPanel style="font-weight:bold"> Select locations: </apex:outputPanel>  </td>
-                                  <td> 
+                          <tr>
+                               <td> 
+                                    <apex:outputPanel style="font-weight:bold"> Select locations: </apex:outputPanel>  </td>
+                               <td>        
                                    <apex:outputPanel > 
-                                   <apex:selectList id="locationValue" value="{!location}" multiselect="true">
+                                   <apex:selectList styleClass="SelectClass"  id="locationValue" value="{!location}" multiselect="true">
                                         <apex:selectOptions value="{!Locationdata}"></apex:selectOptions> 
                                         </apex:selectList>
                                    </apex:outputPanel> 
-                                  </td>
-                                  </tr>
-                                  
+                              </td>
+                         </tr>
+                         
+                         <tr>
+                         
+                             <td><apex:outputPanel > 
+                             
+                                     <apex:selectCheckboxes styleClass="MyCheckBox" id="myCheckBox" value="{!location}">
+                                         <apex:selectOptions value="{!Locationdata}"></apex:selectOptions> 
+                                     </apex:selectCheckboxes>
+                             
+                                
+                </apex:outputPanel> 
+                             </td>
+                         </tr>
                                  
-                       </table>
-                       
-                     </div>
+                   </table>    
+                   <input type="button" value="Next" onclick="next()" />                
+           </div>
   
-  
-                    </apex:pageBlock>
+          </apex:pageBlock>
        </apex:form>  
   </div>
   
-    <script type="text/javascript">
+  <div id="price">
+        <apex:form >
+            <apex:pageBlock id="clean">
+                <div class="row" id="feedback_section">
+                                                  
+                                    <apex:outputPanel id="item_name" style="font-weight:bold"> Item Name: </apex:outputPanel> 
+                                    <apex:inputText styleClass="item_text_next" id="item_text_next" value="{!itemName}"/>
+                               <br></br>
+                                  <apex:outputPanel style="font-weight:bold"> Do you want the same price at all locations: </apex:outputPanel>
+                                 
+                                        <input type="radio" name="checkPrice" value="Yes" onClick="disablePrice()" />Yes
+                                        <input type="radio" name="checkPrice" value="No" onClick="enablePrice()" />No
+                                  
+                                   <br></br>
+                                 
+                                <apex:outputPanel style="font-weight:bold"> Default Price: </apex:outputPanel>
+                                <apex:inputText />
+                                <br></br>
+                         <apex:pageBlock id="locationBlock">       
+                        <apex:repeat value="{!location}" var="o">
+                        <table >
+                            <tr> 
+                                <td> <apex:outputLabel value="{!o}:" /></td>
+                                <td>  <apex:inputText /> </td>     
+                            </tr>                        
+                        </table>
+                        </apex:repeat>          
+                               </apex:pageBlock>
+                   
+                    <input type="button" value="Back" onclick="back()" />    
+        
+          
+         
 
-function checkLocFn(value) {
-    alert('sdffgsdg');
-    if(value == 'yes'){
-//        documents.getElementById("locationValue").disabled = false;
-            alert('yes');
-    }
-    else {
-        documents.getElementById("locationValue").disabled = false;
-    }
-    
+     
+        
+           </div>
+  
+          </apex:pageBlock>
+       </apex:form>  
+  </div>
+  
+  
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+function disableLoc() {
+    alert('in');
+//    jQuery( ".SelectClass" ).css( "disabled", true );
+     var disableClass= jQuery( ".SelectClass" );
+     disableClass[0].disabled = true;
 }
+function enableLoc() {
+    alert('inn');
+    var disableClass= jQuery( ".SelectClass" );
+     disableClass[0].disabled = false;
+//     $('.myCheckClass ').prop('checked', true);
+
+}
+
+function disablePrice() {
+
+}
+function enablePrice() {
+
+}
+
+function sayHello(){
+
+}
+$(document).ready(function() {    
+       document.getElementById("price").style.display = 'none';
+    });
+    
+function back(){
+         document.getElementById("items").style.display = 'block';
+        document.getElementById("price").style.display = 'none';
+
+}
+
+function next(){
+         document.getElementById("price").style.display = 'block';
+        document.getElementById("items").style.display = 'none';
+
+        $('.item_text_next').val($('.item_text').val());
+}
+    
+ function rerenderPage(){
+                        
+    }    
 </script>
   </body>
   

@@ -34,7 +34,16 @@ global class MenuItemListController_Copy {
         System.debug(selLocation);
     }
     
+    public MenuItemListController_Copy(String reqlocation, String tableid){
+        selLocation=reqlocation;
+        tableNumber=tableid;
+        tableNo= Decimal.valueOf(tableNumber);
+        System.debug(selLocation);
+    }
+    
+    
     public Food_Order__c getFoodOrder(){
+       
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
             f.Status__c,  f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 

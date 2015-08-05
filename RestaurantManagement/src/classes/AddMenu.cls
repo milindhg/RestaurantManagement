@@ -1,9 +1,9 @@
 global with sharing class AddMenu{
 
       
-    public String itemName;
+    public String itemName{get; set;}
     public List<String> locations = fetchLocations();
-    public String location{get ; set;}
+    public List<String> location{get ; set;}
 
     public AddMenu(){  }
     
@@ -20,6 +20,11 @@ global with sharing class AddMenu{
         }
         return listLocations;
         
+    }
+    
+    public PageReference displayName(){
+        System.debug('ItemName--->' + itemName);
+        return null;
     }
     
      public List<SelectOption> getLocationdata()
@@ -51,5 +56,8 @@ global with sharing class AddMenu{
     public AddMenu(ApexPages.StandardController controller) {}
     public AddMenu(ApexPages.StandardSetController controller) {}  
   
-    
+    public PageReference rerenderPage() {
+        return null;
+    }
+   
 }

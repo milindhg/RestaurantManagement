@@ -1,87 +1,416 @@
-<apex:page showheader="false" controller="BillNew">
+<apex:page showheader="false" controller="BillNew" standardstylesheets="false">
  <style type="text/css">
-             h1{
-                    color:maroon;
-                    font-weight:bold;
-                    text-shadow:none;
-            }
-                   .col-sm-6{
-                    margin-top:10px;
-                    padding:0px;
-                    border: black 1px solid
-                    background-color:white;
-                    -webkit-border-radius: 5px !important;
-                    -moz-border-radius: 5px !important;
-                    border-radius: 5px !important;
-                    }
-                    
-                    .col-md-6{
-                    border: black 1px solid
-                    -webkit-border-radius: 5px !important;
-                    -moz-border-radius: 5px !important;
-                    border-radius: 5px !important;       }
-                    
-                    .col-lg-4{
-                    border: black 1px solid
-                    -webkit-border-radius: 5px !important;
-                    -moz-border-radius: 5px !important;
-                    border-radius: 5px !important;
-                    }
-                    
-                    .panel-body {
-                    border: black 1px solid
-                    background-image:none !important;
-                    background-color:white !important;
-                    padding:0px;
-                    }
-                    
-                    .cardimage{
-                    background-size:100%;
-                    float:left;
-                    }
-                    
-                    .desc{
-                    
-                    background-size:100%;
-                    margin:0px;
-                    float:left;
-                    text-shadow:none;
-                    
-                    }
-                    .panel-default >.panel-heading {
-                    background-image:none;
-                    
-                    }
-                    .panel-default >.panel-heading > .panel-title {
-                    color:white;
-                    }
-                    
-                    #menu_btn, #view_cart_btn{
-                    background-image:none;
-                    background-color:maroon;
-                    text-shadow:none;
-                    width: 100%;
-                    height: 50px;
-                    }
-                    
-                    #open_cart{
-                    background-color:maroon;
-                    color:white;
-                    text-shadow:none;
-                    }
-                 #menu_link, #view_cart_link{
-                    text-align:left;
-                    background-image:none;
-                    color: black;
-                    font-size: 18px;
-                    text-shadow:none;
-                    color:white;
-                    width:100%;
-                    height:50px;
-                    padding:5px;
-                    margin:0px;
-                    
-                    }
+        .orderitem{
+            height:40px;
+        }
+        .quant_label{
+            margin-top:5px;
+        }
+        
+        #quant{
+            height:35px;
+            margin-top:1px;
+        }
+        .ui-input-text input, .ui-input-search input{
+            font-size:12px;
+            height:25px;
+        }
+        .ui-btn-icon-bottom{
+        padding-bottom:2em;
+        }
+        .tablist-left {
+        width: 25%;
+        display: inline-block;
+        }
+        .tablist-content {
+        width: 60%;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 5%;
+        }
+        
+        .ui-page-theme{
+        background-color:green;
+        }
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
+        .ui-input-text input, .ui-input-search input{
+        min-height:20px;
+        height:35px;
+        margin-right:10px;
+        }
+        
+        //.ui-link,.ui-btn{
+        //background-color:green;
+        //}
+        
+        #billed_items{
+        background-color:maroon;
+        }
+        
+        .list-group-item.active.ui-link{
+        color:white;
+        text-shadow:none;
+        font-size:12px;
+        }
+        
+        .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+        background-image:none;
+        background-color:maroon;
+        border-color:white;
+        font-size:12px;
+        }
+        
+        .list-group{
+        background-color:maroon;
+        color:maroon;
+        font-size:12px;
+        }
+        
+        #panel_body1 {
+        padding:0px;
+        position: absolute;   
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        }
+        
+        .panel_body1 {
+        padding:0px;
+        position: absolute;   
+        -webkit-perspective: 1000;
+        -moz-perspective: 1000;
+        }
+        
+        .page1 {
+        width: 100%;
+        background: white;
+        position: relative;
+        }
+        .page2 {
+        width: 100%;
+        background: white;
+        position: relative;
+        display: none;
+        }
+        
+        .slideme {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        width:100%;
+        }
+        
+        .flip {
+        -webkit-backface-visibility:hidden;
+        -webkit-transform:translateX(0); 
+        -moz-backface-visibility:hidden;
+        -moz-transform:translateX(0);
+        }
+        
+        .flip.out {
+        -webkit-transform: rotateY(-90deg) scale(.9);
+        -webkit-animation-name: flipouttoleft;
+        -webkit-animation-duration: 175ms;
+        -moz-transform: rotateY(-90deg) scale(.9);
+        -moz-animation-name: flipouttoleft;
+        -moz-animation-duration: 175ms;
+        }
+        
+        .flip.in {
+        -webkit-animation-name: flipintoright;
+        -webkit-animation-duration
+        : 225ms;
+        -moz-animation-name: flipintoright;
+        -moz-animation-duration: 225ms;
+        }
+        
+        .flip.out.reverse {
+        -webkit-transform: rotateY(90deg) scale(.9);
+        -webkit-animation-name: flipouttoright;
+        -moz-transform: rotateY(90deg) scale(.9);
+        -moz-animation-name: flipouttoright;
+        }
+        
+        .flip.in.reverse {
+        -webkit-animation-name: flipintoleft;
+        -moz-animation-name: flipintoleft;
+        }
+        
+        @-webkit-keyframes flipouttoleft {
+        from { -webkit-transform: rotateY(0); }
+        to { -webkit-transform: rotateY(-90deg) scale(.9); }
+        }
+        
+        @-moz-keyframes flipouttoleft {
+        from { -moz-transform: rotateY(0); }
+        to { -moz-transform: rotateY(-90deg) scale(.9); }
+        }
+        
+        @-webkit-keyframes flipouttoright {
+        from { -webkit-transform: rotateY(0) ; }
+        to { -webkit-transform: rotateY(90deg) scale(.9); }
+        }
+        
+        @-moz-keyframes flipouttoright {
+        from { -moz-transform: rotateY(0); }
+        to { -moz-transform: rotateY(90deg) scale(.9); }
+        }
+        
+        @-webkit-keyframes flipintoleft {
+        from { -webkit-transform: rotateY(-90deg) scale(.9); }
+        to { -webkit-transform: rotateY(0); }
+        }
+        
+        @-moz-keyframes flipintoleft {
+        from { -moz-transform: rotateY(-90deg) scale(.9); }
+        to { -moz-transform: rotateY(0); }
+        }
+        
+        @-webkit-keyframes flipintoright {
+        from { -webkit-transform: rotateY(90deg) scale(.9); }
+        to { -webkit-transform: rotateY(0); }
+        }
+        
+        @-moz-keyframes flipintoright {
+        from { -moz-transform: rotateY(90deg) scale(.9); }
+        to { -moz-transform: rotateY(0); }
+        }
+        
+        h1{
+        color:maroon;
+        font-weight:bold;
+        text-shadow:none; 
+        }
+        
+        .swiper-container {
+        width: 100%;
+        height: 100%;
+        margin-left:auto;
+        margin-right:auto;
+        padding-bottom:100px;
+        }
+        
+        .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        height: 245px;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        }
+        
+        .col-sm-6{
+        margin-top:20px;
+        padding-top:0px;
+        }
+        
+        .panel-body {
+        background-color:white !important;
+        text-align:left !important;
+        padding:0px;
+        }
+        
+        .cardimage{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:cover;
+        top:0;
+        right:0;
+        height:180px;
+        }
+        
+        .offerimage{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.offer}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:100%;
+        }
+        
+        #content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
+        .content2{
+        margin:5px;
+        background:grey;
+        opacity:0.8;
+        }
+        
+        #desc{
+        padding:10px;
+        height:50%;
+        font-size:16px;
+        text-shadow:none;
+        }
+        
+        desc{
+        padding:10px;
+        height:50%;
+        font-size:16px;
+        text-shadow:none;
+        }
+        
+        .panel-body > .text-center{
+        background-color:grey;
+        }
+        
+        #quantity_desc{
+        width:100%;
+        float:left;
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:160px;
+        }
+        
+        .quantity_desc{
+        width:100%;
+        float:left;
+        padding:0px;
+        margin:0px;
+        width:100%;
+        background-image:url('{!$Resource.salad}');
+        background-repeat:no-repeat;
+        background-size:100%;
+        top:0;
+        right:0;
+        height:160px;
+        }
+        
+        .panel-default >.panel-heading {
+        background-image:none;
+        }
+        
+        .panel-default >.panel-heading > .panel-title {
+        color:white;
+        }
+        
+        #menu_btn, #view_cart_btn{
+        background-image:none;
+        background-color:maroon;
+        text-shadow:none;
+        width: 100%;
+        height: 50px;
+        }
+        
+        #open_cart{
+        background-color:maroon;
+        color:white;
+        text-shadow:none;
+        }
+        
+        #addorder{
+        padding:0px;
+        background-color:maroon !important;
+        color:White;
+        text-shadow:none;
+        margin-top:2px;
+        height:35px;
+        }
+        
+        #showdetail{
+        margin:auto;
+        padding:0px;
+        font-size:20px;
+        width:10px;
+        height:20px;
+        }
+        
+        #cart_items {
+        position:fixed;
+        overflow: scroll;
+        right:0;
+        width:100%;
+        z-index:55;
+        }     
+        
+        #stspecial {
+        position:fixed;
+        padding:0px;
+        left:0;  
+        }
+        
+        #stmenu{
+        height:100%;
+        position:fixed;
+        margin-top:335px;
+        left:0;
+        overflow:scroll;
+        }
+        
+        #menu_link, #view_cart_link{
+        text-align:left;
+        background-image:none;
+        color: black;
+        font-size: 18px;
+        text-shadow:none;
+        color:white;
+        width:100%;
+        height:50px;
+        padding:5px;
+        margin:0px;
+        }
+        
+        .ui-input-text{
+        margin:0px;
+        }
+        
+        /**Styling for the new cart UI: Starts **/
+        .list-group{
+        /* width: 200px;*/
+        margin-bottom:0px;
+        }
+        
+        .bs-example{
+        margin-bottom: 10px;
+        }
+        
+        .bPageBlock{
+        border:0px;
+        }
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+        margin:0px;
+        }
+        
+        .list-group-item.active>.badge, .nav-pills>.active>a>.badge {
+           color: #800000;
+        }
+        
+        /**Styling for the new cart UI: End **/
+        
+        .est_del{
+          display:none;
+          font-size:17px;
+          font-weight:bold;
+          color:maroon;
+        }
                 </style>
          <head>
                     
@@ -140,162 +469,185 @@
                                                                 <apex:actionFunction name="rerenderPage" action="{!rerenderPage}" reRender="total, clean"/>
                                                                 <apex:actionFunction name="paidStatusUpdate" action="{!paidStatusUpdate}" reRender="total"/>
                                                                 <apex:actionFunction name="insertFeedback" action="{!insertFeedback}" rerender="" />
-                                                                <apex:pageBlock title="Items">
-                                                               <apex:pageBlockTable id="cart" value="{!orderItemsList}" var="pitem">
-                                                             
-                                                           
-                                                                <apex:column >
-                                                                <div style="float:left;width:10%">
-                                                                    <apex:outputLabel value="{!pitem.quantity}" ></apex:outputLabel>
-                                                                </div>
-                                                                <div style="float:left;width:60%">
-                                                                    <apex:outputLabel value="{!pitem.name}" ></apex:outputLabel>
-                                                                    
-                                                                </div>
-                                                                <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!pitem.totalPrice}"></apex:outputText>                                                    
-                                                                </div>
-                                                            </apex:column>
-                                                            
-                                                              </apex:pageBlockTable>  
-                                                              
-                                                              
-                                                              <apex:pageBlock id="current_bill">
-                                                              
-                                                              <div style="float:left;width:100%">
-                                                                <div style="float:left;width:70%" >
-                                                                    <apex:outputLabel value="Total " ></apex:outputLabel>
-                                                                </div>
-                                                                <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!FoodOrder.Price__c}" ></apex:outputText>                                          
-                                                                </div> 
-                                                              </div> 
-                                                              
-                                                              <div style="float:left;width:100%">
-                                                               
-                                                                  <div style="float:left;width:70%">
-                                                                    <apex:outputLabel value="Taxes" ></apex:outputLabel>
-                                                                  </div>
-                                                        
-                                                                  <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!FoodOrder.Tax__c}" ></apex:outputText>                                          
-                                                                  </div> 
-                                                                
-                                                                
-                                                                  
-                                                                <div style="float:left;width:70%">
-                                                                <apex:outputLabel value="Tip" ></apex:outputLabel>
-                                                                </div>
-                                                                  
-                                                                <div style="float:left;width:30%">
-                                                                    <apex:inputTextarea cols="4" value="{!tip}" >
-                                                                    </apex:inputTextarea>       
-                                                                     <apex:commandButton action="{!inserttip}" value="Check Total" reRender="total">
-                                                                      </apex:commandButton>
-                                                                </div>
-                                                                  
-                                                                  
-                                                               
-                                                                </div>
-                                                                <div style="float:left;width:100%">
-                                                                <div style="float:left;width:70%" >
-                                                                    <apex:outputLabel value="Total Amount" ></apex:outputLabel>
-                                                                </div>
-                                                                <div style="float:left;width:30%">
-                                                                    <apex:outputText value="{!FoodOrder.FinalPrice__c}" ></apex:outputText>                                          
-                                                                </div> 
-                                                                  </div>                                                                
-                                                                 </apex:pageBlock>
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                             
-                                                            
-                                                                    <apex:commandLink styleClass="btn" value="Back to Cart" action="{!backToCart}" immediate="true">    
-                                                                                   <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
-                                                                   </apex:commandLink> 
-                                                                   <input type="button" value="Pay" onclick="enableDiv()" />
-                                                                    
-                                                                </apex:pageBlock>
+                                                                <apex:pageBlock >
+                
+                <!-- Placeholder for div - bill_items pageblock -->
+                <apex:pageBlock id="billed_items" >
+                    <div class="container-fluid" style="padding:15px;">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <h2 class="mainTitle">Billed Items</h2>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <h2 style="text-align:right;margin-right:20px;"><span class="glyphicon glyphicon-book" ></span></h2>
+                            </div>
+                        </div>
+                        <div class="bs-example" style="cursor:default;">
+                            <div class="list-group" style="cursor:default;">
+                                <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name}
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </apex:repeat>
+                            </div>
+                        </div>
+                        
+                        <div class="bs-example" style="cursor:default;">
+                            <div class="list-group" style="cursor:default;">
+                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                    <span class="glyphicon"></span> 
+                                    Total Price
+                                    <span class="badge">{!FoodOrder.Price__c}</span>
+                                </a>
+                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                    <span class="glyphicon"></span> 
+                                    Taxes
+                                    <span class="badge">{!FoodOrder.Tax__c}</span>
+                                </a>
+                            </div>
+                            <div class="row" style="margin:10px Auto;">
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <span class="glyphicon"></span> 
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" >
+                                            <apex:commandButton styleClass="btn btn-default" style="float:right;height: 30px;" action="{!inserttip}" value="Add Tip" reRender="total">
+                                            </apex:commandButton>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <apex:inputTextarea styleClass="form-control" cols="4" value="{!tip}" style="float:right;resize: none;height: 30px;width:80px;vertical-align: bottom;text-align:right;overflow:hidden" >
+                                    </apex:inputTextarea>
+                                </div>
+                            </div>
+                            <div class="list-group" style="cursor:default;">
+                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                    <span class="glyphicon"></span> 
+                                    Total Amount
+                                    <span class="badge">{!FoodOrder.FinalPrice__c}</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </apex:pageBlock>
+                
+                <apex:pageBlock >
+                    <div class="container-fluid" style="padding:15px;">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <apex:commandLink styleClass="btn btn-default" style="font-weight:normal;color:black;" value="Back to Cart" action="{!backToCart}" immediate="true">    
+                                               <apex:param name="foodOrderId" value="{!FoodOrder.id}"/>                                                            
+                               </apex:commandLink> 
+                               <input type="button" class="btn btn-default" value="Pay" onclick="enableDiv()" />
+                           </div>
+                       </div>
+                    </div>
+                </apex:pageBlock>
+                
+                    </apex:pageBlock>
                                                                 </apex:form>                    
     
                                                      </apex:pageBlock>
         </div>
-        <div id="feedback">
-        <apex:form >
-                    <apex:pageBlock id="clean">
-                        
-                             <div class="container">
-                             
-                                <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="jumbotron">
-                                                <h2>
-                                                    Thanks for eating at Resto!
-                                                </h2>
-                                               
-                                            </div>
-                                        </div>
-                                </div>
-
-                    <div class="row" id="feedback_section">
-
-                     <div style="font-weight:bold;text-align:center;">Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  </div>
-                             
-                             
-                                    <table >   
-                                 <tr>
-                                             <td> <apex:outputPanel style="font-weight:bold"> Food quality </apex:outputPanel>     </td>
-                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;font-size:10;" value="{!SelectedFQ }"  size="1" >
-                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                   </apex:selectlist>  </apex:outputPanel>  </td>
-                                        </tr> 
-                                   <tr>
-                                             <td> <apex:outputPanel style="font-weight:bold"> Service </apex:outputPanel>     </td>
-                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedService}" size="1" >
-                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                   </apex:selectlist>  </apex:outputPanel>  </td>
-                                   </tr>
-                                   <tr>
-                                             <td> <apex:outputPanel style="font-weight:bold"> Overall Experience </apex:outputPanel>     </td>
-                                             <td>  <apex:outputPanel > <apex:selectList style="color:maroon;" value="{!SelectedOAE }" size="1">
-                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
-                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
-                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
-                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
-                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
-                                                   </apex:selectlist>  </apex:outputPanel>  </td>
-                                   </tr>
-                                   <tr>
-                                   <td> <apex:outputPanel style="font-weight:bold"> What I liked: </apex:outputPanel>     </td>
-                                   <td>  <apex:inputTextArea rows="4" cols="50" value="{!likes}" > </apex:inputTextArea> </td>
-                                   </tr>
-                                   <tr>
-                                   <td> <apex:outputPanel style="font-weight:bold"> What must have been there : </apex:outputPanel>     </td>
-                                   <td> <apex:inputTextArea rows="4" cols="50" value="{!unlikes}" > </apex:inputTextArea> </td>
-                                   </tr>
-    
-                       </table>
-                       </div>
-                     </div>
-                     <div  style="text-align: center;">
-                     <input type="button" value="Submit" onclick="submitFeedback()" />
-                     
-                     
-
-                     <apex:commandLink styleClass="btn" value="Finish"  immediate="true" action="{! finish}"/>    
         
+        
+        <div id="feedback">
+            <apex:form >
+                <apex:pageBlock id="clean">
+                     <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="jumbotron">
+                                    <h2>
+                                        Thanks for eating at Resto!
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="container-fluid jumbotron" id="feedback_section">
+                                <div class="row" style="font-weight:bold;">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        Based on your visit, please rate us your experience from 1-5 from "5" being the best and "1" being the worst  
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <apex:outputPanel style="font-weight:bold"> Food quality </apex:outputPanel>
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <apex:outputPanel > <apex:selectList styleClass="form-control" style="color:maroon;font-size:10;height:40px;width:60px;" value="{!SelectedFQ }"  size="1" >
+                                               <apex:selectOption itemValue="5" itemLabel="5"/>
+                                               <apex:selectOption itemValue="4" itemLabel="4"/>
+                                               <apex:selectOption itemValue="3" itemLabel="3"/>
+                                               <apex:selectOption itemValue="2" itemLabel="2"/>
+                                               <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                               </apex:selectlist>  
+                                        </apex:outputPanel>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <apex:outputPanel style="font-weight:bold"> Service </apex:outputPanel>
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <apex:outputPanel > <apex:selectList styleClass="form-control" style="color:maroon;height:40px;width:60px;" value="{!SelectedService}" size="1" >
+                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
+                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
+                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
+                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
+                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                                   </apex:selectlist>  </apex:outputPanel>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <apex:outputPanel style="font-weight:bold"> Overall Experience </apex:outputPanel>
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <apex:outputPanel > <apex:selectList styleClass="form-control" style="color:maroon;height:40px;width:60px;" value="{!SelectedOAE }" size="1">
+                                                   <apex:selectOption itemValue="5" itemLabel="5"/>
+                                                   <apex:selectOption itemValue="4" itemLabel="4"/>
+                                                   <apex:selectOption itemValue="3" itemLabel="3"/>
+                                                   <apex:selectOption itemValue="2" itemLabel="2"/>
+                                                   <apex:selectOption itemValue="1" itemLabel="1"/> 
+                                                   </apex:selectlist>  </apex:outputPanel>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <apex:outputPanel style="font-weight:bold"> What I liked: </apex:outputPanel>
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <apex:inputTextArea styleClass="form-control" rows="4" cols="50" value="{!likes}" > </apex:inputTextArea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <apex:outputPanel style="font-weight:bold"> What must have been there : </apex:outputPanel>
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <apex:inputTextArea styleClass="form-control" rows="4" cols="50" value="{!unlikes}" > </apex:inputTextArea>
+                                    </div>
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <input type="button" class="btn btn-default" value="Submit Feedback" onclick="submitFeedback()" />
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <apex:commandLink styleClass="btn btn-default" style="color: black;font-weight: normal;" value="Finish"  immediate="true" action="{! finish}"/>    
+                                </div>
+                            </div>
                      </div>
+
                     </apex:pageBlock>
                 </apex:form>
         </div>    

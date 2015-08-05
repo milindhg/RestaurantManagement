@@ -27,4 +27,5 @@
     <tab>Restaurant__c</tab>
     <tab>Tables_New</tab>
     <tab>Bill__c</tab>
+    <tab>MenuCart_New</tab>
 </CustomApplication>

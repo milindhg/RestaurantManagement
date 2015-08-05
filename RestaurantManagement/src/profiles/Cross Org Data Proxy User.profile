@@ -2178,6 +2178,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>MenuCart_New</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>MenuCart_TestPage</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>

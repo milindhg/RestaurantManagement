@@ -534,7 +534,7 @@
                                         <div class="list-group" style="cursor:default;">
                                             <div class="list-group-item" style="cursor:default;">
                                                 <div>
-                                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <a href="#" class="list-group-item active" list-group-item-link="{! pitem.id}" style="cursor:default;">
                                                     <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name} 
                                                     <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
@@ -543,7 +543,7 @@
                                                 <div>
                                                     <div class="row" style="margin-top:5px;">
                                                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                            <div class="input-group">
+                                                            <div class="input-group" input-group="{! pitem.id}">
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-minus"></span>
@@ -555,8 +555,8 @@
                                                                           <span class="glyphicon glyphicon-plus"></span>
                                                                       </button>
                                                                   </span>
-                                                              </div>
                                                             </div>
+                                                        </div>
                                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                             <div style="text-align: right;">
                                                               <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
@@ -622,7 +622,7 @@
                                                 <a href="#" class="list-group-item active" style="cursor:default;">
                                                     <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name}
-                                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                    <apex:outputPanel style="opacity:0.4;" rendered="{! if(pitem.status=='Delivered',true,false)}">
                                                         <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
                                                     </apex:outputPanel>
                                                     <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
@@ -719,7 +719,7 @@
                 
             </div>
 
-                        <!-- Placeholder for div - bill_items pageblock -->
+                <!-- Placeholder for div - bill_items pageblock -->
                 <apex:pageBlock id="billed_items">
                     <apex:form >
                         <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
@@ -744,7 +744,7 @@
                                     <a href="#" class="list-group-item active" style="cursor:default;">
                                         <span class="glyphicon">{!pitem.quantity}</span> 
                                             {!pitem.name}
-                                            <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                            <apex:outputPanel style="opacity:0.4;" rendered="{! if(pitem.status=='Delivered',true,false)}">
                                                 <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
                                             </apex:outputPanel>
                                         <span class="badge">{!pitem.totalPrice}</span>
@@ -967,14 +967,21 @@ function input_number_change(obj){
 function btn_delete_click(obj){ 
     console.log(obj.val);
     var deletedFlag;
-    //if(obj.innerText.toLowerCase().trim() == 'delete item'){
+    //get the id of the order item to be modified or deleted
+    var fieldName = jQuery(obj).attr('data-field');
+    fieldName = fieldName.substring(6,fieldName.length-1);
+
+    var listGroupElement = jQuery('a[list-group-item-link="' + fieldName + '"]');
+    var inputGroupElement = jQuery('div[input-group="' + fieldName + '"]');
     if(!$j(obj).hasClass('active')){
-        //obj.innerHTML = '<span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span> Undelete Item';
         $j(obj).addClass('active');
+        listGroupElement.css('opacity',0.3);
+        inputGroupElement.css('display','none');
         deletedFlag = true;
     }else{
-        //obj.innerHTML = '<span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span> Delete Item';
         $j(obj).removeClass('active');
+        listGroupElement.css('opacity',1);
+        inputGroupElement.css('display','table');
         deletedFlag = false;
     }
     jQuery('.btn-save').attr('disabled',false);
@@ -982,9 +989,6 @@ function btn_delete_click(obj){
     console.log(element[0]);
     
     
-    //get the id of the order item to be modified or deleted
-    fieldName = jQuery(obj).attr('data-field');
-    fieldName = fieldName.substring(6,fieldName.length-1);
     
     //if element deletedFlag is true, then put it as modified and to be deleted from the DB.
     //if element is undeleted, then remove it from the list of items to update.
@@ -1048,7 +1052,6 @@ function btn_deliver_click(obj){
         $j(obj).addClass('active');
         deliverFlag = true;
     }else{
-        //obj.innerHTML = '<span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span> Delete Item';
         $j(obj).removeClass('active');
         deliverFlag = false;
     }
@@ -1114,9 +1117,6 @@ function createNewChangedObj(id,newQuantity,operation){
         }
 }
 
-
-
-
 //jQuery(".input-number").keydown(function (e) {
 //pass the "event" object in the call to get it in e.
 function input_number_keydown(e){
@@ -1152,6 +1152,9 @@ var OrderedItems = function (){
         }
     }
     this.changedOrderItemsMap = {};
+    this.initChangedOrderItemsMap = function(){
+        this.changedOrderItemsMap = {};
+    }
     this.changedOrderItems=new Array();
     this.changedOrderItemsMapSize = function(){
         var count = 0;
@@ -1200,10 +1203,10 @@ function btn_save_click(obj){
     
 }
 
-
-
 function btn_edit_click(){
     sayHello();
+    //call the function to initialize the changedOrderItemsMap to new blank map
+    o.initChangedOrderItemsMap();
 }
 
 </script>

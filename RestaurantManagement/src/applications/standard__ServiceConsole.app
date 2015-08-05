@@ -182,6 +182,7 @@
     <tab>Restaurant__c</tab>
     <tab>Tables_New</tab>
     <tab>Bill__c</tab>
+    <tab>MenuCart_New</tab>
     <workspaceMappings>
         <mapping>
             <tab>BIll_Item__c</tab>
@@ -206,6 +207,9 @@
         </mapping>
         <mapping>
             <tab>Menu</tab>
+        </mapping>
+        <mapping>
+            <tab>MenuCart_New</tab>
         </mapping>
         <mapping>
             <tab>MenuCart_TestPage</tab>

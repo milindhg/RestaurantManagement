@@ -1968,6 +1968,10 @@
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>MenuCart_New</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>MenuCart_TestPage</tab>
         <visibility>None</visibility>
     </tabSettings>

@@ -2230,7 +2230,7 @@ function btn_save_click(obj, tableid, location){
     
     //disable the save changes button again since the changes are saved now
     jQuery('.btn-save').attr('disabled',true);
-    
+
 }
 
 function btn_edit_click(){
