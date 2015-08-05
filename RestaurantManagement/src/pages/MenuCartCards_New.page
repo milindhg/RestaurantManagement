@@ -8,21 +8,26 @@
 
 <apex:page showheader="false" controller="Cart_New"  standardstylesheets="false">
     <style type="text/css">
-           
+        
+        .item_name{
+        font-family: 'Oleo Script', cursive;
+        }
         .orderitem{
-            height:40px;
+        height:45px;
         }
         .quant_label{
-            margin-top:5px;
+        margin-top:9px;
+        padding-top:7px;
         }
         
         #quant{
-            height:35px;
-            margin-top:1px;
+        height:35px;
+        margin-top:3px;
+        
         }
         .ui-input-text input, .ui-input-search input{
-            font-size:12px;
-            height:25px;
+        font-size:12px;
+        height:25px;
         }
         .ui-btn-icon-bottom{
         padding-bottom:2em;
@@ -409,16 +414,16 @@
         }
         
         .list-group-item.active>.badge, .nav-pills>.active>a>.badge {
-           color: #800000;
+        color: #800000;
         }
         
         /**Styling for the new cart UI: End **/
         
         .est_del{
-          display:none;
-          font-size:17px;
-          font-weight:bold;
-          color:maroon;
+        display:none;
+        font-size:17px;
+        font-weight:bold;
+        color:maroon;
         }
     </style>
     <head>
@@ -442,9 +447,10 @@
     sforce.connection.sessionId = "{!$Api.Session_ID}";
     $j = jQuery.noConflict();
     
+    sayHello();
     jQuery(document).ready(function() {
         
-        sayHello();
+        
         jQuery.cometd.init({
             url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
             requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
@@ -456,28 +462,22 @@
     });
     
     function handlePlaceOrder(order_id, location, tableid){
-        //alert('order id: '+order_id);
-        //alert('location: '+location);
-        //alert('table id: '+tableid);
-       var result = sforce.apex.execute("Cart_New",    
-                                        "placeOrder",      
-                                        {order_id,
-                                        location,
-                                        tableid});
-                                        
-       //alert('Result: '+result);                                 
-                                        
-       if(result!=''){
-         $j('#id_est_del').text('Estimated Delivery at '+result);
-         $j('#id_est_del').css('display','block');
+        var result = sforce.apex.execute("Cart_New",    
+                                         "placeOrder",      
+                                         {order_id,
+                                          location,
+                                          tableid});
+
+        if(result!='' && $('#id_est_del').css('display')=='none'){                                
+            $('#id_est_del').text('Estimated Delivery at '+result);
+            $('#id_est_del').css('display','block');
         }
-        sayHello();                              
-    }   
+        
+         sayHello();
+       }   
 
     //Dummy function to rerender the cart
-    function sayHello(){
-        
-        }
+    function sayHello(){}
 
 
 </script>        
@@ -619,7 +619,7 @@
                                         <div class="list-group" style="cursor:default;">
                                             <div class="list-group-item" style="cursor:default;">
                                                 <div>
-                                                <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <a href="#" class="list-group-item active" list-group-item-link="{! pitem.id}" style="cursor:default;">
                                                     <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
                                                         {!pitem.name}
                                                     <apex:outputPanel style="opacity:0.4;" rendered="{! if(pitem.status=='Delivered',true,false)}">
@@ -640,7 +640,7 @@
                                                 <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
                                                 <div class="row" style="margin-top:5px;">
                                                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                        <div class="input-group">
+                                                        <div class="input-group" input-group="{! pitem.id}">
                                                               <span class="input-group-btn">
                                                                   <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-minus"></span>
@@ -838,7 +838,7 @@
                 <!-- Placeholder for the complete order button --> 
                 <apex:outputPanel id="complete_order">
                     <apex:form >
-                        <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
+                        <apex:commandLink styleClass="btn btn-default" style="height:30px;width:100%;font-weight:normal;color:black;" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
                     </apex:form>
                 </apex:outputPanel>
             </div>                        
@@ -849,7 +849,7 @@
 <!-- src="{!$Resource.PlusMinusJs}" -->
 
 <script type="text/javascript" > 
-    //plugin bootstrap minus and plus
+//plugin bootstrap minus and plus
 //http://jsfiddle.net/laelitenetwork/puJ6G/
 //jQuery('.btn-number').click(function(e){
 //pass the "this" object in the call to get it in obj.

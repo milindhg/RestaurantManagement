@@ -11,7 +11,7 @@ global with sharing class Cart_New{
 
     public String foodOrderId = 'a0537000000So4p';
     public String tableNumber = '12';
-    public String location = 'R-0000';
+    public String selLocation = 'R-0000';
 
     public Cart_New(){ selectedItems=''; }
     public List<DisplayCart> orderItemsList;
@@ -153,29 +153,6 @@ global with sharing class Cart_New{
           update orderItem;                             
      }
      
-     WebService static String placeOrder(String order_id, String location, String tableid) {
-        
-        if(order_id == null || order_id == ''){
-            return '';
-        }
-        else{
-            Integer tableNo = Integer.valueOf(tableid);
-            String est_del_time = estimateDelivery(location, tableNo);
-            
-            Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
-            fo.Status__c = PENDING;
-            update fo;
-            
-            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:order_id AND oi.Status__c =:NAVA AND oi.Delete_Status__c = 'No'];
-            for(Order_Item__c o : orderItems){
-                o.Status__c = PENDING;            
-            }
-            update orderItems;    
-            
-            return est_del_time;                                                            
-        }
-     }
-     
      public void placeOrder1() {
         String id= system.CurrentPageReference().getParameters().get('id');  
         Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: id];
@@ -187,6 +164,40 @@ global with sharing class Cart_New{
             o.Status__c = PENDING;            
         }
         update orderItems;                                                                 
+     }
+     
+     WebService static String placeOrder(String order_id, String location, String tableid) {
+        
+        if(order_id == null || order_id == ''){
+            return '';
+         }            
+        else
+          { Integer tableNo = Integer.valueOf(tableid);
+            String est_del_time = '';
+            Food_Order__c fo = [SELECT DeliveryTime__c, Status__c
+                                FROM  Food_Order__c
+                                WHERE Id = :order_id];
+            
+            //Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
+            fo.Status__c = PENDING;
+            update fo;
+            
+            List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:order_id AND oi.Status__c =:NAVA AND oi.Delete_Status__c = 'No'];
+            for(Order_Item__c o : orderItems){
+                o.Status__c = PENDING;            
+            }
+            update orderItems;  
+            
+            System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
+            
+            List<String> result= estimateDelivery(location, tableNo, order_id);
+            est_del_time = result[0];
+            fo.DeliveryTimeBy__c = est_del_time;
+            fo.DeliveryTime__c = Integer.valueOf(result[1]);
+            update fo;  
+            
+            return est_del_time;                                                            
+        }
      }
      
      public void resetCart() {
@@ -221,9 +232,9 @@ global with sharing class Cart_New{
      }
      
      public PageReference payBill() {
-         PageReference pageRef = Page.Bill;
+         PageReference pageRef = Page.Bill_New;
          pageRef.getParameters().put('orderId', foodOrderId);
-         pageRef.getParameters().put('reqlocation', location);
+         pageRef.getParameters().put('reqlocation', selLocation);
          pageRef.getParameters().put('tableid', tableNumber);
          System.debug('PageRef------------------->'+pageRef);
          pageRef.setRedirect(true);
@@ -250,7 +261,7 @@ global with sharing class Cart_New{
     }
     
 
-    static String estimateDelivery(String location, Integer tableNo){
+    static List<String> estimateDelivery(String location, Integer tableNo, String order_id){
         Integer count = 0;
         Integer prep_factor = 5;
         Integer MIN_VALUE = -100;
@@ -261,14 +272,18 @@ global with sharing class Cart_New{
         Boolean flag = false;
         Integer est_del_time = 0;
         String am_pm = 'AM';
+        String zero_hr = '';
+        String zero_min = '';
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
+        List<String> result_list = new List<String>();
+        //System.debug('Order Id: '+foodOrderId);
         
         List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, 
                                             Status__c, Quantity__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c IN ('Pending','Accepted')
-                                     AND    Food_Order__r.Restaurant_Branch__r.Restaurant_ID__c = :location
+                                     AND    Restaurant_Id__c = :location
                                      AND    Delete_Status__c = 'No'
                                      ORDER BY Status__c desc, CreatedDate];                          
         
@@ -277,82 +292,105 @@ global with sharing class Cart_New{
                                      WHERE  Status__c = 'New'
                                      AND    Table_Number__c = :tableNo
                                      AND    Delete_Status__c = 'No'
-                                     AND    Food_Order__r.Restaurant_Branch__r.Restaurant_ID__c = :location];
+                                     AND    Restaurant_Id__c = :location];
                                
-         
-        Chef__c chef = [SELECT Total_Chefs__c
-                        FROM Chef__c
-                        WHERE Restaurant_Id__c = :location];                             
-        System.debug('totalChefs are: ' + chef);
-        Integer total_chefs = (Integer)chef.Total_Chefs__c;
+        Restaurant__c resto = [SELECT Id
+                               FROM   Restaurant__c
+                               WHERE  Restaurant_Id__c = :location];
         
-        for(Order_Item__c o : queue){
-           count++;
+        Id resto_id = resto.id;
+        
+        List<Chef__c> chef_list = [SELECT Name, Total_Chefs__c 
+                                   FROM   Chef__c
+                                   WHERE  Restaurant_Id__c = :resto_id];                            
+        
+        if(chef_list.size()>0){
+            Integer total_chefs = (Integer)chef_list[0].Total_Chefs__c;
             
-           if(o.Quantity__c > 1) 
-              prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
-           else
-              prep_time = (Integer) o.Item_Prep_Time__c;
-              
-            
-               
-           if(max_time < prep_time )
-               max_time = prep_time;
-           
-           if(Math.mod(count, total_chefs) == 0){
-              prev_time+=max_time;
-              max_time = MIN_VALUE;
-           }   
-        }
-        
-        //System.debug('Count: '+count);
-        //System.debug('Total Time before: '+prev_time);
-        //System.debug('Max Time: '+max_time);
-        
-        if(count >= total_chefs  && max_time > 0)
-           prev_time+=max_time;                           
-        else
-           prev_time = 0;                       
-        
-        //System.debug('Total Time after: '+prev_time);
-                                     
-        for(String it_type : item_type){
-           for(Order_Item__c it : items){
-               if(it.Type__c == it_type){
-                  if(it.Quantity__c > 1) 
-                     prep_time = ((Integer) it.Item_Prep_Time__c * (Integer)it.Quantity__c)/prep_factor;
-                  else
-                     prep_time = (Integer) it.Item_Prep_Time__c; 
+            for(Order_Item__c o : queue){
+               count++;
+                
+               if(o.Quantity__c > 1) 
+                  prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
+               else
+                  prep_time = (Integer) o.Item_Prep_Time__c;
                   
-                   curr_item_time = prep_time;
-                  flag = true;
-                  break;
-                }
+                
+               if(max_time < prep_time)
+                   max_time = prep_time;
+               
+               if(Math.mod(count, total_chefs) == 0){
+                  prev_time+=max_time;
+                  max_time = MIN_VALUE;
+               }   
             }
-            if(flag)
-              break;
-        }
-         
-        //System.debug('Curr Time: '+curr_item_time);
-        //System.debug('Est Del Time: '+est_del_time);
-        
-        Integer hr = System.now().hour();
-        Integer min = System.now().minute(); 
-        
-        min = prev_time + curr_item_time + min;
-        
-        if(min > 59){
-          hr+= min/60;
-          min=Math.mod(min,60);  
-         }
-        
-        if(hr>=12)
-          am_pm = 'PM';
+            
+            //System.debug('Count: '+count);
+            //System.debug('Total Time before: '+prev_time);
+            //System.debug('Max Time: '+max_time);
+            
+            if(count >= total_chefs  && max_time > 0)
+               prev_time+=max_time;                           
+            else
+               prev_time = 0;                       
+            
+            //System.debug('Total Time after: '+prev_time);
+                                         
+            for(String it_type : item_type){
+               for(Order_Item__c it : items){
+                   if(it.Type__c == it_type){
+                      if(it.Quantity__c > 1) 
+                         prep_time = ((Integer) it.Item_Prep_Time__c * (Integer)it.Quantity__c)/prep_factor;
+                      else
+                         prep_time = (Integer) it.Item_Prep_Time__c; 
+                      
+                       curr_item_time = prep_time;
+                      flag = true;
+                      break;
+                    }
+                }
+                if(flag)
+                  break;
+            }
+             
+            //System.debug('Curr Time: '+curr_item_time);
+            //System.debug('Est Del Time: '+est_del_time);
+            
+            Integer hr = System.now().hour();
+            Integer min = System.now().minute(); 
+            
+            min = prev_time + curr_item_time + min;
+            
+            if(min > 59){
+              hr+= min/60;
+              hr = Math.mod(hr,24);
+              min=Math.mod(min,60);  
+             }
+            
+            if(hr>=12)
+              am_pm = 'PM';
+            
+            if(hr>12)
+              hr-=12;
+              
+            if(hr<10)
+              zero_hr = '0'+hr;
+            else
+              zero_hr = hr+'';
+              
+            if(min < 10)
+              zero_min = '0'+min;
+            else
+              zero_min = min+''; 
+            
+            
+            String result = zero_hr+':'+zero_min+' '+am_pm;
+            result_list.add(result);
+            result_list.add(prev_time + curr_item_time+'');  
+            return result_list;
+          }
+        else
+           return result_list;   
           
-        String result = hr+':'+min+' '+am_pm;
-       
-        return result;
-        
     }
-
 }

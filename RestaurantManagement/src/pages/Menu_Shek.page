@@ -3,6 +3,46 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
     <style type="text/css">
         
+         .jssorb02 {
+                    position: absolute;
+                }
+                .jssorb02 div, .jssorb02 div:hover, .jssorb02 .av {
+                    position: absolute;
+                    /* size of bullet elment */
+                    width: 21px;
+                    height: 21px;
+                    text-align: center;
+                    line-height: 21px;
+                    color: white;
+                    font-size: 12px;
+                    background: url(../img/b02.png) no-repeat;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
+                .jssorb02 div { background-position: -5px -5px; }
+                .jssorb02 div:hover, .jssorb02 .av:hover { background-position: -35px -5px; }
+                .jssorb02 .av { background-position: -65px -5px; }
+                .jssorb02 .dn, .jssorb02 .dn:hover { background-position: -95px -5px; }
+        .jssorb03 {
+            position: absolute;
+        }
+        .jssorb03 div, .jssorb03 div:hover, .jssorb03 .av {
+            position: absolute;
+            /* size of bullet elment */
+            width: 21px;
+            height: 21px;
+            text-align: center;
+            line-height: 21px;
+            color: white;
+            font-size: 12px;
+            background: url(../img/b03.png) no-repeat;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .jssorb03 div { background-position: -5px -4px; }
+        .jssorb03 div:hover, .jssorb03 .av:hover { background-position: -35px -4px; }
+        .jssorb03 .av { background-position: -65px -4px; }
+        .jssorb03 .dn, .jssorb03 .dn:hover { background-position: -95px -4px; }
         .item_name{
         font-family: 'Oleo Script', cursive;
         }
@@ -424,6 +464,10 @@
         <apex:includeScript value="{!$Resource.cometd}"/>
         <apex:includeScript value="{!$Resource.jquery}"/>
         <apex:includeScript value="{!$Resource.json2}"/>
+        <apex:includeScript value="{!$Resource.jssor1}"/>
+        <apex:includeScript value="{!$Resource.jssor2}"/>
+        <apex:includeScript value="{!$Resource.jssor3}"/>
+        <apex:includeScript value="{!$Resource.jssor4}"/>
         <apex:includeScript value="{!$Resource.jquery_cometd}"/>
         <apex:includeScript value="{!$Resource.spineditjs}"/>
         <apex:includeScript value="{!$Resource.swiperminjs}"/>
@@ -452,6 +496,85 @@
     
     $j = jQuery.noConflict();
     
+    jssor_slider1_starter = function (containerId) {
+            var options = {
+                $AutoPlay: false,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+                $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
+                $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+                $PauseOnHover: 1,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+
+                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+                $SlideDuration: 300,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+                $MinDragOffsetToSlide: 80,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+                //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+                $SlideHeight: 150,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+                $SlideSpacing: 3, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $DisplayPieces: 3,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+                $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+                $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+                $PlayOrientation: 2,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+                $DragOrientation: 2,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0),
+
+                $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
+                    $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
+                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 2,                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $SpacingY: 5,                                   //[Optional] Vertical space between each item in pixel, default value is 0
+                    $Orientation: 2                                 //[Optional] The orientation of the navigator, 1 horizontal, 2 vertical, default value is 1
+                }
+            };
+            var jssor_slider1 = new $JssorSlider$(containerId, options);
+
+            //responsive code begin
+            //you can remove responsive code if you don't want the slider scales while window resizes
+            function ScaleSlider() {
+                var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
+                if (parentWidth) {
+                    var sliderWidth = parentWidth;
+
+                    //keep the slider width no more than 809
+                    sliderWidth = Math.min(sliderWidth, 809);
+
+                    jssor_slider1.$ScaleWidth(sliderWidth);
+                }
+                else
+                    $Jssor$.$Delay(ScaleSlider, 30);
+            }
+
+            ScaleSlider();
+            $Jssor$.$AddEvent(window, "load", ScaleSlider);
+
+            $Jssor$.$AddEvent(window, "resize", $Jssor$.$WindowResizeFilter(window, ScaleSlider));
+            $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
+            //responsive code end
+        };
+
+        jssor_sliderh_starter = function (containerId) {
+            var sliderhOptions = {
+                $PauseOnHover: 1,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+                $AutoPlaySteps: 4,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
+                $SlideDuration: 300,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+                $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+                $SlideWidth: 200,                                   //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+                //$SlideHeight: 150,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+                $SlideSpacing: 3, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $DisplayPieces: 4,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+                $ParkingPosition: 0,                              //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+                $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+
+                $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
+                    $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
+                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 0,                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $Steps: 1,                                      //[Optional] Steps to go for each navigation request, default value is 1
+                    $Lanes: 1,                                      //[Optional] Specify lanes to arrange items, default value is 1
+                    $SpacingX: 0,                                   //[Optional] Horizontal space between each item in pixel, default value is 0
+                    $SpacingY: 0,                                   //[Optional] Vertical space between each item in pixel, default value is 0
+                    $Orientation: 1                                 //[Optional] The orientation of the navigator, 1 horizontal, 2 vertical, default value is 1
+                }
+            }
+            var jssor_sliderh = new $JssorSlider$(containerId, sliderhOptions);
+        };
     sayHello();
     $(document).ready(function() {
         $.cometd.init({
@@ -601,12 +724,13 @@
                                               {tableid,location}
                                              );
         
-        alert(result_list[1]);                                     
+        //alert(result_list[1]);                                     
         if(result_list[0] == 'Pending' && result_list[1]!=null){
            $('#id_est_del').text('Estimated Delivery at '+result_list[1]);
            $('#id_est_del').css('display','block');
         }
-                                                     
+        
+                                               
     }
     
     function filter_entree(type,event){
@@ -758,26 +882,19 @@
     
     
     function handlePlaceOrder(order_id, location, tableid){
-        //alert('order id: '+order_id);
-        //alert('location: '+location);
-        //alert('table id: '+tableid);
         var result = sforce.apex.execute("MenuItemListController_Copy",    
                                          "placeOrder",      
                                          {order_id,
                                           location,
                                           tableid});
-                                          
-        //alert('Result: '+result);                                 
-        
+
         if(result!='' && $('#id_est_del').css('display')=='none'){                                
             $('#id_est_del').text('Estimated Delivery at '+result);
             $('#id_est_del').css('display','block');
         }
-        
-         
-         sayHello();
-          
-       }   
+
+        sayHello();
+    }   
           
       //Dummy function to rerender the cart
       function sayHello(){}
@@ -788,204 +905,222 @@
             
             <!-- Div for modal popup -->
             <div class="modal fade" id="modal-container-615533" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <apex:outputPanel id="modal_content">
                             <apex:form >
                                 <div class="modal-header">
-                                    
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                        ×
-                                    </button>
-                                    <h4 class="modal-title" id="myModalLabel">
-                                        Edit Order
-                                    </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
+                                    <h4 class="modal-title" id="myModalLabel"> Edit Order </h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            
-                                            <apex:pageBlock title="Cart">
-                                                
-                                                <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat_cart_items">
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="list-group" style="cursor:default;">
-                                                                    <div class="list-group-item" style="cursor:default;">
-                                                                        <div>
-                                                                            <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                                <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
-                                                                                {!pitem.name} 
-                                                                                <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div>
-                                                                            <div class="row" style="margin-top:5px;">
-                                                                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-btn">
-                                                                                            <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
-                                                                                                <span class="glyphicon glyphicon-minus"></span>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                        <input type="text" orderItemType="cart" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
-                                                                                        <span class="input-group-btn">
-                                                                                            <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
-                                                                                                <span class="glyphicon glyphicon-plus"></span>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                                                    <div style="text-align: right;">
-                                                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
-                                                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
+                    <!-- placed order section in the modal -->
+                    <apex:pageBlock >
+                        <div class="container-fluid" >
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <h2 class="mainTitle">Cart</h2>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <h2 style="text-align:right;margin-right:20px;"><span class="glyphicon glyphicon-shopping-cart" ></span></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat_cart_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group" style="cursor:default;">
+                                            <div class="list-group-item" style="cursor:default;">
+                                                <div>
+                                                <a href="#" class="list-group-item active" list-group-item-link="{! pitem.id}" style="cursor:default;">
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
+                                                        {!pitem.name} 
+                                                    <span class="badge" name="totalPrice[{!pitem.id}]">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <div>
+                                                    <div class="row" style="margin-top:5px;">
+                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            <div class="input-group" input-group="{! pitem.id}">
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-minus"></span>
+                                                                      </button>
+                                                                  </span>
+                                                                  <input type="text" orderItemType="cart" name="quant[{! pitem.id}]" style="height:28px;vertical-align:middle;text-align:center;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                                  <span class="input-group-btn">
+                                                                      <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                          <span class="glyphicon glyphicon-plus"></span>
+                                                                      </button>
+                                                                  </span>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </apex:repeat>
-                                                
-                                                
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="list-group" style="margin: Auto 15px;cursor:default;">
-                                                            <div class="list-group-item" style="cursor:default;">
-                                                                <div>
-                                                                    <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                        <span class="glyphicon"></span> 
-                                                                        Taxes
-                                                                        <span class="badge" name="taxEstimate">{!FoodOrder.TaxEstimate__c}</span>
-                                                                    </a>
-                                                                    <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                        <span class="glyphicon"></span> 
-                                                                        Estimated Bill
-                                                                        <span class="badge" name="totalPriceEstimate">{!FoodOrder.TotalPriceEstimate__c}</span>
-                                                                    </a>
-                                                                </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                            <div style="text-align: right;">
+                                                              <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
+                                                                <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span> Delete
+                                                              </button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                            </apex:pageBlock>
-                                        </div>
-                                        
-                                        <div class="col-md-6">
-                                            
-                                            <apex:pageBlock title="Placed Order">
-                                                <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
-                                                    <div class="container-fluid">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="list-group" style="cursor:default;">
-                                                                    <div class="list-group-item" style="cursor:default;">
-                                                                        <div>
-                                                                            <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                                <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
-                                                                                {!pitem.name}
-                                                                                <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
-                                                                                    <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
-                                                                                        <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true">Deliver</span>
-                                                                                    </button>
-                                                                                </apex:outputPanel>
-                                                                                <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
-                                                                                    <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
-                                                                                </apex:outputPanel>
-                                                                                <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
-                                                                            </a>
-                                                                        </div>
-                                                                        <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
-                                                                            <div class="row" style="margin-top:5px;">
-                                                                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                                                                    <div class="input-group">
-                                                                                        <span class="input-group-btn">
-                                                                                            <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
-                                                                                                <span class="glyphicon glyphicon-minus"></span>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                        <input type="text" orderItemType="placed" name="quant[{! pitem.id}]" style="height:28px;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
-                                                                                        <span class="input-group-btn">
-                                                                                            <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
-                                                                                                <span class="glyphicon glyphicon-plus"></span>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                                                    <div style="text-align: right;">
-                                                                                        <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
-                                                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </apex:outputPanel>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </apex:repeat>
-                                                
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="list-group" style="margin: Auto 15px;cursor:default;">
-                                                            <div class="list-group-item" style="cursor:default;">
-                                                                <div>
-                                                                    <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                        <span class="glyphicon"></span> 
-                                                                        Taxes
-                                                                        <span class="badge" name="tax">{!FoodOrder.Tax__c}</span>
-                                                                    </a>
-                                                                    <a href="#" class="list-group-item active" style="cursor:default;">
-                                                                        <span class="glyphicon"></span> 
-                                                                        Current Bill
-                                                                        <span class="badge" name="totalPrice">{!FoodOrder.TotalPrice__c}</span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </apex:pageBlock>
-                                            
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    
-                                    
-                                    
-                                    
                                 </div>
-                                <div class="modal-footer">
-                                    
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                                        Close
-                                    </button> 
-                                    
-                                    <button type="button" class="btn btn-default btn-save" 
-                                            onclick="btn_save_click(this,'{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}')" 
-                                            data-dismiss="modal" disabled="true">
-                                        Save changes
-                                    </button>
+                            </div>
+                        </apex:repeat>
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;cursor:default;">
+                                    <div class="list-group-item" style="cursor:default;">
+                                        <div>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge" name="taxEstimate">{!FoodOrder.TaxEstimate__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Estimated Bill
+                                                <span class="badge" name="totalPriceEstimate">{!FoodOrder.TotalPriceEstimate__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </apex:form>
-                        </apex:outputPanel>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+                </div>
+
+                <div class="col-md-6">
+
+                    <!-- placed order section in the modal -->
+                    <apex:pageBlock >
+                        <div class="container-fluid" >
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <h2 class="mainTitle">Placed Order</h2>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <h2 style="text-align:right;margin-right:20px;"><span class="glyphicon glyphicon-book" ></span></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat_billed_items">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="list-group" style="cursor:default;">
+                                            <div class="list-group-item" style="cursor:default;">
+                                                <div>
+                                                <a href="#" class="list-group-item active" list-group-item-link="{! pitem.id}" style="cursor:default;">
+                                                    <span class="glyphicon" name="quantity[{! pitem.id}]">{!pitem.quantity}</span> 
+                                                        {!pitem.name}
+                                                    <apex:outputPanel style="opacity:0.4;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                        <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                                    </apex:outputPanel>
+                                                    <span class="badge" name="totalPrice[{! pitem.id}]">{!pitem.totalPrice}</span>
+                                                </a>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center;margin-top:5px;">
+                                                        <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Picked Up',true,false)}">
+                                                            <button type="button" style="width:inherit;" class="btn btn-default btn-deliver" aria-label="Deliver" data-field="quant[{! pitem.id}]" onclick="btn_deliver_click(this)">
+                                                                <span class="glyphicon glyphicon-check" style="width:auto !important" aria-hidden="true"></span> Deliver Item
+                                                            </button>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                                <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
+                                                <div class="row" style="margin-top:5px;">
+                                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                        <div class="input-group" input-group="{! pitem.id}">
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                                  </button>
+                                                              </span>
+                                                              <input type="text" orderItemType="placed" name="quant[{! pitem.id}]" style="height:28px;text-align:center;" class="form-control input-number" value="{! pitem.quantity}" min="1" max="10" onkeydown="input_number_keydown(event)" onfocus="input_number_focusin(this)" onchange="input_number_change(this)"/>
+                                                              <span class="input-group-btn">
+                                                                  <button type="button" class="btn btn-default btn-number" onclick="btn_number_click(this)" data-type="plus" data-field="quant[{! pitem.id}]">
+                                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                                  </button>
+                                                              </span>
+                                                          </div>
+                                                        </div>
+                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                        <div style="text-align: right;">
+                                                          <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
+                                                            <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span> Delete
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" style="margin: Auto 15px;cursor:default;">
+                                    <div class="list-group-item" style="cursor:default;">
+                                        <div>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Taxes
+                                                <span class="badge" name="tax">{!FoodOrder.Tax__c}</span>
+                                            </a>
+                                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                                <span class="glyphicon"></span> 
+                                                Current Bill
+                                                <span class="badge" name="totalPrice">{!FoodOrder.TotalPrice__c}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </apex:pageBlock>
+
+                </div>
+            </div>
+
+                
+                            
+                            
+                            
+                        </div>
+                        <div class="modal-footer">
+                             
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button> 
+
+                            <button type="button" class="btn btn-default btn-save" onclick="btn_save_click(this)" data-dismiss="modal" disabled="true">
+                                Save changes
+                            </button>
+                        </div>
+                    </apex:form>
+                </apex:outputPanel>
                     </div>
                     
                 </div>
                 
             </div>
-            
+
             <div data-role="page" id="pageone" style="padding:0px;" >
                 <div data-role="header" style="position:fixed;top:0;left:0;right:0;z-index:100;">
                     <h1>Place Order: Table - {!$CurrentPage.parameters.tableid} Location - {!$CurrentPage.parameters.reqlocation}
@@ -1039,21 +1174,26 @@
                             <div id="stmenu" style="left:0;height:60%;overflow:scroll;">
                                 <div id="one" class="container" style="clear:left;background-color:white;width:100%;">
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
-                                        <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
+                                       <!-- <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                                             <ul>
                                                 <li><a href="#vegan_appetizer"  onClick="filter_appitizer('vegan_appetizer',event);" data-ajax="false"
                                                        style="width:100%;color:white;background-color:#86B404;background-image:none;height:35px;text-shadow:none;">Vegan <tr/><apex:image value="{!$Resource.vegan}" width="20px"/> </a></li>
                                                 <li><a href="#veg_appetizer" onClick="filter_appitizer('veg_appetizer',event);" style="width:100%;color:white;background-color:#088A29;background-image:none;height:35px;text-shadow:none;" >Vegetarian <tr/><apex:image value="{!$Resource.veg}" width="20px"/></a></li>
                                                 <li><a href="#nonveg_appetizer" onClick="filter_appitizer('nonveg_appetizer',event);"  style="width:100%;color:white;background-color:#610B0B;background-image:none;height:35px;text-shadow:none" data-ajax="false">Non-Vegetarian <tr/><apex:image value="{!$Resource.nonveg}" width="20px"/></a></li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                         <div id="vegan_appetizer"  class="ui-body-d ui-content">
                                             <div class="row" >
-                                                <div class="swiper-container">
-                                                    <div class="swiper-wrapper" >
+                                               <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 809px; height: 456px; overflow: hidden; ">
+                                                   <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 456px;
+                overflow: hidden;">
+                                                       <div>
+															<div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
+                        height: 150px;">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer_vegan" var="item">
                                                             <!--<div class="swiper-slide" style="">-->
-                                                            <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer' && item.typ='Vegan'), 'display:block', 'display:none')};margin:0px;">    
+                                                              <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 150px;
+                            overflow: hidden;">
                                                                 <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" >                                                                    
                                                                     <div class="panel panel-default" >                                                                        
                                                                         <div id="panel_body" class="panel-body text-center" >
@@ -1104,11 +1244,16 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </apex:repeat> 
-                                                </div>
+                                                                </div>
+                                                    </apex:repeat>
+                                                       </div>                                                         
+                                                       </div>
                                             </div>
                                         </div>
+                                        </div>
+                                        <script type="text/javascript">
+                            jssor_sliderh_starter('sliderh1_container');
+                        </script>
                                     </div>
                                     <div id="veg_appetizer"  class="ui-body-d ui-content">
                                         <div class="row">
@@ -1236,80 +1381,79 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-grid-b">
-    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
-    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
-    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
-    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
-    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
-    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
-    <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px">Block A</div></div>
-    <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px">Block B</div></div>
-    <div class="ui-block-c"><div class="ui-bar ui-bar-a" style="height:60px">Block C</div></div>
-</div>
                         <div id="all_appetizers">
-                            <div class="row">
-                               <!-- <div class="swiper-container">-->
-                                   <!-- <div class="swiper-wrapper" >-->
-                               <div class="ui-grid-b" >
-                                        <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer" var="item">
-                                           
-                                           <!-- <div  id="slider" class="sliderex" style="{!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;">-->
-                                                <div class="col-sm-6 col-md-6 col-lg-4" style=" {!IF((item.category=='Appetizer'), 'display:block', 'display:none')};margin:0px;width:100%;" > 
-                                                    <div class="panel panel-default">
-                                                        <div id="panel_body" class="panel-body text-center" >
-                                                            <div class="page1" id="page1" onClick="flip_in(event);">
-                                                                <div   class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
-                                                                    <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
-                                                                        <p style="float:left;padding-right:10px;opacity:1;"></p>
-                                                                        <p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
-                                                                    </div>
-                                                                    <div id="desc1" class="desc1" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;cursor:pointer;padding:0px;height:30px">
-                                                                        <div id="item_name" class="item_name" style="color:White;font-weight:bold;font-size:20px;float:left"> {!item.name} </div>
-                                                                        <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.veg}" width="20px" />
-                                                                        <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.vegan}" width="20px" />
-                                                                        <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.nonveg}" width="20px" />
-                                                                        <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
-                                                                    </div>
-                                                                    <apex:image style="{!IF((item.spiceLevel == 'Hot'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.veryhot}" width="60px" /> 
-                                                                    <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
-                                                                    <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
-                                                                    <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
-                                                                        <p id="chef_special" class="chef_special" style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;cursor:pointer;background-color:white;opacity:0.7;font-size:16px;">
-                                                                            Chef's Special
-                                                                        </p>
+                                          <div class="row" >
+                                               <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 809px; height: 456px; overflow: hidden; ">
+                                                   <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 456px;
+                overflow: hidden;">
+                                                       <div>
+															<div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
+                        height: 150px;">
+                                                        <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer_all" var="item">
+                                                            <!--<div class="swiper-slide" style="">-->
+                                                              <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 150px;
+                            overflow: hidden;">
+                                                                <div class="col-sm-6 col-md-6 col-lg-4" style="width:100%;" >                                                                    
+                                                                    <div class="panel panel-default" >                                                                        
+                                                                        <div id="panel_body" class="panel-body text-center" >
+                                                                            <div class="page1" id="page1" onClick="flip_in(event);">
+                                                                                <div   class="cardimage" style="position:relative;margin:0px;background-image:url({!item.imgurl});width:100%;">
+                                                                                    <div id="price" style="float:left;position:absolute;right:0;bottom:0;background-color:grey;opacity:0.8;font-size:32px;color:black;font-weight:bold;">
+                                                                                        <p style="float:left;padding-right:10px;opacity:1;"></p>
+                                                                                        <p id="price" style="float:left;padding-right:10px;padding-left:10px;" >${!item.price}</p>
+                                                                                    </div>
+                                                                                    <div id="desc1" class="desc1" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.6;cursor:pointer;padding:0px;height:30px">                                                                                   
+                                                                                        <div id="item_name" class="item_name" style="color:White;font-weight:bold;font-size:20px;float:left"> {!item.name} </div>
+                                                                                        <apex:image style="{!IF((item.typ== 'Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.veg}" width="20px" />
+                                                                                        <apex:image style="{!IF((item.typ== 'Vegan'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.vegan}" width="20px" />
+                                                                                        <apex:image style="{!IF((item.typ== 'Non-Vegetarian'), '', 'display:none')};margin-left:20px;padding-top:5px" value="{!$Resource.nonveg}" width="20px" />
+                                                                                        <apex:image style="{!IF((item.starredItem == TRUE), '', 'display:none')};position:absolute;left:0;bottom:0;background-color:white;" value="{!$Resource.star1}" width="40px" />
+                                                                                    </div>
+                                                                                    <apex:image style="{!IF((item.spiceLevel == 'Hot'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.veryhot}" width="60px" /> 
+                                                                                    <apex:image style="{!IF((item.spiceLevel == 'Medium'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mediumhot}" width="60px" /> 
+                                                                                    <apex:image style="{!IF((item.spiceLevel == 'Mild'), '', 'display:none')};position:absolute;right:-20px;top:-30px;z-index:1;" value="{!$Resource.mildhot}" width="60px" />
+                                                                                    <div style="{!IF((item.isSpecial== TRUE), '', 'display:none')};">
+                                                                                        <p id="chef_special" class="chef_special" style="float:left;font-family: 'Tangerine', cursive;font-weight:bold;cursor:pointer;background-color:white;opacity:0.7;font-size:16px;">
+                                                                                            Chef's Special
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="page2" id="page2" onClick="flip_out(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
+                                                                                <div class="cardimage"    style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
+                                                                                    
+                                                                                    <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;cursor:pointer;padding:0px">
+                                                                                        <apex:outputText value="{!item.description}" id="ite" style="color:White;font-size:14px;background-size:cover;" /> 
+                                                                                        <br> Preparation time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
+                                                                                    Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />
+                                                                                </div> 
+                                                                            </div> 
+                                                                        </div>
+                                                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
+                                                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
+                                                                            <input type="text" min="1" max="10" value="1" id="quant" class="quant" size='4' style="background-color:white;size:4;width:40px;float:left;padding-right:10px;"/>
+                                                                            <a href="#" data-role="button" onClick="changeQuant(event,'inc');" id="addorder" style="float:left;width:35px;padding-top:4px;"> 
+                                                                                +
+                                                                            </a> 
+                                                                            <a href="#" data-role="button" onClick="changeQuant(event,'dec');" id="addorder" style="float:left;width:35px;padding-top:4px;"> 
+                                                                                -
+                                                                            </a> 
+                                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:30%;padding-top:4px;" >ADD</a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="page2" id="page2" onClick="flip_out(event);" style="background-color:#610B0B;opacity:0.7;background-size:100%;cursor: pointer;">
-                                                                <div class="cardimage"    style="position:relative;background-image:url({!item.imgurl});width:100%;cursor: pointer;">
-                                                                    <div id="desc2" class="desc2" style="font-size:14px;color:white;text-shadow:none;background-color:#610B0B;opacity:0.7;cursor:pointer;padding:0px">
-                                                                        <apex:outputText value="{!item.description}" id="ite" style="color:White;font-size:14px;background-size:cover;" /> 
-                                                                        <br> Preparation time : <apex:outputText value="{!item.preptime}" style="color:White;font-weight:bold;font-size:16px;" />min </br>
-                                                                    Calories : <apex:outputText value="{!item.calories}" style="color:White;font-weight:bold;font-size:16px;" />
-                                                                </div> 
-                                                            </div> 
-                                                        </div>
-                                                        <div class="orderitem" style="padding:0px;background-color:maroon;background-size:100%;opacity:0.7;margin:0px;">
-                                                            <label for="spin" class="quant_label" style="color:White;float:left;padding-right:10px;float:left;">Quantity</label>
-                                                            <input type="text" min="1" max="10" value="1" id="quant" class="quant" readOnly="true" size='4' style="background-color:white;size:4;width:40px;float:left;padding-right:10px;"/>
-                                                            <a href="#" data-role="button" onClick="changeQuant(event,'inc');" id="addorder" style="float:left;width:35px;padding-top:4px;"> 
-                                                                +
-                                                            </a> 
-                                                            <a href="#" data-role="button" onClick="changeQuant(event,'dec');" id="addorder" style="float:left;width:35px;padding-top:4px;"> 
-                                                                -
-                                                            </a> 
-                                                            <a href="#" data-role="button" onClick="AddOrder(event,'{!item.name}','{!$CurrentPage.parameters.tableid}','{!$CurrentPage.parameters.reqlocation}','{!item.priceBook}');" id="addorder" style="margin-left:50px;width:30%;padding-top:4px;" >ADD</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                                </div>
+                                                    </apex:repeat>
+                                                       </div>                                                         
+                                                       </div>
                                             </div>
-                                      <!-- </div>-->
-                                    </apex:repeat> 
-                                </div>
-                           </div>
-                       <!-- </div>-->  <!-- row -->
-                    </div>
+                                        </div>
+                                        </div>
+                                        <script type="text/javascript">
+                            jssor_sliderh_starter('sliderh1_container');
+                        </script>
+                                    </div>
                 </div>
                 <div id="two" class="container" style="clear:left;background-color:white;width:100%;">
                     <div data-role="tabs" id="tabs" style="padding:0px;">   
@@ -1860,105 +2004,128 @@
             
             <div id="id_est_del" class="est_del"></div>
             
-            <apex:pageBlock id="billed_items" title="Billed Items">
-                <apex:form >
-                    <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
-                        <button type="button" class="btn btn-default btn-edit" aria-label="Edit Items" onclick="btn_edit_click()">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                            Edit Items
-                        </button>
-                    </a>
-                    <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name}
-                                    <apex:outputPanel style="margin-left:20px;" rendered="{! if(pitem.status=='Delivered',true,false)}">
-                                        <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
-                                    </apex:outputPanel>
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
+                <!-- Placeholder for div - bill_items pageblock -->
+                <apex:pageBlock id="billed_items">
+                    <apex:form >
+                        <a id="modal-615533" href="#modal-container-615533" role="button" class="btn" data-toggle="modal">
+                            <button type="button" class="btn btn-default btn-edit" aria-label="Edit Order" onclick="btn_edit_click()">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            Edit Order
+                            </button>
+                        </a>
+                        <div class="container-fluid" >
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <h2 class="mainTitle">Billed Items</h2>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <h2 style="text-align:right;margin-right:20px;"><span class="glyphicon glyphicon-book" ></span></h2>
+                                </div>
                             </div>
                         </div>
-                    </apex:repeat>
-                </apex:form>
-            </apex:pageBlock>
-            
-            
-            <!-- Placeholder for div - current_bill pageblock -->
-            <apex:pageBlock id="current_bill">
-                <div class="bs-example" style="cursor:default;">
-                    <div class="list-group" style="cursor:default;">
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon"></span> 
-                            Taxes
-                            <span class="badge">{!FoodOrder.Tax__c}</span>
-                        </a>
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon"></span> 
-                            Current Bill
-                            <span class="badge">{!FoodOrder.TotalPrice__c}</span>
-                        </a>
-                    </div>
-                </div>
-            </apex:pageBlock>
-            
-            
-            <!-- Placeholder for div - cart_table pageblock -->
-            <apex:pageBlock id="cart_table" title="Cart">
-                <apex:form >
-                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons, modal_content, cart_icon, complete_order"/>
+                        <apex:repeat value="{!orderItemsList}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name}
+                                            <apex:outputPanel style="opacity:0.4;" rendered="{! if(pitem.status=='Delivered',true,false)}">
+                                                <apex:image id="theImage" style="height:50px;width:inherit;margin:-20px auto;" value="{!$Resource.icon_delivered}" width="200" height="200"/>                                                            
+                                            </apex:outputPanel>
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                    </apex:form>
+                </apex:pageBlock>
+
                     
-                    <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
-                        <div class="bs-example" style="cursor:default;">
-                            <div class="list-group" style="cursor:default;">
-                                <a href="#" class="list-group-item active" style="cursor:default;">
-                                    <span class="glyphicon">{!pitem.quantity}</span> 
-                                    {!pitem.name} 
-                                    <span class="badge">{!pitem.totalPrice}</span>
-                                </a>
+                    <!-- Placeholder for div - current_bill pageblock -->
+                <apex:pageBlock id="current_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Taxes
+                                <span class="badge">{!FoodOrder.Tax__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Current Bill
+                                <span class="badge">{!FoodOrder.TotalPrice__c}</span>
+                            </a>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+
+                        <!-- Placeholder for div - cart_table pageblock -->
+                <apex:pageBlock id="cart_table">
+                    <div class="container-fluid" >
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <h2 class="mainTitle">Cart</h2>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <h2 style="text-align:right;"><span class="glyphicon glyphicon-shopping-cart" >
+                                    <span class="glyphicon badge" style="vertical-align:top;">{! CartSize}</span>
+                                </span></h2>
                             </div>
                         </div>
-                    </apex:repeat>
-                    <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
-                        <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Place Order" disabled="{! if(CartSize <=0,true,false)}" onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
-                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
-                        </apex:commandButton>                                        
                     </div>
-                    <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
-                        <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
-                            <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
-                        </apex:commandButton>
+                    <apex:form >
+                    <apex:actionFunction name="sayHello" action="{!sayHello}" reRender="billed_items, cart_table, current_bill, estimated_bill, cart_action_buttons, modal_content, cart_icon, complete_order"/>
+                                    
+                        <apex:repeat value="{!activeCartItems}" var="pitem" id="repeat">
+                            <div class="bs-example" style="cursor:default;">
+                                <div class="list-group" style="cursor:default;">
+                                    <a href="#" class="list-group-item active" style="cursor:default;">
+                                        <span class="glyphicon">{!pitem.quantity}</span> 
+                                            {!pitem.name} 
+                                        <span class="badge">{!pitem.totalPrice}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Place Order" disabled="{! if(CartSize <=0,true,false)}" onClick="handlePlaceOrder('{!FoodOrder.id}','{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>                                        
+                        </div>
+                        <div class ="row" style=" margin:3px 0 0 0;" id="place_order">
+                            <apex:commandButton styleClass="btn btn-default" style="height:30px;width:100%;" value="Reset Cart" rendered="{!FoodOrder.Status__c=='New'}" action="{!resetCart}" rerender="billed_items, cart_table, current_bill, estimated_bill, modal_content, cart_icon, complete_order">
+                                <apex:param name="Id" value="{!FoodOrder.id}"/>                                  
+                            </apex:commandButton>
+                        </div>
+                    </apex:form>
+                </apex:pageBlock>
+                
+                <br/>
+                    <!-- Placeholder for div - estimated_bill pageblock -->
+                <apex:pageBlock id="estimated_bill">
+                    <div class="bs-example" style="cursor:default;">
+                        <div class="list-group" style="cursor:default;">
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Taxes
+                                <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
+                            </a>
+                            <a href="#" class="list-group-item active" style="cursor:default;">
+                                <span class="glyphicon"></span> 
+                                Estimated Bill
+                                <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
+                            </a>
+                        </div>
                     </div>
-                </apex:form>
-            </apex:pageBlock>
-            
-            <br/>
-            <!-- Placeholder for div - estimated_bill pageblock -->
-            <apex:pageBlock id="estimated_bill">
-                <div class="bs-example" style="cursor:default;">
-                    <div class="list-group" style="cursor:default;">
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon"></span> 
-                            Taxes
-                            <span class="badge">{!FoodOrder.TaxEstimate__c}</span>
-                        </a>
-                        <a href="#" class="list-group-item active" style="cursor:default;">
-                            <span class="glyphicon"></span> 
-                            Estimated Bill
-                            <span class="badge">{!FoodOrder.TotalPriceEstimate__c}</span>
-                        </a>
-                    </div>
-                </div>
-            </apex:pageBlock>
-            
-            <!-- Placeholder for the complete order button --> 
-            <apex:outputPanel id="complete_order">
-                <apex:form >
-                    <apex:commandLink styleClass="btn" style="height:30px;width:100%" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
-                </apex:form>
-            </apex:outputPanel>
+                </apex:pageBlock>
+                
+                <!-- Placeholder for the complete order button --> 
+                <apex:outputPanel id="complete_order">
+                    <apex:form >
+                        <apex:commandLink styleClass="btn btn-default" style="height:30px;width:100%;font-weight:normal;color:black;" action="{! payBill}" value="Complete Order" rendered="{!FoodOrder.Status__c=='Delivered' }" />
+                    </apex:form>
+                </apex:outputPanel>
             
             
         </div> 
@@ -1976,6 +2143,7 @@ $(document ).ready(function() {
         this.id= 'item'+i;
         i++;
     });
+    
     
 });   
 
@@ -2243,7 +2411,7 @@ function btn_save_click(obj, tableid, location){
     
     //disable the save changes button again since the changes are saved now
     jQuery('.btn-save').attr('disabled',true);
-    
+
 }
 
 function btn_edit_click(){

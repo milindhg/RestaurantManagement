@@ -58,7 +58,7 @@ global class MenuItemListController_Copy {
         {
     foodOrderId= existingOrder[0].Id;
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OrderId__c, f.OrderDateTime__c,f.Location__c,
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -99,7 +99,7 @@ global class MenuItemListController_Copy {
     //Method required for fetching the order items for modification in the modal popup. 
     //This method returns the json object containing the orderitems in serialized format to the front end javscript function.
     public String getOrderItemsListSerialized(){
-        System.debug('Entered orderItemsListSerialized');
+        System.debug('Entered getOrderItemsListSerialized');
         System.debug('orderItemsList is: ' + orderItemsList);
         String jsonString = JSON.serializePretty(this.orderItemsList);
         System.debug('!!!!jsonString: ' + jsonString);
@@ -125,8 +125,8 @@ global class MenuItemListController_Copy {
                     for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                        o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                        o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id
                                         AND o.Delete_Status__c <> 'Yes'
@@ -140,6 +140,14 @@ global class MenuItemListController_Copy {
 
     }
     
+    public String getActiveCartItemsSerialized(){
+        System.debug('Entered getActiveCartItemsListSerialized');
+        System.debug('activeCartItems is: ' + activeCartItems);
+        String jsonString = JSON.serializePretty(this.activeCartItems);
+        System.debug('!!!!jsonString: ' + jsonString);
+        return jsonString;
+    }
+
     public void onAdd() {
            String id= system.CurrentPageReference().getParameters().get('id');
   
@@ -254,18 +262,6 @@ global class MenuItemListController_Copy {
          pageRef.setRedirect(true);
          return pageRef;
          }
-
-     
-     public PageReference test() {
-         PageReference pageRef = Page.Bill;
-//        PageReference pageRef = new PageReference('/apex/Bill');
-        System.debug('PageRef------------------->'+pageRef);
-         pageRef.setRedirect(true);
-  //       pageRef.getParameters().put('msg','success');
-         return pageRef;
-         }
-     
-
      
      public Integer getCartSize(){
          if(activeCartItems==null){
@@ -395,7 +391,8 @@ global class MenuItemListController_Copy {
         orderitem.Quantity__c= decimal.valueOf(quant);
         orderitem.Status__c='New';
         insert orderitem;
-        return orders[0].name;
+        //return orders[0].name;
+        return orderItem.id;
         
     }
     

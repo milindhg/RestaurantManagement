@@ -17,36 +17,22 @@
                           <tr>
                                <td> <apex:outputPanel style="font-weight:bold"> Do you want to add it to all locations: </apex:outputPanel>     </td>                              
                                <td>  
-                                        <input type="radio" name="checkLoc" value="Yes" onClick="disableLoc()" />Yes
+                                        <input type="radio" name="checkLoc" value="Yes" onClick="disableLoc()" checked="checked" />Yes
                                         <input type="radio" name="checkLoc" value="No" onClick="enableLoc()" />No
                                </td>
                           </tr>
-    
-                          <tr>
-                               <td> 
-                                    <apex:outputPanel style="font-weight:bold"> Select locations: </apex:outputPanel>  </td>
-                               <td>        
-                                   <apex:outputPanel > 
-                                   <apex:selectList styleClass="SelectClass"  id="locationValue" value="{!location}" multiselect="true">
-                                        <apex:selectOptions value="{!Locationdata}"></apex:selectOptions> 
-                                        </apex:selectList>
-                                   </apex:outputPanel> 
-                              </td>
-                         </tr>
-                         
-                         <tr>
-                         
-                             <td><apex:outputPanel > 
-                             
-                                     <apex:selectCheckboxes styleClass="MyCheckBox" id="myCheckBox" value="{!location}">
-                                         <apex:selectOptions value="{!Locationdata}"></apex:selectOptions> 
-                                     </apex:selectCheckboxes>
-                             
-                                
-                </apex:outputPanel> 
-                             </td>
-                         </tr>
-                                 
+                          <tr>     
+                          <td>  <apex:outputPanel style="font-weight:bold"> Locations: </apex:outputPanel></td>                    
+                             <td><apex:outputPanel >                               
+                               <apex:repeat value="{!Locationdata}" var="o">
+                                    <table >
+                                        <tr>                                 
+                                            <input type="checkbox" name="vehicle" value="{!o.value}" checked="checked">{!o.value}</input>
+                                        </tr>                        
+                                    </table>
+                               </apex:repeat>                                            
+                            </apex:outputPanel>  </td>                            
+                         </tr>                                 
                    </table>    
                    <input type="button" value="Next" onclick="next()" />                
            </div>
@@ -60,19 +46,19 @@
             <apex:pageBlock id="clean">
                 <div class="row" id="feedback_section">
                                                   
-                                    <apex:outputPanel id="item_name" style="font-weight:bold"> Item Name: </apex:outputPanel> 
-                                    <apex:inputText styleClass="item_text_next" id="item_text_next" value="{!itemName}"/>
-                               <br></br>
+                                  
+
                                   <apex:outputPanel style="font-weight:bold"> Do you want the same price at all locations: </apex:outputPanel>
                                  
-                                        <input type="radio" name="checkPrice" value="Yes" onClick="disablePrice()" />Yes
+                                        <input type="radio" name="checkPrice" value="Yes" onClick="disablePrice()" checked="checked" />Yes
                                         <input type="radio" name="checkPrice" value="No" onClick="enablePrice()" />No
                                   
                                    <br></br>
-                                 
+                                   <br></br>                                 
                                 <apex:outputPanel style="font-weight:bold"> Default Price: </apex:outputPanel>
                                 <apex:inputText />
                                 <br></br>
+                                <br></br>                                
                          <apex:pageBlock id="locationBlock">       
                         <apex:repeat value="{!location}" var="o">
                         <table >
@@ -85,12 +71,7 @@
                                </apex:pageBlock>
                    
                     <input type="button" value="Back" onclick="back()" />    
-        
-          
-         
-
-     
-        
+      
            </div>
   
           </apex:pageBlock>
@@ -101,17 +82,16 @@
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript">
 function disableLoc() {
-    alert('in');
-//    jQuery( ".SelectClass" ).css( "disabled", true );
-     var disableClass= jQuery( ".SelectClass" );
-     disableClass[0].disabled = true;
+
+$(':checkbox').each(function() {
+          this.checked = true;
+      });
 }
 function enableLoc() {
-    alert('inn');
-    var disableClass= jQuery( ".SelectClass" );
-     disableClass[0].disabled = false;
-//     $('.myCheckClass ').prop('checked', true);
-
+    
+$(':checkbox').each(function() {
+          this.checked = false;
+      });      
 }
 
 function disablePrice() {
@@ -126,6 +106,7 @@ function sayHello(){
 }
 $(document).ready(function() {    
        document.getElementById("price").style.display = 'none';
+       
     });
     
 function back(){
@@ -135,10 +116,21 @@ function back(){
 }
 
 function next(){
-         document.getElementById("price").style.display = 'block';
-        document.getElementById("items").style.display = 'none';
 
-        $('.item_text_next').val($('.item_text').val());
+
+var checked = $( "input[type=checkbox]" );
+for(var i=0; checked [i]; ++i){
+      if(checked [i].checked){
+          alert(checked [i].value);
+           checkedValue = checked [i].value;
+      }
+}
+
+    document.getElementById("price").style.display = 'block';
+    document.getElementById("items").style.display = 'none';
+
+    $('.item_text_next').val($('.item_text').val());
+       
 }
     
  function rerenderPage(){
