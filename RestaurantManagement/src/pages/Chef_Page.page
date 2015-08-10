@@ -1,4 +1,4 @@
-<apex:page controller="Copy_ChefListController" sidebar="false" showHeader="false">
+<apex:page controller="ChefListController" sidebar="false" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -33,23 +33,20 @@
            sforce.connection.sessionId = "{!$Api.Session_ID}";
           
            
-           function getmaxchefs(location, noOfChefs){
-             if(location===''||location==null){
-               alert('Please select the location');
-               return false;
-             }
+           function getmaxchefs(noOfChefs){
+            
              
              if(noOfChefs==='' || noOfChefs==null){
                alert('Please select the Number of Chefs');
                return false;
              }
              
-             var result = sforce.apex.execute('Copy_ChefListController',
+             var result = sforce.apex.execute('ChefListController',
                                               'updateNoChefs',
                                                {noOfChefs});
                                                
              if(result==''){
-               alert('Chef information not available for Location: '+location+'. Please enter data through the Main Chef page.');
+               alert('Chef information not available for this branch. Please enter data through the Main Chef page.');
                return false;
              }
                                                   
@@ -67,11 +64,11 @@
             <apex:form >
                 <apex:pageBlock >
                     <apex:outputPanel >
-                        <div style="font-weight:bold;text-align:left;">Select your Location</div>
-                        <apex:selectList id="slist" style="color:maroon;" value="{!selectedlocation}" size="1">
+                        <p style="font-weight:bold;text-align:left;">Your Location: {!RestoBranch}</p><br/>
+                        <!-- <apex:selectList id="slist" style="color:maroon;" value="{!selectedlocation}" size="1">
                             <apex:selectOptions value="{!Locationdata}"/>
                             <apex:actionSupport event="onchange" reRender="main2"/>
-                        </apex:selectList>
+                        </apex:selectList> -->
                         
                         <div style="font-weight:bold;text-align:left;">Number of Chefs</div>
                         <apex:selectList style="color:maroon;" value="{!selectedNoChefs}" size="1">
@@ -81,7 +78,7 @@
                         
                         <apex:outputPanel id="main2">  
                           <div align="center">
-                              <apex:commandLink immediate="true" onclick="getmaxchefs('{!selectedlocation}','{!selectedNoChefs}')"
+                              <apex:commandLink immediate="true" onclick="getmaxchefs('{!selectedNoChefs}')"
                                     styleClass="btn" style="margin-left:-20px;width:50px;font-weight:bold;font-size:14px;color:blue;" value="Next" />
                                    
                           </div>

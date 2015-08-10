@@ -34,12 +34,21 @@ global class MenuItemListController {
         System.debug(selLocation);
     }
     
+    public MenuItemListController(String reqlocation, String tableid){
+        selLocation=reqlocation;
+        tableNumber=tableid;
+        tableNo= Decimal.valueOf(tableNumber);
+        System.debug(selLocation);
+    }
+    
+    
     public Food_Order__c getFoodOrder(){
+       
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
-            f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c,
+            f.Status__c,  f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' and f.Location__c=:selLocation];
+                                     where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' and f.Restaurant_Branch__r.Restaurant_ID__c=:selLocation];
         System.debug('existingOrder is: !!!!' + existingOrder);
         if(existingOrder.isEmpty())
         {
@@ -49,7 +58,7 @@ global class MenuItemListController {
         {
     foodOrderId= existingOrder[0].Id;
     return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OrderId__c, f.OrderDateTime__c,f.Location__c,
+                        f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
@@ -74,7 +83,7 @@ global class MenuItemListController {
             for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id,o.Food_Order__r.Location__c, 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id,o.Food_Order__r.Location__c, o.Food_Order__r.Restaurant_Branch__r.Restaurant_ID__c, 
                                         o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id and o.Delete_Status__c <> 'Yes'
@@ -90,7 +99,7 @@ global class MenuItemListController {
     //Method required for fetching the order items for modification in the modal popup. 
     //This method returns the json object containing the orderitems in serialized format to the front end javscript function.
     public String getOrderItemsListSerialized(){
-        System.debug('Entered orderItemsListSerialized');
+        System.debug('Entered getOrderItemsListSerialized');
         System.debug('orderItemsList is: ' + orderItemsList);
         String jsonString = JSON.serializePretty(this.orderItemsList);
         System.debug('!!!!jsonString: ' + jsonString);
@@ -116,8 +125,8 @@ global class MenuItemListController {
                     for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
                                         o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
-                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
-                                        o.Food_Item__c, o.CreatedDate, o.CreatedById 
+                                        o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
+                                        o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
                                         where o.Food_order__c=:fo.id
                                         AND o.Delete_Status__c <> 'Yes'
@@ -131,6 +140,14 @@ global class MenuItemListController {
 
     }
     
+    public String getActiveCartItemsSerialized(){
+        System.debug('Entered getActiveCartItemsListSerialized');
+        System.debug('activeCartItems is: ' + activeCartItems);
+        String jsonString = JSON.serializePretty(this.activeCartItems);
+        System.debug('!!!!jsonString: ' + jsonString);
+        return jsonString;
+    }
+
     public void onAdd() {
            String id= system.CurrentPageReference().getParameters().get('id');
   
@@ -175,12 +192,21 @@ global class MenuItemListController {
         
         if(order_id == null || order_id == ''){
             return '';
-        }
-        else{
-            Integer tableNo = Integer.valueOf(tableid);
-            String est_del_time = estimateDelivery(location, tableNo);
+         }            
+        else
+          { Integer tableNo = Integer.valueOf(tableid);
+            String est_del_time = '';
+            Food_Order__c fo = [SELECT DeliveryTime__c, Status__c
+                                FROM  Food_Order__c
+                                WHERE Id = :order_id];
             
-            Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
+            //Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
+            System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
+            
+            List<String> result= estimateDelivery(location, tableNo, order_id);
+            est_del_time = result[0];
+            fo.DeliveryTimeBy__c = est_del_time;
+            fo.DeliveryTime__c = Integer.valueOf(result[1]);
             fo.Status__c = PENDING;
             update fo;
             
@@ -188,7 +214,15 @@ global class MenuItemListController {
             for(Order_Item__c o : orderItems){
                 o.Status__c = PENDING;            
             }
-            update orderItems;    
+            update orderItems;  
+            
+            /*System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
+            
+            List<String> result= estimateDelivery(location, tableNo, order_id);
+            est_del_time = result[0];
+            fo.DeliveryTimeBy__c = est_del_time;
+            fo.DeliveryTime__c = Integer.valueOf(result[1]);
+            update fo;  */
             
             return est_del_time;                                                            
         }
@@ -225,35 +259,6 @@ global class MenuItemListController {
      }
      
      public PageReference payBill() {
- /*       Double tableNo = Double.valueOf(ApexPages.CurrentPage().getParameters().get('tableid'));   
-        String loc = ApexPages.CurrentPage().getParameters().get('reqlocation');
-        
-        List<Order_Item__c> oitems = [SELECT Id, Name, Food_Item__c
-                                       FROM   Order_Item__c
-                                       WHERE  Status__c =: DELIVERED
-                                       AND    Table_Number__c = :tableNo];
-
-        List<Food_Item__c> fitems = new List<Food_Item__c>();
-        for(Integer i=0;i<oitems.size();i++){
-            Id food_item = oitems[i].Food_Item__c;
-        
-            Food_Item__c f = [SELECT Id, 
-                               (SELECT NoItemsOrdered__c
-                                FROM   PriceBooks__r
-                                WHERE  Location__c = :loc
-                                )
-             FROM Food_Item__c
-             WHERE Id = :food_item];
-            
-             PriceBook__c p = f.PriceBooks__r;
-             p.NoItemsOrdered__c = p.NoItemsOrdered__c + 1;
-            
-             fitems.add(f);
-            
-        }
-        
-        update fitems;
-     */
 
          PageReference pageRef = Page.Bill;
          pageRef.getParameters().put('orderId', foodOrderId);
@@ -263,18 +268,6 @@ global class MenuItemListController {
          pageRef.setRedirect(true);
          return pageRef;
          }
-
-     
-     public PageReference test() {
-         PageReference pageRef = Page.Bill;
-//        PageReference pageRef = new PageReference('/apex/Bill');
-        System.debug('PageRef------------------->'+pageRef);
-         pageRef.setRedirect(true);
-  //       pageRef.getParameters().put('msg','success');
-         return pageRef;
-         }
-     
-
      
      public Integer getCartSize(){
          if(activeCartItems==null){
@@ -309,7 +302,8 @@ global class MenuItemListController {
                 List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c 
                                             from PriceBook__c p 
                                             where p.Food_Item__r.name=:item.Name 
-                                            and p.Location__c =:selLocation 
+                                            //and p.Location__c =:selLocation
+                                            and p.Restaurant_Branch__r.Restaurant_ID__c =:selLocation
                                             and p.Price__c!=0]; 
                 System.debug(item.Name);
                 System.debug(selLocation);
@@ -351,25 +345,31 @@ global class MenuItemListController {
         //Decimal itemPrice = Decimal.valueOf(price); 
         System.debug(item);
         System.debug(quant);
+        System.debug(location);
         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
             f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' 
+                                             and 
+                                             f.Restaurant_Branch__r.Restaurant_ID__c =:location
+                                            ];
                 
         if(existingOrder.isEmpty()){
-            	List<Restaurant__c> resto_list=[Select r.Zip__c, r.SystemModstamp, r.Street_Address__c, r.State__c,
+            System.debug('Order Not Found');
+                List<Restaurant__c> resto_list=[Select r.Zip__c, r.SystemModstamp, r.Street_Address__c, r.State__c,
                                      r.Restaurant_ID__c, r.Phone__c, r.OwnerId, r.Name, r.Manager__c,
-                                    r.LastViewedDate, r.LastReferencedDate, r.LastModifiedDate, 
-                                    r.LastModifiedById, r.LastActivityDate, r.IsDeleted, r.Id, 
-                                    r.Email__c, r.CreatedDate, r.CreatedById, r.Country__c, r.City__c, 
-                                    r.Branch__c, r.Apartment_Suite__c From Restaurant__c r where r.Branch__c='Sawmill'];
+                                     r.LastViewedDate, r.LastReferencedDate, r.LastModifiedDate, 
+                                     r.LastModifiedById, r.LastActivityDate, r.IsDeleted, r.Id, 
+                                     r.Email__c, r.CreatedDate, r.CreatedById, r.Country__c, r.City__c, 
+                                     r.Branch__c, r.Apartment_Suite__c From Restaurant__c r where r.Restaurant_ID__c=:location];
                     
+                //Restaurant__c restaurant = [Select r.Id from Restaurant__c r where r.Restaurant_ID__c=:location];
+                System.debug('Resturant is'  + resto_list[0].Id);
                 Food_Order__c order = new Food_Order__c();
                 order.Status__c='New';
                 order.TableNumber__c=tableid;
-                order.Location__c= location;
-            	order.Restaurant_Branch__c =resto_list[0].Id;
+                order.Restaurant_Branch__c = resto_list[0].Id;
                 insert order;  
         }               
         
@@ -377,10 +377,10 @@ global class MenuItemListController {
             f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
             f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
-                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Location__c=:location ];
+                                     where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Restaurant_Branch__r.Restaurant_ID__c=:location ];
         String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
-                                        f.Prep_Time__c,f.Calories__c,  f.Name, f.LastViewedDate, 
+                                        f.Prep_Time__c,f.Calories__c, f.OwnerId, f.Name, f.LastViewedDate, 
                                         f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
                                         f.IsDeleted, f.Id, f.Description__c, f.CreatedDate, f.CreatedById, 
                                         f.Category__c From Food_Item__c f where f.Name=:item_name];
@@ -390,15 +390,15 @@ global class MenuItemListController {
         orderitem.Name= item;
         orderitem.Price__c= price;
         orderitem.Food_Item__c= food_items[0].Id;
+        orderitem.Restaurant_Id__c= location;
         orderitem.Food_Order__c= orders[0].Id;
         //orderitem.Location__c= location;
-        orderitem.Restaurant_Id__c= 'R-0000';
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
-        
         orderitem.Status__c='New';
         insert orderitem;
-        return orders[0].name;
+        //return orders[0].name;
+        return orderItem.id;
         
     }
     
@@ -423,7 +423,30 @@ global class MenuItemListController {
         return null;
     }
     
-    static String estimateDelivery(String location, Integer tableNo){
+    Webservice static List<String> getFoodOrderStatus(String tableid, String location){
+      List<String> result_list = new List<String>();
+      
+      Restaurant__c r = [SELECT Id
+                         FROM Restaurant__c
+                         WHERE Restaurant_Id__c = :location];
+      
+      Id resto_id = r.Id;                   
+      Decimal table_no = Decimal.valueOf(tableid); 
+      
+      Food_Order__c f = [SELECT Id, Status__c, DeliveryTimeBy__c
+                         FROM   Food_Order__c
+                         WHERE  TableNumber__c = :table_no 
+                         AND    Restaurant_Branch__c = :resto_id
+                         AND    Status__c != 'Paid'];
+      
+      result_list.add(f.Status__c);
+      result_list.add(f.DeliveryTimeBy__c);                   
+      
+      return result_list;                   
+    
+    }
+    
+    static List<String> estimateDelivery(String location, Integer tableNo, String order_id){
         Integer count = 0;
         Integer prep_factor = 5;
         Integer MIN_VALUE = -100;
@@ -434,14 +457,18 @@ global class MenuItemListController {
         Boolean flag = false;
         Integer est_del_time = 0;
         String am_pm = 'AM';
+        String zero_hr = '';
+        String zero_min = '';
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
+        List<String> result_list = new List<String>();
+        //System.debug('Order Id: '+foodOrderId);
         
         List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, 
                                             Status__c, Quantity__c
                                      FROM   Order_Item__c
                                      WHERE  Status__c IN ('Pending','Accepted')
-                                     AND    Food_Order__r.Location__c = :location
+                                     AND    Restaurant_Id__c = :location
                                      AND    Delete_Status__c = 'No'
                                      ORDER BY Status__c desc, CreatedDate];                          
         
@@ -450,81 +477,109 @@ global class MenuItemListController {
                                      WHERE  Status__c = 'New'
                                      AND    Table_Number__c = :tableNo
                                      AND    Delete_Status__c = 'No'
-                                     AND    Food_Order__r.Location__c = :location];
+                                     AND    Restaurant_Id__c = :location];
                                
-         
-        Chef__c chef = [SELECT Total_Chefs__c
-                        FROM Chef__c
-                        WHERE Location__c = :location];                             
+        Restaurant__c resto = [SELECT Id
+                               FROM   Restaurant__c
+                               WHERE  Restaurant_Id__c = :location];
         
-        Integer total_chefs = (Integer)chef.Total_Chefs__c;
+        Id resto_id = resto.id;
         
-        for(Order_Item__c o : queue){
-           count++;
+        List<Chef__c> chef_list = [SELECT Name, Total_Chefs__c 
+                                   FROM   Chef__c
+                                   WHERE  Restaurant_Id__c = :resto_id];                            
+        
+        if(chef_list.size()>0){
+            Integer total_chefs = (Integer)chef_list[0].Total_Chefs__c;
             
-           if(o.Quantity__c > 1) 
-              prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
-           else
-              prep_time = (Integer) o.Item_Prep_Time__c;
-              
-            
-               
-           if(max_time < prep_time )
-               max_time = prep_time;
-           
-           if(Math.mod(count, total_chefs) == 0){
-              prev_time+=max_time;
-              max_time = MIN_VALUE;
-           }   
-        }
-        
-        //System.debug('Count: '+count);
-        //System.debug('Total Time before: '+prev_time);
-        //System.debug('Max Time: '+max_time);
-        
-        if(count >= total_chefs  && max_time > 0)
-           prev_time+=max_time;                           
-        else
-           prev_time = 0;                       
-        
-        //System.debug('Total Time after: '+prev_time);
-                                     
-        for(String it_type : item_type){
-           for(Order_Item__c it : items){
-               if(it.Type__c == it_type){
-                  if(it.Quantity__c > 1) 
-                     prep_time = ((Integer) it.Item_Prep_Time__c * (Integer)it.Quantity__c)/prep_factor;
-                  else
-                     prep_time = (Integer) it.Item_Prep_Time__c; 
+            for(Order_Item__c o : queue){
+               count++;
+                
+               if(o.Quantity__c > 1) 
+                  prep_time = ((Integer) o.Item_Prep_Time__c * (Integer)o.Quantity__c)/prep_factor;
+               else
+                  prep_time = (Integer) o.Item_Prep_Time__c;
                   
-                   curr_item_time = prep_time;
-                  flag = true;
-                  break;
-                }
+                
+               if(max_time < prep_time)
+                   max_time = prep_time;
+               
+               if(Math.mod(count, total_chefs) == 0){
+                  prev_time+=max_time;
+                  max_time = MIN_VALUE;
+               }   
             }
-            if(flag)
-              break;
-        }
-         
-        //System.debug('Curr Time: '+curr_item_time);
-        //System.debug('Est Del Time: '+est_del_time);
-        
-        Integer hr = System.now().hour();
-        Integer min = System.now().minute(); 
-        
-        min = prev_time + curr_item_time + min;
-        
-        if(min > 59){
-          hr+= min/60;
-          min=Math.mod(min,60);  
-         }
-        
-        if(hr>=12)
-          am_pm = 'PM';
+            
+            //System.debug('Count: '+count);
+            //System.debug('Total Time before: '+prev_time);
+            //System.debug('Max Time: '+max_time);
+            
+            if(count >= total_chefs  && max_time > 0)
+               prev_time+=max_time;                           
+            else
+               prev_time = 0;                       
+            
+            //System.debug('Total Time after: '+prev_time);
+                                         
+            for(String it_type : item_type){
+               for(Order_Item__c it : items){
+                   if(it.Type__c == it_type){
+                      if(it.Quantity__c > 1) 
+                         prep_time = ((Integer) it.Item_Prep_Time__c * (Integer)it.Quantity__c)/prep_factor;
+                      else
+                         prep_time = (Integer) it.Item_Prep_Time__c; 
+                      
+                       curr_item_time = prep_time;
+                      flag = true;
+                      break;
+                    }
+                }
+                if(flag)
+                  break;
+            }
+             
+            //System.debug('Curr Time: '+curr_item_time);
+            //System.debug('Est Del Time: '+est_del_time);
+            
+            Integer hr = System.now().hour();
+            Integer min = System.now().minute(); 
+            
+            System.debug('Initial Minute: '+min);
+            min = prev_time + curr_item_time + min;
+            System.debug('After adding minutes: '+min);
+            
+            if(min > 59){
+              hr+= min/60;
+              hr = Math.mod(hr,24);
+              min=Math.mod(min,60);  
+             }
+             
+             System.debug('Final minutes: '+min);
+            
+            if(hr>=12)
+              am_pm = 'PM';
+            
+            if(hr>12)
+              hr-=12;
+              
+            if(hr<10)
+              zero_hr = '0'+hr;
+            else
+              zero_hr = hr+'';
+              
+            if(min < 10)
+              zero_min = '0'+min;
+            else
+              zero_min = min+''; 
+            
+            
+            String result = zero_hr+':'+zero_min+' '+am_pm;
+            result_list.add(result);
+            result_list.add(prev_time + curr_item_time+'');  
+            return result_list;
+          }
+        else
+           return result_list;   
           
-        String result = hr+':'+min+' '+am_pm;
-       
-        return result;
-        
     }
 }

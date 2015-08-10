@@ -31,11 +31,7 @@
             <type>Alert</type>
         </actions>
         <active>false</active>
-        <criteriaItems>
-            <field>RawMaterial__c.Available__c</field>
-            <operation>lessThan</operation>
-            <value>1</value>
-        </criteriaItems>
+        <formula>RawMaterial__r.Available__c  &lt;=  RawMaterial__r.threshold__c</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
             <actions>

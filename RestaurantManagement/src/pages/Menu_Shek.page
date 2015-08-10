@@ -1,4 +1,4 @@
-<apex:page showheader="false" controller="MenuItemListController_Copy" standardstylesheets="false">
+<apex:page showheader="false" controller="MenuItemListController" standardstylesheets="false">
     <meta http-equiv="X-UA-Compatible" content="IE=8"/>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
     <style type="text/css">
@@ -503,12 +503,12 @@
                 $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
                 $PauseOnHover: 1,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
 
-                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+                $ArrowKeyNavigation: true,                          //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
                 $SlideDuration: 300,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
                 $MinDragOffsetToSlide: 80,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
                 //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
                 $SlideHeight: 150,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
-                $SlideSpacing: 3, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $SlideSpacing: 3,                                   //[Optional] Space between each slide in pixels, default value is 0
                 $DisplayPieces: 3,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
                 $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
                 $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
@@ -557,7 +557,7 @@
                 $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
                 $SlideWidth: 200,                                   //[Optional] Width of every slide in pixels, default value is width of 'slides' container
                 //$SlideHeight: 150,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
-                $SlideSpacing: 3, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $SlideSpacing: 3,                                   //[Optional] Space between each slide in pixels, default value is 0
                 $DisplayPieces: 4,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
                 $ParkingPosition: 0,                              //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
                 $UISearchMode: 0,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
@@ -1188,7 +1188,7 @@
                                                    <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 456px;
                 overflow: hidden;">
                                                        <div>
-															<div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
+                                                            <div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
                         height: 150px;">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer_vegan" var="item">
                                                             <!--<div class="swiper-slide" style="">-->
@@ -1387,7 +1387,7 @@
                                                    <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 809px; height: 456px;
                 overflow: hidden;">
                                                        <div>
-															<div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
+                                                            <div id="sliderh1_container" style="position: relative; top: 0px; left: 0px; width: 809px;
                         height: 150px;">
                                                         <apex:repeat value="{! MenuItems}" id="Menu_Items_appetizer_all" var="item">
                                                             <!--<div class="swiper-slide" style="">-->
@@ -2397,7 +2397,7 @@ function btn_save_click(obj, tableid, location){
     }*/
     
     //alert(tableid+","+location);
-    var result_list = sforce.apex.execute("MenuItemListController_Copy",
+    var result_list = sforce.apex.execute("MenuItemListController",
                                           "getFoodOrderStatus",
                                           {tableid,location}
                                          );

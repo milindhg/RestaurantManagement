@@ -1,4 +1,4 @@
-<apex:page sidebar="false" controller="Copy_ChefListController" showHeader="false">
+<apex:page sidebar="false" controller="ChefListController" showHeader="false">
 
     <head>
         <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" />
@@ -24,7 +24,7 @@
         var hash = new Object();
        
         function getOrdersOnRefresh(){
-           var result = sforce.apex.execute("Copy_ChefListController",
+           var result = sforce.apex.execute("ChefListController",
                                              "handleRefreshPage",
                                              {});
                                              
@@ -104,10 +104,11 @@
            });
         
            $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-                var result = 10;
+                //var result = 10;
                 var user_resto_id = '{!$User.Restaurant_Id__c}';
                  
-                var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '_' + new Date().getTime();
+                var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "");
+                removeOldIds(oid);
                 
                 //alert(oid);
                 var item_name = JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "");
@@ -115,14 +116,10 @@
                 var item_qty = parseInt(JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, ""));
                 var item_resto_id = JSON.stringify(message.data.sobject.Restaurant_Id__c).replace(/\"/g, "");
                 
-                result = updateQty(item_name, item_qty);
+                //result = updateQty(item_name, item_qty);
                 
                 if(user_resto_id == item_resto_id){
                     if(del_status == 'No'){
-                        if(result == 0){
-                          removeOldIds(JSON.stringify(message.data.sobject.Id).replace(/\"/g, ""));
-                          result = item_qty;
-                         }
                         
                         $('#tbody').append(
                         '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
@@ -131,7 +128,7 @@
                         
                         '</td><td class=\"border text-center\">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
                         
-                        '</td><td class=\"border text-center\">' + result + 
+                        '</td><td class=\"border text-center\">' + item_qty + 
                         
                         '</td><td id=\"orderStatus_' + oid + '\" class=\"border text-center\">Pending'+
                         '</td><td class=\"border text-center\">' +
@@ -153,7 +150,7 @@
         $.cometd.disconnect();
         }
         
-        function updateQty(item_name, item_qty){
+        /*function updateQty(item_name, item_qty){
             
             var result = 0;
             var table = $("#chef_table");
@@ -194,23 +191,18 @@
             });
             
             return result;
-         }
+         }*/
          
          function removeOldIds(old_id){
-             
               var table = $("#chef_table");
-        
-                table.find('tr').each(function (i){
-                row_id = $(this).attr("id");
-                
-                    //alert('Row Id: '+row_id);
-                var index = row_id.indexOf('_');
-                
-                temp_id = row_id.substring(0,index);
-                if(old_id === temp_id)
-                   $(this).remove();
+               
+              table.find('tr').each(function(i){
+              row_id = $(this).attr("id");
+               
+              if(old_id === row_id)
+                 $(this).remove();
              
-                });
+               });
           }
         
         window.onbeforeunload = disconnect;

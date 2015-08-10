@@ -63,22 +63,27 @@
           // Subscribe to a topic. JSON-encoded update will be returned in the callback
           $.cometd.subscribe('/topic/OrderPickedUpByWaiter', function(message) {
                 
+                 var user_resto_id = '{!$User.Restaurant_Id__c}';
+                 var restoId = JSON.stringify(message.data.sobject.Restaurant_Id__c).replace(/\"/g, "");
                  
-                 $('#tbody').append(
-                    '<tr class = \"fontStyleTr border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"border text-center\">' 
-                                   + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
-                    
-                    '</td><td class=\"text-center border  \">' +
-                          '<button id=\"pickUpBtn\" class=\"btn\" onClick=\"pickupOrder(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
-                                 JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Pick Up</button>' + '</td></tr>');   
-                });
-        });
+                 if(user_resto_id == restoId) {
+                     $('#tbody').append(
+                        '<tr class = \"fontStyleTr border\" id="' + JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '"><td class=\"border text-center\">' 
+                                       + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Type__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"border text-center \">' + JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, "") + 
+                        
+                        '</td><td class=\"text-center border  \">' +
+                              '<button id=\"pickUpBtn\" class=\"btn\" onClick=\"pickupOrder(\''+ JSON.stringify(message.data.sobject.Id).replace(/\"/g, "") + '\',\''+
+                                     JSON.stringify(message.data.sobject.Food_Order__c).replace(/\"/g, "") + '\');\">Pick Up</button>' + '</td></tr>');   
+                        }
+                    });
+                 
+            });
         })(jQuery)
         
         function disconnect() {
@@ -93,7 +98,7 @@
             <div class="page-header" id="pageHeader">
                 Intern Cafe
             </div>
-            
+            <apex:param name="userAssociatedRestoId" value="{! $USER.Restaurant_Id__c}"/>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">

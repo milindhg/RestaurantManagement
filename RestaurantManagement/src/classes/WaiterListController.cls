@@ -35,13 +35,13 @@ global class WaiterListController{
     }
     
     WebService static List<Order_Item__c> handleRefreshPage(){
-//        Id Resto_Id = ApexPages.currentPage().getParameters().get('userAssociatedRestoId');
+        String Resto_Id = ApexPages.currentPage().getParameters().get('userAssociatedRestoId');
         List<Order_Item__c> oitems = [SELECT Table_Number__c, Type__c, Delete_Status__c,
                                              Food_Item_Name__c, Quantity__c, Food_Order__c
                                       FROM   Order_Item__c
                                       WHERE  Status__c = 'Ready'
                                       AND    Delete_Status__c = 'No' 
-                                      //AND    Food_Order__r.Restaurant_Branch__c = :Resto_Id 
+                                      AND    Restaurant_Id__c = :Resto_Id 
                                       ORDER BY CreatedDate];
         return oitems;
     }

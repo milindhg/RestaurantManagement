@@ -779,8 +779,8 @@
                                                 </div>
                                                 <div>
                                                     <div class="row" style="margin-top:5px;">
-                    				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    				                        <div class="input-group">
+                                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                            <div class="input-group">
                                                                   <span class="input-group-btn">
                                                                       <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                           <span class="glyphicon glyphicon-minus"></span>
@@ -793,16 +793,16 @@
                                                                       </button>
                                                                   </span>
                                                               </div>
-                    				                        </div>
-                    				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    				                        <div style="text-align: right;">
+                                                            </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                            <div style="text-align: right;">
                                                               <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="cart" onclick="btn_delete_click(this)">
                                                                 <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                               </button>
                                                             </div>
-                    				                    </div>
-                    			                    </div>
-                			                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -861,8 +861,8 @@
                                                 </div>
                                                 <apex:outputPanel rendered="{! if(pitem.status=='Pending',true,false)}">
                                                 <div class="row" style="margin-top:5px;">
-                				                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                				                        <div class="input-group">
+                                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                                        <div class="input-group">
                                                               <span class="input-group-btn">
                                                                   <button type="button" class="btn-number btn btn-default " onclick="btn_number_click(this)" data-type="minus" data-field="quant[{! pitem.id}]">
                                                                       <span class="glyphicon glyphicon-minus"></span>
@@ -875,16 +875,16 @@
                                                                   </button>
                                                               </span>
                                                           </div>
-                				                        </div>
-                				                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                				                        <div style="text-align: right;">
+                                                        </div>
+                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                        <div style="text-align: right;">
                                                           <button type="button" style="width:inherit;" class="btn btn-default btn-delete" aria-label="Delete" data-field="quant[{! pitem.id}]" orderItemType="placed" onclick="btn_delete_click(this)">
                                                             <span class="glyphicon glyphicon-trash" style="width:auto !important" aria-hidden="true"></span>
                                                           </button>
                                                         </div>
-                				                    </div>
-                			                    </div>
-                			                    </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                                </apex:outputPanel>
                                             </div>
                                         </div>
                                     </div>

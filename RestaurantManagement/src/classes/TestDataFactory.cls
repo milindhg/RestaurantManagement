@@ -37,6 +37,7 @@ public class TestDataFactory {
     public static Table__c createTable(Restaurant__c resto){
        // try{
         Table__c table = new Table__c(No_of_seats__c = 5,
+                                      Location__c='Test',
                                      Restaurant_Branch__c = resto.Id,
                                      Status__c='Ready',
                                      Table_Number__c='3',
@@ -53,10 +54,12 @@ public class TestDataFactory {
     public static Food_Item__c createFoodItem(Restaurant__c resto){
         //try{
         Food_Item__c item= new Food_Item__c(Calories__c=100,
+                                            status__c = 'enabled',
                                             Category__c='Appetizer',
                                             Description__c='Test Food Item',
                                             Type__c='Vegan',
                                             Name='Test',
+                                            Special__c=True,
                                             Prep_Time__c = 20,
                                             Spice_level__c = 'Medium');
         
@@ -167,6 +170,7 @@ public class TestDataFactory {
         purchase.Price__c=20;
         purchase.Quantity__c=12;
         purchase.RawMaterial__c= rawmat.Id;
+        purchase.Date_of_Purchase__c=System.today();
         
         insert purchase;
         return purchase;
@@ -181,6 +185,7 @@ public class TestDataFactory {
        // try{
         Offers__c offer = new Offers__c();
         offer.Description__c='Discount';
+        offer.Discount__c=10;
         offer.Food_Item__c= fitem.Id;
         
         insert offer;

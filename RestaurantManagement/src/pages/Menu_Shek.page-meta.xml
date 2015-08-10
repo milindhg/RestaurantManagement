@@ -6,11 +6,6 @@
     <label>Menu_Shek</label>
     <packageVersions>
         <majorNumber>1</majorNumber>
-        <minorNumber>33</minorNumber>
-        <namespace>agf</namespace>
-    </packageVersions>
-    <packageVersions>
-        <majorNumber>1</majorNumber>
         <minorNumber>18</minorNumber>
         <namespace>al</namespace>
     </packageVersions>

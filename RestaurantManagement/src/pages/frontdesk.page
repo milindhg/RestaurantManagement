@@ -35,24 +35,7 @@
                     <apex:outputText >
                     <apex:param name="userAssociateRestoId" value="{! $USER.Restaurant_Id__c}" assignTo="{!userAssociateRestoId}"/> 
                     </apex:outputText>
-                    <!--  <apex:outputPanel >
-                        <div style="font-weight:bold;text-align:center;">Select your State</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedstate }" size="1">
-                            <apex:selectOptions value="{!Statedata}"/>
-                            <apex:actionSupport event="onchange" reRender="List" />
-                        </apex:selectList>
-                        <div style="font-weight:bold;text-align:center;">Select your City</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedcity }" size="1">
-                            <apex:selectOptions value="{!Citydata}"/>
-                            <apex:actionSupport event="onchange" reRender="List" />
-                        </apex:selectList>
-                        <div style="font-weight:bold;text-align:center;">Select your Branch</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedbranch }" size="1">
-                            <apex:selectOptions value="{!Branchdata}"/>
-                            <apex:actionSupport event="onchange" reRender="tablesrerender" />
-                        </apex:selectList>
-                    </apex:outputPanel> --> 
-                    <div class="row">
+                                       <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">
                                 <apex:pageBlockTable styleClass="border table table-bordered" value="{!tables}" var="s" id="tablesrerender">
@@ -64,11 +47,6 @@
                                             <apex:param name="tablename" value="{!s.name}"/>    
                                         </apex:commandButton>
                                     </apex:column> 
-                           
-                                    
-                                      <apex:column headerValue="Menu Link">
-                  <apex:commandLink action="https://c.na31.visual.force.com/apex/Menu?reqlocation={!s.urid}&tableid={!s.tableNumber}" immediate="true" styleClass="btn" value="Menu" />
-                                     </apex:column>
                                 </apex:pageBlockTable>
                             </div>
                         </div>

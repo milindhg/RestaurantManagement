@@ -3,21 +3,82 @@
  <body>  
   <div id="items">
         <apex:form >
-        <apex:actionFunction name="sayHello" action="{!displayName}" reRender="item_name"/>
+        <apex:actionFunction name="saveItemInJavascript" action="{!saveItem}" reRender="price"/>
                                     
                        
             <apex:pageBlock id="clean">
-                <div class="row" id="feedback_section">
+                <div class="row">
                      <table >   
                           <tr>
                                <td> <apex:outputPanel style="font-weight:bold"> Item Name: </apex:outputPanel>     </td>
-                               <td>  <apex:inputText styleClass="item_text" id="item_text" value="{!itemName}"/> </td>
+                               <td>  <apex:inputText styleClass="item_text" id="item_text" value="{!itemName}" required="true"/> </td>
+                          </tr>
+                          
+                          
+                          <tr>
+                          <td> <apex:outputPanel style="font-weight:bold"> Category: </apex:outputPanel>     </td>
+                              <td>
+                              <apex:selectList multiselect="false" size="1" value="{!category}" >
+                                   <apex:selectOption itemLabel="Appetizer" itemValue="Appetizer"/>
+                                   <apex:selectOption itemLabel="Entree" itemValue="Entree"/>
+                                   <apex:selectOption itemLabel="Dessert" itemValue="Dessert"/>                                   
+                                            
+                                </apex:selectList>
+                              </td>
+                          </tr>
+                          
+                          <tr>
+                          <td> <apex:outputPanel style="font-weight:bold"> Type: </apex:outputPanel>     </td>
+                              <td>
+                              <apex:selectList multiselect="false" size="1" value="{!type}" >
+                                   <apex:selectOption itemLabel="Vegetarian" itemValue="Vegetarian"/>
+                                   <apex:selectOption itemLabel="Non-Vegetarian" itemValue="Non-Vegetarian"/>
+                                   <apex:selectOption itemLabel="Vegan" itemValue="Vegan"/>                                   
+                                            
+                                </apex:selectList>
+                              </td>
+                          </tr>
+                          
+                          <tr>
+                          <td> <apex:outputPanel style="font-weight:bold"> Spicy: </apex:outputPanel>     </td>
+                              <td>
+                              <apex:selectList multiselect="false" size="1" value="{!spicy}" >
+                                   <apex:selectOption itemLabel="Mild" itemValue="Mild"/>
+                                   <apex:selectOption itemLabel="Medium" itemValue="Medium"/>
+                                   <apex:selectOption itemLabel="Hot" itemValue="Hot"/>                                   
+                                            
+                                </apex:selectList>
+                              </td>
+                          </tr>
+                          
+                           <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Image: </apex:outputPanel>     </td>
+                               <td>  
+                               <apex:image value="{!photourl}" url="{!photourl}"  rendered="{!if((photourl == ''),false,true)}" styleclass="img">   </apex:image>
+                              <apex:inputTextarea richText="true" value="{!photo}"/>
+                              <apex:inputFile value="{!tempBlob}" > </apex:inputFile>
+                                </td>
+                          </tr>
+                          
+                          <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Calories: </apex:outputPanel>     </td>
+                               <td>  <apex:inputText styleClass="calories" value="{!calories}" required="true"/> </td>
+                          </tr>
+                          
+                          <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Description: </apex:outputPanel>     </td>
+                               <td>  <apex:inputTextarea styleClass="description" value="{!description}" required="true"/> </td>
                           </tr>
                                   
                           <tr>
+                               <td> <apex:outputPanel style="font-weight:bold"> Preparation Time: </apex:outputPanel>     </td>
+                               <td>  <apex:inputText styleClass="prep_time" value="{!prepTime}" required="true"/> </td>
+                          </tr>        
+                                          
+                          <tr>
                                <td> <apex:outputPanel style="font-weight:bold"> Do you want to add it to all locations: </apex:outputPanel>     </td>                              
                                <td>  
-                                        <input type="radio" name="checkLoc" value="Yes" onClick="disableLoc()" checked="checked" />Yes
+                                        <input type="radio" name="checkLoc" value="Yes" onClick="disableLoc()" checked="true"/>Yes
                                         <input type="radio" name="checkLoc" value="No" onClick="enableLoc()" />No
                                </td>
                           </tr>
@@ -27,14 +88,15 @@
                                <apex:repeat value="{!Locationdata}" var="o">
                                     <table >
                                         <tr>                                 
-                                            <input type="checkbox" name="vehicle" value="{!o.value}" checked="checked">{!o.value}</input>
+                                            <td><input type="checkbox" name="vehicle" value="{!o.value}" checked="">{!o.value}</input></td>
                                         </tr>                        
                                     </table>
                                </apex:repeat>                                            
                             </apex:outputPanel>  </td>                            
                          </tr>                                 
-                   </table>    
-                   <input type="button" value="Next" onclick="next()" />                
+                   </table> 
+                   <apex:commandButton value="Next" action="null" onclick="next()"/>  
+                                 
            </div>
   
           </apex:pageBlock>
@@ -56,22 +118,30 @@
                                    <br></br>
                                    <br></br>                                 
                                 <apex:outputPanel style="font-weight:bold"> Default Price: </apex:outputPanel>
-                                <apex:inputText />
+                                <input type="text" onkeyup="priceUpdate()" id= "default_price"/>
+                               
                                 <br></br>
-                                <br></br>                                
+                                <br></br>      
+                                <table id="a1" cellpadding="3" cellspacing="3" border="1">
+                                    <tr>
+                                     
+                                    </tr>
+                                </table>
+                                                          
                          <apex:pageBlock id="locationBlock">       
                         <apex:repeat value="{!location}" var="o">
-                        <table >
+                        <table id="a1">
                             <tr> 
                                 <td> <apex:outputLabel value="{!o}:" /></td>
                                 <td>  <apex:inputText /> </td>     
                             </tr>                        
                         </table>
+                        
                         </apex:repeat>          
                                </apex:pageBlock>
                    
                     <input type="button" value="Back" onclick="back()" />    
-      
+                    <apex:commandButton value="Add" action="{!saveItem}"/>    
            </div>
   
           </apex:pageBlock>
@@ -82,55 +152,76 @@
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript">
 function disableLoc() {
-
-$(':checkbox').each(function() {
+    $(':checkbox').each(function() {
           this.checked = true;
       });
 }
+
 function enableLoc() {
-    
-$(':checkbox').each(function() {
+    $(':checkbox').each(function() {
           this.checked = false;
       });      
 }
 
 function disablePrice() {
-
 }
+
 function enablePrice() {
-
 }
 
-function sayHello(){
+function saveItemInJavascript(){}
 
+function priceUpdate(){
+            var value = $('#default_price').val();
+            var table = document.getElementById("a1");
+            var i = 0;
+            while(i < table.rows.length) {
+              console.log(table.rows[i]);
+              table.rows[i].children[1].children[0].value = value;
+              i++;
+            }
+    
 }
+
+
 $(document).ready(function() {    
-       document.getElementById("price").style.display = 'none';
-       
+        document.getElementById("price").style.display = 'none';
+        var checked = $( "input[type=checkbox]" );
+        for(var i=0; checked [i]; ++i){
+              checked [i].checked = true;
+        }
     });
     
 function back(){
-         document.getElementById("items").style.display = 'block';
+        document.getElementById("items").style.display = 'block';
         document.getElementById("price").style.display = 'none';
-
 }
 
 function next(){
+    var table = document.getElementById("a1");
+    while(table.rows.length > 0) {
+      table.deleteRow(0);
+    }
 
+    var checked = $( "input[type=checkbox]" );
+    for(var i=0; checked [i]; ++i){
+          if(checked [i].checked){
+            var temp =  '<tr><td><label for="item">' + checked [i].value + '</label></td><td><input type="text" id="' +  checked [i].value + '"></td></tr>' ;
+            var newLine = $(temp);
+        
+            $("#a1").append(newLine );
+        
+               checkedValue = checked [i].value;
+        }
+    
+    }
 
-var checked = $( "input[type=checkbox]" );
-for(var i=0; checked [i]; ++i){
-      if(checked [i].checked){
-          alert(checked [i].value);
-           checkedValue = checked [i].value;
-      }
-}
 
     document.getElementById("price").style.display = 'block';
     document.getElementById("items").style.display = 'none';
 
     $('.item_text_next').val($('.item_text').val());
-       
+    saveItemInJavascript(); 
 }
     
  function rerenderPage(){

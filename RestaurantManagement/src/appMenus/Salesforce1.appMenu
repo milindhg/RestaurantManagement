@@ -45,31 +45,7 @@
         <type>StandardAppMenuItem</type>
     </appMenuItems>
     <appMenuItems>
-        <name>Menu</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
-        <name>WaiterPage</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
         <name>Tables</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
-        <name>MenuCart_TestPage</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
-        <name>MenuCarts_Modal</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
-        <name>Tables_New</name>
-        <type>CustomTab</type>
-    </appMenuItems>
-    <appMenuItems>
-        <name>MenuCart_New</name>
         <type>CustomTab</type>
     </appMenuItems>
 </AppMenu>

@@ -982,6 +982,16 @@
     <label>Restaurant</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Apartment_Suite__c</columns>
+        <columns>Branch__c</columns>
+        <columns>Email__c</columns>
+        <columns>Manager__c</columns>
+        <columns>Phone__c</columns>
+        <columns>Restaurant_ID__c</columns>
+        <columns>Street_Address__c</columns>
+        <columns>City__c</columns>
+        <columns>State__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

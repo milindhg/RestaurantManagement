@@ -1,11 +1,11 @@
-global with sharing class Bill{
+global class Bill{
 
-    //public String foodOrderId = 'a0537000000RI9b';
-    public String foodOrderId = ApexPages.currentPage().getParameters().get('orderId');
-    public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
-    public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
-    public Decimal tableNo= Decimal.valueOf(tableNumber);
-    
+//    public static String foodOrderId = 'a0537000000T8bu';
+    public static String foodOrderId = ApexPages.currentPage().getParameters().get('orderId');
+    public static String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
+    public static String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
+    //public Decimal tableNo= Decimal.valueOf(tableNumber);
+
     public String SelectedFQ;
     public String SelectedService;
     public String SelectedOAE;
@@ -13,6 +13,7 @@ global with sharing class Bill{
     public String unlikes;
     public String tip;
   
+    
     public String getSelectedFQ() {
         return SelectedFQ;
     }
@@ -63,22 +64,30 @@ global with sharing class Bill{
         this.unlikes= recType;
     }
      
-    
-    public Bill(){  }
+    public Bill(String foodOrder){
+        foodOrderId= foodOrder;
+    }
+    public Bill(){  
+     
+    }
     public List<DisplayCart> orderItemsList;
  
     public static final String PAID = 'Paid';
     
-    Food_Order__c fo = getFoodOrder();
+    public Food_Order__c fo = getFoodOrder();
     
     public Food_Order__c getFoodOrder(){
-    return [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.FinalPrice__c,f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
-                        f.Status__c, f.OrderId__c, f.OrderDateTime__c,
-                        f.Name, f.LastViewedDate, f.LastReferencedDate, 
-                        f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
-                        f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
-                        From Food_Order__c f 
-                        where f.id=:foodOrderId];
+      System.debug('Food Order ID'+foodOrderId);
+     
+      return  [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.FinalPrice__c,f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
+                                         f.Status__c, f.OrderId__c, f.OrderDateTime__c,
+                                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
+                                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
+                                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
+              FROM Food_Order__c f
+              WHERE f.Id =:foodOrderId];
+        
+
     }
                             
     public Bill(ApexPages.StandardController controller) {}
@@ -152,7 +161,7 @@ global with sharing class Bill{
          System.debug('price and tip'+foodOrder.FinalPrice__c);
     }
     
-     public PageReference insertfeedback()
+     public void insertfeedback()
     {
     Feedback__c fb = new Feedback__c();
     fb.Food_Quality__c=SelectedFQ;
@@ -161,22 +170,37 @@ global with sharing class Bill{
     fb.What_I_liked__c=likes;
     fb.What_must_have_been_there__c=unlikes;
     insert fb;
-         PageReference pageRef = Page.thankyou;
-      //   pageRef.getParameters().put('reqlocation', selLocation);
-       //  pageRef.getParameters().put('tableid', tableNumber);
-         pageRef.setRedirect(true);
-         return pageRef;
+    finish();
+    
     }
     
-     public PageReference paidStatusUpdate(){
+    /*public static String getRestoId(){
+       User u  = [SELECT Restaurant_Id__c
+                  FROM   User
+                  WHERE  Id = :UserInfo.getUserId()];
+           
+       String rid = u.Restaurant_Id__c;
+       
+       return rid;
+    }*/
+    
+     public void paidStatusUpdate(){
          Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
          foodOrder.status__c = PAID;
          update foodOrder;
-         //, TotalPrice__c, Quantity__c, Tax__c, ItemName__c
+
+        Restaurant__c resto = [SELECT Id
+                               FROM   Restaurant__c
+                               WHERE  Restaurant_Id__c = :selLocation];
+        
+         Id resto_id = resto.id;
+         
+         
          Bill__c bill = new Bill__c();  
          bill.TableNumber__c = foodOrder.TableNumber__c;
          bill.Price__c = foodOrder.TotalPrice__c;
          bill.Tax__c = foodOrder.Tax__c;
+         bill.Restaurant_ID__c = resto_id ;
          insert bill;
          
           for(DisplayCart displayCart: orderItemsList){
@@ -188,21 +212,25 @@ global with sharing class Bill{
             billItem.Bill__c = bill.Id;
 //            billItem.Tax__c = 3.4// TODO;
             insert billItem;   
-            System.debug('current item pricebook is: ' + DisplayCart.pricebook);
+            
             PriceBook__c priceBook = [SELECT NoItemsOrdered__c FROM PriceBook__c WHERE ID=:displayCart.priceBook];
             priceBook.NoItemsOrdered__c += 1;
             update priceBook;  
                       
        }     
        
-         PageReference pageRef = Page.MenuCart;
-         
+     }
+     
+     public PageReference finish(){
+         PageReference pageRef = Page.Menu;
+         pageRef.getParameters().put('reqlocation', selLocation);
+         pageRef.getParameters().put('tableid', tableNumber);
          pageRef.setRedirect(true);
          return pageRef;
      }
 
      public PageReference backToCart(){
-         PageReference pageRef = Page.Menu_Demo;
+         PageReference pageRef = Page.Menu;
          pageRef.getParameters().put('reqlocation', selLocation);
          pageRef.getParameters().put('tableid', tableNumber);
          pageRef.setRedirect(true);

@@ -140,6 +140,11 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Location__c</fields>
+        <fields>Total_Chefs__c</fields>
+        <fields>OWNER.ALIAS</fields>
+        <fields>OWNER.FIRST_NAME</fields>
+        <fields>OWNER.LAST_NAME</fields>
         <relatedList>Chef__c.Restaurant_Id__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -157,10 +162,20 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Bill_Id__c</fields>
+        <fields>Location__c</fields>
+        <fields>TableNumber__c</fields>
+        <fields>Price__c</fields>
+        <fields>Tax__c</fields>
         <relatedList>Bill__c.Restaurant_ID__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Used__c</fields>
+        <fields>Used_till_now__c</fields>
+        <fields>threshold__c</fields>
+        <fields>QuantityRollup__c</fields>
+        <fields>Available__c</fields>
         <relatedList>RawMaterial__c.Restaurant__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
