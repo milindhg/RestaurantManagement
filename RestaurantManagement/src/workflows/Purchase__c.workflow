@@ -24,22 +24,4 @@
         <senderType>CurrentUser</senderType>
         <template>unfiled$public/SalesNewCustomerEmail</template>
     </alerts>
-    <rules>
-        <fullName>Alert Purchase</fullName>
-        <actions>
-            <name>Alert_to_make_a_Purchase</name>
-            <type>Alert</type>
-        </actions>
-        <active>false</active>
-        <formula>RawMaterial__r.Available__c  &lt;=  RawMaterial__r.threshold__c</formula>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-        <workflowTimeTriggers>
-            <actions>
-                <name>Alert</name>
-                <type>Alert</type>
-            </actions>
-            <timeLength>0</timeLength>
-            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-    </rules>
 </Workflow>

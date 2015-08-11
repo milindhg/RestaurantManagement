@@ -96,7 +96,7 @@
     <body onLoad="getOrdersOnRefresh();">
         <div class="container">
             <div class="page-header" id="pageHeader">
-                Intern Cafe
+                Resto Cafe
             </div>
             <apex:param name="userAssociatedRestoId" value="{! $USER.Restaurant_Id__c}"/>
             <div class="row">

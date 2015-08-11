@@ -27,6 +27,7 @@ global class MenuItemListController {
     public static final String DELIVERED = 'Delivered';
     //public static String table=ApexPages.currentPage().getParameters().get('tableid');
     
+     //constructor for setting the table number and the restaurant location
     public MenuItemListController(){
         selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
         tableNumber=ApexPages.currentPage().getParameters().get('tableid');
@@ -41,7 +42,7 @@ global class MenuItemListController {
         System.debug(selLocation);
     }
     
-    
+     //method to get the exisiting food order for the selected table number
     public Food_Order__c getFoodOrder(){
        
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
@@ -67,6 +68,7 @@ global class MenuItemListController {
         }
     }
     
+    //method to fetch the order items contained in the order placed from the selected table
     public List<DisplayCart> getOrderItemsList() {
         System.debug('FoodOrder is: !!!!' + fo);
         if(fo==null)
@@ -140,6 +142,7 @@ global class MenuItemListController {
 
     }
     
+    
     public String getActiveCartItemsSerialized(){
         System.debug('Entered getActiveCartItemsListSerialized');
         System.debug('activeCartItems is: ' + activeCartItems);
@@ -148,38 +151,31 @@ global class MenuItemListController {
         return jsonString;
     }
 
+    //method to increase the quantity of an ordered item
     public void onAdd() {
-           String id= system.CurrentPageReference().getParameters().get('id');
-  
-
-           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
-           
-       orderItem.Quantity__c += 1;                                          
-                   
-           update orderItem;
-                                          
-       }
-       
+        String id= system.CurrentPageReference().getParameters().get('id');
+        Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
+        orderItem.Quantity__c += 1;                                          
+        update orderItem;
+        }
      
+     //method to decrement the quantity of an ordered item
      public void onRemove() {
-           String id= system.CurrentPageReference().getParameters().get('id');
-  
-
-           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
-           
-       orderItem.Quantity__c -= 1;                                          
-                   
-           update orderItem;
-                             
-     }
+         String id= system.CurrentPageReference().getParameters().get('id');
+         Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
+         orderItem.Quantity__c -= 1;                                          
+         update orderItem;
+       }
      
-     public void onDelete() {
+    //method to delete an ordered item 
+    public void onDelete() {
           String id= system.CurrentPageReference().getParameters().get('id');
           Order_Item__c orderItem = [SELECT o.Quantity__c FROM Order_Item__c o where o.id=: id];
           orderItem.Delete_Status__c = 'Yes';
           update orderItem;                             
      }
      
+     //method to check if the table has an active food order
      public boolean isOrderActive{
         get{
             if(foodOrderId==null)
@@ -188,6 +184,8 @@ global class MenuItemListController {
         }
      }
      
+    //webservice method called from javascript from the menu page on click of the Place order button
+    //this moves the items ordered by the customer to the chef's queue
      WebService static String placeOrder(String order_id, String location, String tableid) {
         
         if(order_id == null || order_id == ''){
@@ -228,6 +226,7 @@ global class MenuItemListController {
         }
      }
      
+    //method to delete all exisiting items from the cart
      public void resetCart() {
         System.debug('foodOrderId is: !!!!' + foodOrderId);
         if(foodOrderId==null){
@@ -250,7 +249,8 @@ global class MenuItemListController {
             update orderItems;                                                                 
         }
      }
-
+    
+      //method to mark the order as paid
      public void paidStatusUpdate(){
          //ID foodOrderId = ApexPages.CurrentPage().getParameters().get('foodOrderId');
          Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE ID=:foodOrderId];
@@ -258,6 +258,7 @@ global class MenuItemListController {
          update foodOrder;
      }
      
+    //method to pay the bill and return to the tables page
      public PageReference payBill() {
 
          PageReference pageRef = Page.Bill;
@@ -269,6 +270,7 @@ global class MenuItemListController {
          return pageRef;
          }
      
+     //method to display the number of the items in the cart
      public Integer getCartSize(){
          if(activeCartItems==null){
              return 0;
@@ -276,6 +278,8 @@ global class MenuItemListController {
          return activeCartItems.size();
      }
     
+    //method to display the ietms in the menu
+    //the items are displayed only when their status is 'enabled' and a pricebook has been created for the restaurant 
     public List<DisplayMenuItems> getMenuItems(){
         System.debug('ItemList is: !!!!' + ItemList);
          System.debug('Diet Type'+ dietType);
@@ -324,6 +328,7 @@ global class MenuItemListController {
         return ItemList;
     }
     
+       //method to fetch the special offers
        public List<DisplayOffer> getOffers(){
         System.debug('offerList is: !!!!' + offerList);
         if(offerList==null){
@@ -339,6 +344,8 @@ global class MenuItemListController {
         return offerList;
     }
     
+     //webservice method called from the javascript from the menu page once the user clicks on ADD button for a menu item
+    //this method adds the respective menu item to the cart
     @RemoteAction 
     WebService static String createOrderItem(String item, String quant, String table, String location, Id price){
         Decimal tableid= Decimal.valueOf(table);
@@ -423,6 +430,8 @@ global class MenuItemListController {
         return null;
     }
     
+    //webservice method to get the status of a food order
+    //called through javascript
     Webservice static List<String> getFoodOrderStatus(String tableid, String location){
       List<String> result_list = new List<String>();
       
@@ -446,6 +455,8 @@ global class MenuItemListController {
     
     }
     
+    // Below method calculates the estimated delivery time of the first item ordered by the customer.
+    // Once the waiter delivers all the ordered items to the customer, the estimated delivery time will be rendered invisible. This handling is done in javascript. 
     static List<String> estimateDelivery(String location, Integer tableNo, String order_id){
         Integer count = 0;
         Integer prep_factor = 5;
@@ -492,6 +503,7 @@ global class MenuItemListController {
         if(chef_list.size()>0){
             Integer total_chefs = (Integer)chef_list[0].Total_Chefs__c;
             
+            //Below 'for' loop calculates the orders that are in the pending status on the chef's screen
             for(Order_Item__c o : queue){
                count++;
                 
@@ -520,7 +532,10 @@ global class MenuItemListController {
                prev_time = 0;                       
             
             //System.debug('Total Time after: '+prev_time);
-                                         
+            
+            // In the below 'for' loop, the item prep time of the first order item is determined. 
+            // The highest priority is given to Appetizers, then Entrees and then Dessert.  
+            // So if the order contains Appetizers, Entrees and Dessert items, then the item prep time of the first Appetizer ordered is found out.                  
             for(String it_type : item_type){
                for(Order_Item__c it : items){
                    if(it.Type__c == it_type){
@@ -554,7 +569,7 @@ global class MenuItemListController {
               min=Math.mod(min,60);  
              }
              
-             System.debug('Final minutes: '+min);
+             //System.debug('Final minutes: '+min);
             
             if(hr>=12)
               am_pm = 'PM';

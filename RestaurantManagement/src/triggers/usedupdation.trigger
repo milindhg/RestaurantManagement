@@ -1,4 +1,4 @@
-trigger usedupdation on RawMaterial__c (before update) {
+trigger usedupdation on RawMaterial__c (Before update) {
 
 for (RawMaterial__c rm :Trigger.new){
 

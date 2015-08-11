@@ -54,38 +54,6 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
-        <fullName>Location__c</fullName>
-        <description>Locations where restos are located</description>
-        <externalId>false</externalId>
-        <label>Location</label>
-        <picklist>
-            <picklistValues>
-                <fullName>California</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Indiana</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Ohio</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>New York</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Texas</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-    </fields>
-    <fields>
         <fullName>No_of_seats__c</fullName>
         <externalId>false</externalId>
         <label>No of seats</label>
@@ -158,7 +126,6 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Location__c</columns>
         <columns>No_of_seats__c</columns>
         <columns>Status__c</columns>
         <columns>Table_Number__c</columns>

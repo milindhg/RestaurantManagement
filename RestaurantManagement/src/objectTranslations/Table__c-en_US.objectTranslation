@@ -9,30 +9,6 @@
         <value>Tables</value>
     </caseValues>
     <fields>
-        <label><!-- Location --></label>
-        <name>Location__c</name>
-        <picklistValues>
-            <masterLabel>California</masterLabel>
-            <translation><!-- California --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Indiana</masterLabel>
-            <translation><!-- Indiana --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>New York</masterLabel>
-            <translation><!-- New York --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Ohio</masterLabel>
-            <translation><!-- Ohio --></translation>
-        </picklistValues>
-        <picklistValues>
-            <masterLabel>Texas</masterLabel>
-            <translation><!-- Texas --></translation>
-        </picklistValues>
-    </fields>
-    <fields>
         <label><!-- No of seats --></label>
         <name>No_of_seats__c</name>
     </fields>

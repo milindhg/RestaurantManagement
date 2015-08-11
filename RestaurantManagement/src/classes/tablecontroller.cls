@@ -148,7 +148,7 @@ public class tablecontroller {
          uid = tablecontroller.getRestoId();
          tables = new List<Displaytables>();
        
-          for(Table__c t : [ SELECT  Name,Location__c,No_of_seats__c,Status__c,Table_Number__c,Restaurant_Branch__r.Restaurant_ID__c,Restaurant_Branch__r.Branch__c FROM Table__c where 
+          for(Table__c t : [ SELECT  Name,No_of_seats__c,Status__c,Table_Number__c,Restaurant_Branch__r.Restaurant_ID__c,Restaurant_Branch__r.Branch__c FROM Table__c where 
           Restaurant_Branch__r.Restaurant_ID__c=:uid ORDER BY No_of_seats__c ]) 
         {
             tables.add(new Displaytables(t));
@@ -167,9 +167,9 @@ public class tablecontroller {
         public String name {
             get { return table.Name; }
         }
-        public String Locations {
-            get { return table.Location__c; }
-        }
+        //public String Locations {
+          //  get { return table.Location__c; }
+        //}
         public String Status {
             get { return table.Status__c; }
         }

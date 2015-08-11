@@ -37,7 +37,7 @@ public class TestDataFactory {
     public static Table__c createTable(Restaurant__c resto){
        // try{
         Table__c table = new Table__c(No_of_seats__c = 5,
-                                      Location__c='Test',
+                                      //Location__c='Test',
                                      Restaurant_Branch__c = resto.Id,
                                      Status__c='Ready',
                                      Table_Number__c='3',
@@ -73,15 +73,15 @@ public class TestDataFactory {
        //  return null;   
        // }
     }
-	
+    
     public static Food_Order__c createFoodOrder(Restaurant__c resto, Decimal table_no, Food_Item__c food_item, 
                                                 PriceBook__c pbook){
         
        //try{                                            
         Food_Order__c forder = new Food_Order__c(Name = 'Test Food Order',
-       											Restaurant_Branch__c=resto.Id,
-        										TableNumber__c=table_no,
-        										Status__c = 'New');
+                                                Restaurant_Branch__c=resto.Id,
+                                                TableNumber__c=table_no,
+                                                Status__c = 'New');
         
         //createOrderitem(resto, forder, food_item, pbook);
         return forder;
@@ -116,7 +116,7 @@ public class TestDataFactory {
     public static Chef__c createChef(Restaurant__c resto){
        // try{
         Chef__c chef = new Chef__c(Total_Chefs__c=5,
-        						   Restaurant_Id__c= resto.Id);
+                                   Restaurant_Id__c= resto.Id);
         
         //insert chef;
         return chef;
@@ -150,7 +150,10 @@ public class TestDataFactory {
         material.Name__c='Test Raw Material';
         material.Restaurant__c= resto.Id;
         material.threshold__c=4;
+        material.Used_till_now__c=4;
         material.Used__c=2;
+        
+       // material.Used__c=2;
         
         insert material;
         createPurchase(material);
@@ -171,7 +174,6 @@ public class TestDataFactory {
         purchase.Quantity__c=12;
         purchase.RawMaterial__c= rawmat.Id;
         purchase.Date_of_Purchase__c=System.today();
-        
         insert purchase;
         return purchase;
        // }

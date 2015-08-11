@@ -21,10 +21,10 @@ public class Resto_Utility_Chef {
       Database.SaveResult result4 = Database.insert(f_order, false);
       Database.SaveResult result5 = Database.insert(o_item, false);
      
-      String ready_id = ChefListController.itemReadyUpdate('a0137000000N1YcAAK');
-      System.assertEquals('a0137000000N1YcAAK', ready_id);
+      String ready_id = ChefListController.itemReadyUpdate('a0137000000P1AxAAK');
+      System.assertEquals('a0137000000P1AxAAK', ready_id);
  
-      String accept_id = ChefListController.itemAcceptUpdate('a0137000000N1YcAAK','a0537000000RI9bAAG');
+      String accept_id = ChefListController.itemAcceptUpdate('a0137000000P1AxAAK','a0537000000T9g7AAC');
       System.assertEquals('success', accept_id);
      
       String s = ChefListController.getRestoId();

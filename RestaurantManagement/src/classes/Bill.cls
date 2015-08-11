@@ -1,6 +1,5 @@
 global class Bill{
 
-//    public static String foodOrderId = 'a0537000000T8bu';
     public static String foodOrderId = ApexPages.currentPage().getParameters().get('orderId');
     public static String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
     public static String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
@@ -222,7 +221,7 @@ global class Bill{
      }
      
      public PageReference finish(){
-         PageReference pageRef = Page.Menu;
+         PageReference pageRef = Page.testtables;
          pageRef.getParameters().put('reqlocation', selLocation);
          pageRef.getParameters().put('tableid', tableNumber);
          pageRef.setRedirect(true);

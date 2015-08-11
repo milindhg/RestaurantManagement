@@ -23,6 +23,8 @@
         
         var hash = new Object();
        
+        // Below method required to fetch orders in case the page is refreshed. 
+        // Push notifications can only handle current records in processing
         function getOrdersOnRefresh(){
            var result = sforce.apex.execute("ChefListController",
                                              "handleRefreshPage",
@@ -108,7 +110,7 @@
                 var user_resto_id = '{!$User.Restaurant_Id__c}';
                  
                 var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "");
-                removeOldIds(oid);
+                removeOldIds(oid); // Removes the old order item. Required when the customer modifies the order
                 
                 //alert(oid);
                 var item_name = JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "");
@@ -119,7 +121,7 @@
                 //result = updateQty(item_name, item_qty);
                 
                 if(user_resto_id == item_resto_id){
-                    if(del_status == 'No'){
+                    if(del_status == 'No'){  // This condition checkes if the food item is available.
                         
                         $('#tbody').append(
                         '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
@@ -212,7 +214,7 @@
     
         <div class="container">
             <div class="page-header" id="pageHeader">
-                    Intern Cafe
+                    Resto Cafe
             </div>
             <div class="row">
                 <div class="col-lg-12">

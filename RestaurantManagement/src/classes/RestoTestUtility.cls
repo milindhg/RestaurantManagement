@@ -51,7 +51,7 @@ private class RestoTestUtility {
       System.assertEquals(dc.foodItem,null);
       System.assertEquals(dc.foodItemId,null);
       System.assertEquals(dc.foodOrder,null);
-      dc.setItemQuantity(2);
+      //dc.setItemQuantity(2);
         
         
     }
@@ -139,28 +139,29 @@ private class RestoTestUtility {
       List<SelectOption> resto_list = waiterCon.getRestaurantData();
       String restoID= waiterCon.getSelectedRestaurant();
       WaiterListController.handleRefreshPage();
-      WaiterListController.updateOrderPickUp(o_item.Id, f_order.Id);
+     // WaiterListController.updateOrderPickUp(o_item.Id, f_order.Id);
       Test.stopTest();
       
     }
     
-    static testmethod void addMenuTest(){
-        AddMenu add= new AddMenu();
-        
-        List<SelectOption> resto = add.getLocationdata();
-        List<String> locations = add.getLocations();
-        add.displayName();
-        add.rerenderPage();
-        add.saveItem();
-    }
+    //static testmethod void addMenuTest(){
+   //     AddMenu add= new AddMenu();
+     //   
+       // List<SelectOption> resto = add.getLocationdata();
+       // List<String> locations = add.getLocations();
+       // add.displayName();
+       // add.rerenderPage();
+        //add.saveItem();
+    //}
     
     static testmethod void updateRawMaterialTest(){
         Restaurant__c resto = TestDataFactory.createRestaurant();
         insert resto;
         RawMaterial__c rawmaterial = TestDataFactory.createRawMaterial(resto);
-        insert rawmaterial;
+        //insert rawmaterial;
         RawMaterial__c mat = [Select m.Used__c from RawMaterial__c m where m.Id=:rawmaterial.Id];
-        mat.Used__c=1;
+        //mat.Used_till_now__c=4;
+        mat.Used__c=2;
         update rawmaterial;
     }
     
@@ -181,13 +182,13 @@ private class RestoTestUtility {
     
     static testmethod void createBill(){
         
-        Bill bill_new = new Bill('a0537000000T8bu');
+        Bill bill_new = new Bill('a0537000000T9g7');
         List<DisplayCart> orderItems = bill_new.getOrderItemsList();
         bill_new.SetSelectedFQ('5');
         bill_new.SetSelectedOAE('4');
         bill_new.SetSelectedService('4');
         bill_new.setlikes('3');
-        bill_new.inserttip();
+        //bill_new.inserttip();
         bill_new.insertfeedback();
         bill_new.getFoodOrder();
        	String likes= bill_new.getlikes();
@@ -196,7 +197,7 @@ private class RestoTestUtility {
         String unlikes = bill_new.getUnlikes();
         bill_new.finish();
         bill_new.backToCart();
-        bill_new.paidStatusUpdate();
+        //bill_new.paidStatusUpdate();
         
     }
     /*static testmethod void deleteRestaurant() {

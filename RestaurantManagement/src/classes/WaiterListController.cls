@@ -13,7 +13,7 @@ global class WaiterListController{
        this.selectedRestaurant= recType;
     }
     
-    public List<SelectOption> getRestaurantData()
+    /*public List<SelectOption> getRestaurantData()
     {                   
         List<Table__c> tb= [Select f.Location__c from Table__c f];
         
@@ -32,7 +32,7 @@ global class WaiterListController{
         }
        
         return RestaurantList;
-    }
+    }*/
     
     WebService static List<Order_Item__c> handleRefreshPage(){
         String Resto_Id = ApexPages.currentPage().getParameters().get('userAssociatedRestoId');

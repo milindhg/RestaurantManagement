@@ -118,6 +118,7 @@
     </fields>
     <fields>
         <fullName>Used_till_now__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Used till now</label>
         <precision>18</precision>

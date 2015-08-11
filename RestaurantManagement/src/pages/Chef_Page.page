@@ -35,11 +35,10 @@
            
            function getmaxchefs(noOfChefs){
             
-             
-             if(noOfChefs==='' || noOfChefs==null){
+             /*if(noOfChefs==='' || noOfChefs==null){
                alert('Please select the Number of Chefs');
                return false;
-             }
+             }*/
              
              var result = sforce.apex.execute('ChefListController',
                                               'updateNoChefs',
@@ -59,7 +58,7 @@
     <body>
         <div class="container">
             <div class="page-header" id="pageHeader">
-            Intern Cafe
+            Resto Cafe
             </div>
             <apex:form >
                 <apex:pageBlock >
