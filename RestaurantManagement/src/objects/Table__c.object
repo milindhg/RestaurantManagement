@@ -67,7 +67,6 @@
     </fields>
     <fields>
         <fullName>Restaurant_Branch__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <description>Restaurant Branch</description>
         <externalId>false</externalId>
         <inlineHelpText>Restaurant Branch</inlineHelpText>
@@ -75,10 +74,12 @@
         <referenceTo>Restaurant__c</referenceTo>
         <relationshipLabel>Tables</relationshipLabel>
         <relationshipName>Tables</relationshipName>
-        <required>false</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
@@ -156,5 +157,5 @@
         <searchResultsAdditionalFields>No_of_seats__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Waiter__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

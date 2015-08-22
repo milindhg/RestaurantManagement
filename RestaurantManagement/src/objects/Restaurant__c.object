@@ -982,13 +982,13 @@
     <label>Restaurant</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>Restaurant_ID__c</columns>
         <columns>NAME</columns>
-        <columns>Apartment_Suite__c</columns>
         <columns>Branch__c</columns>
+        <columns>Apartment_Suite__c</columns>
         <columns>Email__c</columns>
         <columns>Manager__c</columns>
         <columns>Phone__c</columns>
-        <columns>Restaurant_ID__c</columns>
         <columns>Street_Address__c</columns>
         <columns>City__c</columns>
         <columns>State__c</columns>
@@ -1002,9 +1002,11 @@
     </nameField>
     <pluralLabel>Restaurants</pluralLabel>
     <searchLayouts>
+        <customTabListAdditionalFields>Restaurant_ID__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Branch__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>State__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>City__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Branch__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Restaurant_ID__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>State__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>City__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>Branch__c</lookupDialogsAdditionalFields>
@@ -1012,5 +1014,5 @@
         <searchResultsAdditionalFields>City__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Branch__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
 </CustomObject>

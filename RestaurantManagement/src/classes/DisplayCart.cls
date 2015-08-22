@@ -1,6 +1,7 @@
+//class to displat the items in cart
 public class DisplayCart {
     private Order_Item__c cartItem;
-
+	
     public DisplayCart(Order_Item__c item){
         this.cartItem = item;
         this.id = item.id;
@@ -12,10 +13,7 @@ public class DisplayCart {
         this.tableNumber = item.table_number__c;
         this.priceBook = item.price__c;
     }
-    
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    //public Id id = apexpages.currentpage().getparameters().get('id');
-    
+
     public Id priceBook
     {
         get;
@@ -34,14 +32,7 @@ public class DisplayCart {
         get;
         set;
     }
-    
-/*    public Decimal price
-    {
-        //Code to get the price from the lookup column and return it here.
-        get { return 10.00; }
-        set;
-    }
-*/    
+   
     public Decimal quantity
     {
         get;
@@ -85,7 +76,6 @@ public class DisplayCart {
 
     public Decimal tableNumber
     {
-        //get { return cartItem.table_number__c; }
         get;
         set;
     }

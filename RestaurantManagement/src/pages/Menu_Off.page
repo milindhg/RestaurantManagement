@@ -4,8 +4,8 @@
     <style type="text/css">
         .ui-panel-animate.ui-panel-open.ui-panel-position-left.ui-panel-display-overlay, 
         .ui-panel-animate.ui-panel-open.ui-panel-position-left.ui-panel-display-push{
-        	width:320px;
-        	background-color:white;
+            width:320px;
+            background-color:white;
         }
         
         .ui-listview>li.ui-first-child, .ui-listview>li.ui-first-child>a.ui-btn{
@@ -455,9 +455,9 @@
     
     $j = jQuery.noConflict();
     function slideDown(elem) {
-	elem.style.maxHeight = '1000px';
-	// We're using a timer to set opacity = 0 because setting max-height = 0 doesn't (completely) hide the element.
-	elem.style.opacity   = '1';
+    elem.style.maxHeight = '1000px';
+    // We're using a timer to set opacity = 0 because setting max-height = 0 doesn't (completely) hide the element.
+    elem.style.opacity   = '1';
 }
 
 /**
@@ -466,10 +466,10 @@
  * @return {[type]}      [description]
  */
 function slideUp(elem) {
-	elem.style.maxHeight = '0';
-	once( 1, function () {
-		elem.style.opacity = '0';
-	});
+    elem.style.maxHeight = '0';
+    once( 1, function () {
+        elem.style.opacity = '0';
+    });
 }
 
 /**
@@ -478,14 +478,14 @@ function slideUp(elem) {
  * @param  {Function} callback Callback function
  */
 function once (seconds, callback) {
-	var counter = 0;
-	var time = window.setInterval( function () {
-		counter++;
-		if ( counter >= seconds ) {
-			callback();
-			window.clearInterval( time );
-		}
-	}, 400 );
+    var counter = 0;
+    var time = window.setInterval( function () {
+        counter++;
+        if ( counter >= seconds ) {
+            callback();
+            window.clearInterval( time );
+        }
+    }, 400 );
 }
     
     $(document).ready(function() {
@@ -685,20 +685,20 @@ function once (seconds, callback) {
    var cart = $('#cart_items');
 
    var imgtofly = $(parent);
-	if (imgtofly) {
-	var imgclone = imgtofly.clone()
-	.offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
-	.css({'opacity':'0.7', 'position':'absolute', 'height':'150px', 'width':'150px', 'z-index':'1000'})
-	.appendTo($('body'))
-	.animate({
-	'top':cart.offset().top-50,
+    if (imgtofly) {
+    var imgclone = imgtofly.clone()
+    .offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
+    .css({'opacity':'0.7', 'position':'absolute', 'height':'150px', 'width':'150px', 'z-index':'1000'})
+    .appendTo($('body'))
+    .animate({
+    'top':cart.offset().top-50,
         //'left':cart.offset().left + 700,
     'left':cart.offset().left+1200,
-	'width':200,
-	'height':200
-	}, 1900,'easeOutBounce');
-	imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
-	}
+    'width':200,
+    'height':200
+    }, 1900,'easeOutBounce');
+    imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
+    }
         
     }
     
@@ -821,13 +821,14 @@ function once (seconds, callback) {
                                 </div></div>
                             <div data-role="navbar"  data-iconpos="bottom" id="global_nav" data-mini="true" style="height:20px;margin-left:0px;margin-right:auto;position:fixed;z-index:1000">
                                 <ul>
+                                <apex:variable var="myId" value="pankaj"/>
                                     <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
-                                    <li><a href="#two" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" id="entTab" >Entree</a></li>
+                                    <li><a  href="#two" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" id="entTab" >Entree</a></li>
                                     <li><a href="#three" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false"  id="desTab">Dessert</a></li>
                                 </ul>
                             </div>
                             <div id="stmenu" style="left:0;">
-                                <div id="one" class="container" style="clear:left;background-color:white;width:100%;padding-bottom:200px;">
+                                <div id="{!myId}" class="container" style="clear:left;background-color:white;width:100%;padding-bottom:200px;">
                                     <div data-role="tabs" id="tabs" style="padding:0px;">   
                                         <div data-role="navbar"  data-mini="true" style="width:98%;height:28px;margin-left:auto;margin-right:auto;padding:0px;">
                                             <ul>

@@ -37,7 +37,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         //Get the currently operated orderItem in the object
         Order_Item__c myOrderItem = [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                        o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
+                                        o.Name, o.LastModifiedDate, 
                                         o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                         o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
@@ -55,7 +55,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         //get all the orderItems associated with the parent Order of the currently operated orderItem.
         List<Order_Item__c> allOrderItems = [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                             o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                            o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
+                                            o.Name, o.LastModifiedDate, 
                                             o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                             o.Food_Item__c, o.CreatedDate, o.CreatedById 
                                             From Order_Item__c o
@@ -108,7 +108,7 @@ trigger updateOrderBill on Order_Item__c (after insert, after update, before del
         //Get the Food Order object and update it with the newly calculated bill amounts.
         Food_Order__c myFoodOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
                         f.Status__c, f.OrderId__c, f.OrderDateTime__c, 
-                        f.Name, f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, 
+                        f.Name, f.LastModifiedDate, 
                         f.LastModifiedById, f.IsDeleted, f.Id, f.DeliveryTime__c, 
                         f.CreatedDate, f.CreatedById 
                         From Food_Order__c f

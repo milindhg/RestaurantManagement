@@ -50,7 +50,7 @@ global with sharing class ChefListController{
     public static String getRestoId(){
        User u  = [SELECT Restaurant_Id__c
                   FROM   User
-                  WHERE  Id = :UserInfo.getUserId()]; // A custom field is maintained in the User standard object to get the Restaurant_Id
+                  WHERE  Id = :UserInfo.getUserId()];
            
        String rid = u.Restaurant_Id__c;
        
@@ -69,7 +69,6 @@ global with sharing class ChefListController{
        return location;
     }
     
-    // Below method updates the number of chefs in the Chef__c object. Used for estimating the delivery time.
     Webservice static String updateNoChefs(String noOfChefs){
         
         String rid = ChefListController.getRestoId();
@@ -85,7 +84,7 @@ global with sharing class ChefListController{
                                    WHERE  Restaurant_Id__c = :resto_id];
         
         if(chef_list.size() > 0){
-          chef_list[0].Total_Chefs__c = Decimal.valueOf(noOfChefs);
+          chef_list[0].Total_Chefs__c = Integer.valueOf(noOfChefs);
           update chef_list[0]; 
           return rid;
          }
@@ -94,8 +93,6 @@ global with sharing class ChefListController{
         
      }
     
-    // Below method fetches the orders in the Pending and Accepted when the chef page is refreshed. 
-    // This is required because push notifications are applicable only for records currently in processing.
     WebService static List<Order_Item__c> handleRefreshPage(){
         String rid = ChefListController.getRestoId();
         
@@ -111,7 +108,6 @@ global with sharing class ChefListController{
     }
         
    
-    // Handles the Chef Accept functionality 
     WebService static String itemAcceptUpdate(String orderItemId,String foodOrderId){
         Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];
         orderedItem.status__c = ACCEPTED;
@@ -125,7 +121,6 @@ global with sharing class ChefListController{
         return 'success';
     }
     
-    //Handles the Chef Ready functionality
     WebService static String itemReadyUpdate(String orderItemId){
         Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];
         orderedItem.status__c = READY;

@@ -28,30 +28,14 @@
     <body>
         <div class="container">
             <div class="page-header" id="pageHeader">
-            Intern Cafe
+            Resto Cafe
             </div>
                 <apex:form >
                 <apex:pageBlock id="List" >
                     <apex:outputText >
                     <apex:param name="userAssociateRestoId" value="{! $USER.Restaurant_Id__c}" assignTo="{!userAssociateRestoId}"/> 
                     </apex:outputText>
-                    <!--  <apex:outputPanel >
-                        <div style="font-weight:bold;text-align:center;">Select your State</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedstate }" size="1">
-                            <apex:selectOptions value="{!Statedata}"/>
-                            <apex:actionSupport event="onchange" reRender="List" />
-                        </apex:selectList>
-                        <div style="font-weight:bold;text-align:center;">Select your City</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedcity }" size="1">
-                            <apex:selectOptions value="{!Citydata}"/>
-                            <apex:actionSupport event="onchange" reRender="List" />
-                        </apex:selectList>
-                        <div style="font-weight:bold;text-align:center;">Select your Branch</div>
-                        <apex:selectList style="color:maroon;" value="{!selectedbranch }" size="1">
-                            <apex:selectOptions value="{!Branchdata}"/>
-                            <apex:actionSupport event="onchange" reRender="tablesrerender" />
-                        </apex:selectList>
-                    </apex:outputPanel> --> 
+                  
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive">

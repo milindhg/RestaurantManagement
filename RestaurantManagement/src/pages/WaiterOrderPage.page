@@ -21,7 +21,6 @@
     <script type="text/javascript">
         sforce.connection.sessionId = "{!$Api.Session_ID}";
         function pickupOrder(orderItemId,foodOrderId){
-            //alert('Order Item Id: ' + orderItemId);
             var result  = sforce.apex.execute("WaiterListController",
                                            "updateOrderPickUp",
                                            {orderItemId,foodOrderId}
@@ -54,13 +53,11 @@
         (function($){
          $(document).ready(function() {
           
-           // Connect to the CometD endpoint
            $.cometd.init({
              url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
              requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
            });
         
-          // Subscribe to a topic. JSON-encoded update will be returned in the callback
           $.cometd.subscribe('/topic/OrderPickedUpByWaiter', function(message) {
                 
                  var user_resto_id = '{!$User.Restaurant_Id__c}';
@@ -98,7 +95,7 @@
             <div class="page-header" id="pageHeader">
                 Resto Cafe
             </div>
-            <apex:param name="userAssociatedRestoId" value="{! $USER.Restaurant_Id__c}"/>
+            
             <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">

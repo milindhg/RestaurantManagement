@@ -179,6 +179,16 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Feedbacks</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Food_Quality__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Overall_Experience__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Service__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Food_Quality__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Overall_Experience__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Service__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Food_Quality__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Overall_Experience__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

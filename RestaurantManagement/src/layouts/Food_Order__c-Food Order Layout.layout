@@ -110,7 +110,7 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Food_Item__c.Type__c</fields>
+        <fields>Food_Item__c</fields>
         <fields>Price__c</fields>
         <fields>Quantity__c</fields>
         <fields>Total_Price__c</fields>

@@ -1,3 +1,4 @@
+//method to get the most popular items
 public class DisplayMenuItems implements Comparable{
         private Food_Item__c item;
         private Decimal pricetag;
@@ -14,37 +15,8 @@ public class DisplayMenuItems implements Comparable{
             this.numOfTimesOrdered = price[0].NoItemsOrdered__c;
             starredItem = false;
         }
-        
-        // public String status{
-        //    get{if(actionList.containsKey(availDeals.Name)){
-        
-        //      return actionList.get(availDeals.Name);}
-        
-        //    else return 'Available';}
-        
-        //}
-        
-        
-        // public String getUrl{
-        //   get{
-        //     List<StaticResource> resourceName= new List<StaticResource>();
-        //   resourceName= [Select s.Name from StaticResource s where s.Name=:availDeals.Name];
-        // if(!resourceName.isEmpty()){
-        //return URL.getSalesforceBaseUrl().toExternalForm()+'/resource'+'/'+availDeals.Name;
-        //}else{
-        //     return URL.getSalesforceBaseUrl().toExternalForm()+'/resource/sample';
-        // }
-        //}
-        //}
-        
-        //public Boolean isAccepted{
-        // get{if(actionList.containsKey(availDeals.Name)){
-        
-        //   return true;}
-        
-        // else return false;}
-        
-        //}
+
+		
         public String name{
             get{return item.Name;}
         }
@@ -93,6 +65,7 @@ public class DisplayMenuItems implements Comparable{
             set;
         }
         
+    //method to the image of the food items
         public String getimgurl(){
             String s = item.Item_Image__c+'';
             Integer st = s.indexOf('src');
@@ -103,6 +76,7 @@ public class DisplayMenuItems implements Comparable{
             return imgurl; 
        }
        
+    //get the image of offers
        public String getofferimgurl(){
            
            Id fitem_id = item.Id;
@@ -123,11 +97,7 @@ public class DisplayMenuItems implements Comparable{
            return offerimgurl;                       
                                 
        }
-        
-        // public Object diet{
-          //  get{return item.Diet__c;}
-        //}
-     
+ 
         public Decimal getNumOfTimesOrdered(){
             return this.numOfTimesOrdered;
         }
@@ -135,6 +105,11 @@ public class DisplayMenuItems implements Comparable{
         public Integer compareTo(Object o){
             return (Integer)(((DisplayMenuItems)o).getNumOfTimesOrdered() - this.getNumOfTimesOrdered());
         }
-     
+     	/**
+     	*variables:categoryLevelOne and categoryLevelTwo for custom category of food.
+     	 Author:pankaj
+     	*/
+     	public String categoryLevelOne{get{return item.CategoryParentLevel__c;}}
+     	public String categoryLevelTwo{get{return item.CategoryChildLevel__c;}}	
         
     }

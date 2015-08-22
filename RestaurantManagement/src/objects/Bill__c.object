@@ -118,6 +118,12 @@
     <label>Bill</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Bill_Id__c</columns>
+        <columns>Price__c</columns>
+        <columns>Tax__c</columns>
+        <columns>Location__c</columns>
+        <columns>Restaurant_ID__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -126,6 +132,24 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Bill_Id__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Price__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Tax__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Location__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Restaurant_ID__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Bill_Id__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Location__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Restaurant_ID__c</lookupDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Bill_Id__c</searchFilterFields>
+        <searchFilterFields>Location__c</searchFilterFields>
+        <searchFilterFields>Price__c</searchFilterFields>
+        <searchFilterFields>Restaurant_ID__c</searchFilterFields>
+        <searchResultsAdditionalFields>Bill_Id__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Price__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Restaurant_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Location__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

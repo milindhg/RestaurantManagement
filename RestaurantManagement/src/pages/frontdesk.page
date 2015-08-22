@@ -28,7 +28,7 @@
     <body>
         <div class="container">
             <div class="page-header" id="pageHeader">
-            Intern Cafe
+            Resto Cafe
             </div>
                 <apex:form >
                 <apex:pageBlock id="List" >

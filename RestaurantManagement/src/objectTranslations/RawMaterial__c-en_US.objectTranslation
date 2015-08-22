@@ -13,8 +13,9 @@
         <name>Available__c</name>
     </fields>
     <fields>
-        <label><!-- Name --></label>
-        <name>Name__c</name>
+        <label><!-- Grocery --></label>
+        <name>Grocery__c</name>
+        <relationshipLabel><!-- Raw Materials --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- QuantityRollup --></label>

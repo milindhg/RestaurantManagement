@@ -1,19 +1,19 @@
 global class MenuItemListController {
+
+    public String selectedSpicyNess { get; set; }
     
     
     
     public static List<DisplayMenuItems> ItemList;
     public static List<DisplayOffer> offerList;
     public String dietType;
-    //public static String location=ApexPages.currentPage().getParameters().get('reqlocation');
     public String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
-    public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
+   public String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
     public Decimal tableNo= Decimal.valueOf(tableNumber);
     public Id foodOrderId;
     
     //initializing the fo object with the current table food order.
     public Food_Order__c fo = getFoodOrder();
-    //public Cart(){  }
     public List<DisplayCart> orderItemsList;
     public List<DisplayCart> activeCartItems;
 
@@ -25,16 +25,21 @@ global class MenuItemListController {
     public static final String READY = 'Ready';
     public static final String PICKEDUP = 'Picked Up';
     public static final String DELIVERED = 'Delivered';
-    //public static String table=ApexPages.currentPage().getParameters().get('tableid');
+   
     
      //constructor for setting the table number and the restaurant location
     public MenuItemListController(){
+       
         selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
         tableNumber=ApexPages.currentPage().getParameters().get('tableid');
         tableNo= Decimal.valueOf(tableNumber);
         System.debug(selLocation);
+        selectedSpicyNess = 'hie';
+         collectCategoryLevels();
+        
     }
     
+    //parametrized constructor for testing
     public MenuItemListController(String reqlocation, String tableid){
         selLocation=reqlocation;
         tableNumber=tableid;
@@ -47,20 +52,23 @@ global class MenuItemListController {
        
          List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.SystemModstamp, 
             f.Status__c,  f.OrderId__c, f.OrderDateTime__c, f.Name, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
-            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableNo and f.Status__c != 'Paid' and f.Restaurant_Branch__r.Restaurant_ID__c=:selLocation];
         System.debug('existingOrder is: !!!!' + existingOrder);
+        //if there is no existing food order, return null
         if(existingOrder.isEmpty())
         {
             return null;
         }
+        
+        //else return the food order
         else
         {
-    foodOrderId= existingOrder[0].Id;
-    return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
+            foodOrderId= existingOrder[0].Id;
+            return [Select f.Price__c, f.Tax__c, f.TotalPrice__c, f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
                         f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Location__c, f.Restaurant_Branch__r.Restaurant_ID__c, 
-                        f.Name, f.LastViewedDate, f.LastReferencedDate, 
+                        f.Name, f.LastReferencedDate, 
                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                         f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
                         From Food_Order__c f 
@@ -84,7 +92,7 @@ global class MenuItemListController {
                 
             for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                        o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
+                                        o.Name, o.LastModifiedDate, 
                                         o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id,o.Food_Order__r.Location__c, o.Food_Order__r.Restaurant_Branch__r.Restaurant_ID__c, 
                                         o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
@@ -126,7 +134,7 @@ global class MenuItemListController {
             
                     for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                         o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                        o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
+                                        o.Name, o.LastModifiedDate, 
                                         o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__r.id, 
                                         o.Food_Item__r.id, o.CreatedDate, o.CreatedById 
                                         From Order_Item__c o
@@ -198,7 +206,6 @@ global class MenuItemListController {
                                 FROM  Food_Order__c
                                 WHERE Id = :order_id];
             
-            //Food_Order__c fo = [SELECT fo.Status__c FROM Food_Order__c fo where fo.id=: order_id];
             System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
             
             List<String> result= estimateDelivery(location, tableNo, order_id);
@@ -213,15 +220,6 @@ global class MenuItemListController {
                 o.Status__c = PENDING;            
             }
             update orderItems;  
-            
-            /*System.debug('Del time: '+fo.DeliveryTime__c+', Status: '+fo.Status__c);
-            
-            List<String> result= estimateDelivery(location, tableNo, order_id);
-            est_del_time = result[0];
-            fo.DeliveryTimeBy__c = est_del_time;
-            fo.DeliveryTime__c = Integer.valueOf(result[1]);
-            update fo;  */
-            
             return est_del_time;                                                            
         }
      }
@@ -252,7 +250,6 @@ global class MenuItemListController {
     
       //method to mark the order as paid
      public void paidStatusUpdate(){
-         //ID foodOrderId = ApexPages.CurrentPage().getParameters().get('foodOrderId');
          Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE ID=:foodOrderId];
          foodOrder.status__c = PAID;
          update foodOrder;
@@ -283,18 +280,17 @@ global class MenuItemListController {
     public List<DisplayMenuItems> getMenuItems(){
         System.debug('ItemList is: !!!!' + ItemList);
          System.debug('Diet Type'+ dietType);
-        //if(ItemList==null){
             List<Food_Item__c> food_items;
             if(dietType==null){
                 System.debug('WITHOUT Type'+ dietType);
-             food_items=[Select Name, Category__c, Description__c,
+             food_items=[Select Name, Category__c, Description__c,CategoryParentLevel__c,CategoryChildLevel__c,
                                                 Spice_Level__c,Special__c, Item_Image__c, 
                                                 Prep_Time__c,Calories__c,Status__c,Type__c  
                                                 From Food_Item__c 
                                                 where Status__c='enabled'];
             }else{
                 System.debug('WITH Type');
-               food_items=[Select Name, Category__c, Description__c,
+               food_items=[Select Name, Category__c, Description__c,CategoryParentLevel__c,CategoryChildLevel__c,
                                                 Spice_Level__c,Special__c, Item_Image__c, 
                                                 Prep_Time__c,Calories__c,Status__c,Type__c  
                                                 From Food_Item__c 
@@ -306,7 +302,6 @@ global class MenuItemListController {
                 List<PriceBook__c> price = [Select p.Price__c,p.NoItemsOrdered__c 
                                             from PriceBook__c p 
                                             where p.Food_Item__r.name=:item.Name 
-                                            //and p.Location__c =:selLocation
                                             and p.Restaurant_Branch__r.Restaurant_ID__c =:selLocation
                                             and p.Price__c!=0]; 
                 System.debug(item.Name);
@@ -314,7 +309,6 @@ global class MenuItemListController {
                 if(price.size() > 0)
                   ItemList.add(new DisplayMenuItems(item,price));
             }
-       // }
         
         //Code to mark the 3 topselling items as star items 
         //Write the code to call comparator and sort the items list based on numof times ordered here.
@@ -335,9 +329,7 @@ global class MenuItemListController {
             
             offerList = new List<DisplayOffer>();
             for(Offers__c offer : [Select o.Id, Offer_Image__c, o.Food_Item__c, o.Food_Item__r.name,o.Discount__c, o.Description__c From Offers__c o]){
-                //System.debug(item.Name);
-                //System.debug(selLocation);
-                offerList.add(new DisplayOffer(offer));
+            offerList.add(new DisplayOffer(offer));
             }
         }
         
@@ -349,13 +341,12 @@ global class MenuItemListController {
     @RemoteAction 
     WebService static String createOrderItem(String item, String quant, String table, String location, Id price){
         Decimal tableid= Decimal.valueOf(table);
-        //Decimal itemPrice = Decimal.valueOf(price); 
         System.debug(item);
         System.debug(quant);
         System.debug(location);
         List<Food_Order__c> existingOrder = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
             f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
-            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableid and f.Status__c != 'Paid' 
                                              and 
@@ -366,12 +357,11 @@ global class MenuItemListController {
             System.debug('Order Not Found');
                 List<Restaurant__c> resto_list=[Select r.Zip__c, r.SystemModstamp, r.Street_Address__c, r.State__c,
                                      r.Restaurant_ID__c, r.Phone__c, r.OwnerId, r.Name, r.Manager__c,
-                                     r.LastViewedDate, r.LastReferencedDate, r.LastModifiedDate, 
+                                     r.LastReferencedDate, r.LastModifiedDate, 
                                      r.LastModifiedById, r.LastActivityDate, r.IsDeleted, r.Id, 
                                      r.Email__c, r.CreatedDate, r.CreatedById, r.Country__c, r.City__c, 
                                      r.Branch__c, r.Apartment_Suite__c From Restaurant__c r where r.Restaurant_ID__c=:location];
                     
-                //Restaurant__c restaurant = [Select r.Id from Restaurant__c r where r.Restaurant_ID__c=:location];
                 System.debug('Resturant is'  + resto_list[0].Id);
                 Food_Order__c order = new Food_Order__c();
                 order.Status__c='New';
@@ -382,12 +372,12 @@ global class MenuItemListController {
         
         List<Food_Order__c> orders = [Select f.TotalPrice__c, f.TableNumber__c, f.Location__c,f.SystemModstamp, 
             f.Status__c, f.OrderId__c, f.OrderDateTime__c, f.Name, 
-            f.LastViewedDate, f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
+            f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
             f.IsDeleted, f.Id, f.DeliveryTime__c, f.CreatedDate, f.CreatedById From Food_Order__c f
                                      where f.TableNumber__c=:tableid and f.Status__c != 'Paid' and f.Restaurant_Branch__r.Restaurant_ID__c=:location ];
         String item_name= item;
         List<Food_Item__c> food_items= [Select f.Type__c, f.SystemModstamp, f.Status__c, 
-                                        f.Prep_Time__c,f.Calories__c, f.OwnerId, f.Name, f.LastViewedDate, 
+                                        f.Prep_Time__c,f.Calories__c, f.OwnerId, f.Name,
                                         f.LastReferencedDate, f.LastModifiedDate, f.LastModifiedById, 
                                         f.IsDeleted, f.Id, f.Description__c, f.CreatedDate, f.CreatedById, 
                                         f.Category__c From Food_Item__c f where f.Name=:item_name];
@@ -397,14 +387,13 @@ global class MenuItemListController {
         orderitem.Name= item;
         orderitem.Price__c= price;
         orderitem.Food_Item__c= food_items[0].Id;
+        orderitem.Category__c=food_items[0].type__c;
         orderitem.Restaurant_Id__c= location;
         orderitem.Food_Order__c= orders[0].Id;
-        //orderitem.Location__c= location;
         Id foodOrderI= orders[0].Id;
         orderitem.Quantity__c= decimal.valueOf(quant);
         orderitem.Status__c='New';
         insert orderitem;
-        //return orders[0].name;
         return orderItem.id;
         
     }
@@ -420,7 +409,6 @@ global class MenuItemListController {
     
     public PageReference getItemsByType(){
          dietType=ApexPages.currentPage().getParameters().get('type');
-        //getMenuItems();
         System.debug(dietType);
         return null;
     }
@@ -473,7 +461,7 @@ global class MenuItemListController {
         
         List<String> item_type = new List<String>{'Appetizer','Entree','Dessert'};
         List<String> result_list = new List<String>();
-        //System.debug('Order Id: '+foodOrderId);
+
         
         List<Order_Item__c> queue = [SELECT Food_Item_Name__c, Item_Prep_Time__c, 
                                             Status__c, Quantity__c
@@ -521,18 +509,12 @@ global class MenuItemListController {
                   max_time = MIN_VALUE;
                }   
             }
-            
-            //System.debug('Count: '+count);
-            //System.debug('Total Time before: '+prev_time);
-            //System.debug('Max Time: '+max_time);
-            
+
             if(count >= total_chefs  && max_time > 0)
                prev_time+=max_time;                           
             else
                prev_time = 0;                       
-            
-            //System.debug('Total Time after: '+prev_time);
-            
+
             // In the below 'for' loop, the item prep time of the first order item is determined. 
             // The highest priority is given to Appetizers, then Entrees and then Dessert.  
             // So if the order contains Appetizers, Entrees and Dessert items, then the item prep time of the first Appetizer ordered is found out.                  
@@ -552,10 +534,7 @@ global class MenuItemListController {
                 if(flag)
                   break;
             }
-             
-            //System.debug('Curr Time: '+curr_item_time);
-            //System.debug('Est Del Time: '+est_del_time);
-            
+
             Integer hr = System.now().hour();
             Integer min = System.now().minute(); 
             
@@ -568,9 +547,7 @@ global class MenuItemListController {
               hr = Math.mod(hr,24);
               min=Math.mod(min,60);  
              }
-             
-             //System.debug('Final minutes: '+min);
-            
+ 
             if(hr>=12)
               am_pm = 'PM';
             
@@ -597,4 +574,65 @@ global class MenuItemListController {
            return result_list;   
           
     }
+    /******************************************
+    *    Method: customizeSpicy
+    *    Description: Picklist to specify the Spicyness of a dish. Takes values from FoodItem sObject Spicy_Level__c picklist values.
+    *    Used in: Order Items for (add) button.
+    *    Author: Rinkle Kapur
+    *******************************************/
+    public List<SelectOption> getCustomizeSpicy()
+    {
+        List<SelectOption> lstSpicyLevel = new List<SelectOption>();
+        for(Schema.PickListEntry ple: Food_Item__c.Spice_Level__c.getDescribe().getPickListValues())
+        {
+            lstSpicyLevel.add(new SelectOption(ple.getLabel(),ple.getValue()));
+        }
+        return lstSpicyLevel;
+    }
+    
+    
+     /**
+    Method:collectCategoryLevels
+    Variables: categoryLevelOneMap and subCatListBYcat
+    author:Pankaj
+    Method for customizing the category of food
+    Extract the various food category from Category Level-1 and Category Level-2 objects and below are the variables for same.
+    */
+    public Map<Id,Category_Level_1__c>categoryLevelOneMap{set;get;}
+    public Map<Id,List<Category_Level_2__c>>subCatListBYcat{set;get;}
+    public String jsonCategoryLevelOneMap{get;set;}
+    public String jsonSubCatListBYcat{get;set;}
+    public void collectCategoryLevels(){
+        categoryLevelOneMap=new Map<Id,Category_Level_1__c>([ SELECT ID,Name from Category_Level_1__c]);
+        Map<Id,Category_Level_2__c> categoryLevelTwoMap=new Map<Id,Category_Level_2__c>([ SELECT ID,Name,CategoryFirstLevel__c from Category_Level_2__c]);
+        
+        subCatListBYcat=new Map<Id,List<Category_Level_2__c>>();
+        for(Id subCatId: categoryLevelTwoMap.keyset()){
+            
+            Category_Level_2__c subcategory=categoryLevelTwoMap.get(subCatId);
+            if(subCatListBYcat.containsKey(subcategory.CategoryFirstLevel__c)){
+                List<Category_Level_2__c> subcatList=subCatListBYcat.get(subcategory.CategoryFirstLevel__c);
+                subcatList.add(categoryLevelTwoMap.get(subCatId));
+                subCatListBYcat.put(subcategory.CategoryFirstLevel__c,subcatList);
+            }else{
+                List<Category_Level_2__c> subcatList=new List<Category_Level_2__c>();
+                subcatList.add(categoryLevelTwoMap.get(subCatId));
+                subCatListBYcat.put(subcategory.CategoryFirstLevel__c,subcatList);
+                
+            }
+        }
+        if(subCatListBYcat.size()<categoryLevelOneMap.size()){
+    		for(Id absId:categoryLevelOneMap.keySet()){
+    			if(!subCatListBYcat.containsKey(absId)){
+    				subCatListBYcat.put(absId,new List<Category_Level_2__c>{new Category_Level_2__c()});
+    			}
+    		}
+    	}
+        
+        
+        jsonCategoryLevelOneMap=JSON.serialize(categoryLevelOneMap);
+        jsonSubCatListBYcat=JSON.serialize(subCatListBYcat);
+        
+    }
+    
 }

@@ -1,10 +1,11 @@
 global class Bill{
-
+    
+    //velues fetched from query string
     public static String foodOrderId = ApexPages.currentPage().getParameters().get('orderId');
     public static String selLocation=ApexPages.currentPage().getParameters().get('reqlocation');
     public static String tableNumber=ApexPages.currentPage().getParameters().get('tableid');
-    //public Decimal tableNo= Decimal.valueOf(tableNumber);
 
+    //fields for feedback
     public String SelectedFQ;
     public String SelectedService;
     public String SelectedOAE;
@@ -12,76 +13,89 @@ global class Bill{
     public String unlikes;
     public String tip;
   
-    
+    //get the entered food quality
     public String getSelectedFQ() {
         return SelectedFQ;
     }
      
+    //set food quality
     public void setSelectedFQ(String recType) {
         this.SelectedFQ= recType;
     }
-
+    
+    //get the entered tip
      public String gettip() {
         return tip;
     }
      
+    //set the value of tip
     public void settip(String recType) {
         this.tip= recType;
     }    
     
+    //get the entered service rating
     public String getSelectedService() {
         return SelectedService;
     }
      
+     //set the service rating    
     public void setSelectedService (String recType) {
         this.SelectedService= recType;
     }
     
+    //get the overall experience rating
     public String getSelectedOAE () {
         return SelectedOAE;
     }
-     
+    
+    //set the over all experience rating
     public void setSelectedOAE (String recType) {
         this.SelectedOAE = recType;
     }
     
-    
+    //get the value of likes
     public String getlikes() {
-        System.debug('Likes: '+likes);
+        
         return likes;
     }
      
+    //get the value of likes
     public void setlikes(String recType) {
         this.likes= recType;
     }
     
+    //get the values of unlikes
     public String getunlikes() {
         return unlikes;
     }
      
+    //set the value of unlikes
     public void setunlikes(String recType) {
         this.unlikes= recType;
     }
      
+    //parametrized constructor
     public Bill(String foodOrder){
         foodOrderId= foodOrder;
     }
     public Bill(){  
      
     }
+    
     public List<DisplayCart> orderItemsList;
  
     public static final String PAID = 'Paid';
     
+    //set the food order
     public Food_Order__c fo = getFoodOrder();
     
+    //method to get the food order placed from the table
     public Food_Order__c getFoodOrder(){
       System.debug('Food Order ID'+foodOrderId);
      
       return  [SELECT f.Price__c, f.Tax__c, f.TotalPrice__c, f.FinalPrice__c,f.PriceEstimate__c, f.TaxEstimate__c, f.TotalPriceEstimate__c, f.TableNumber__c, f.SystemModstamp, 
                                          f.Status__c, f.OrderId__c, f.OrderDateTime__c,
-                                         f.Name, f.LastViewedDate, f.LastReferencedDate, 
-                                         f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
+                                         f.Name, f.LastModifiedDate, f.LastModifiedById, f.IsDeleted, f.Id, 
                                          f.DeliveryTime__c, f.CreatedDate, f.CreatedById 
               FROM Food_Order__c f
               WHERE f.Id =:foodOrderId];
@@ -106,7 +120,7 @@ global class Bill{
             
         for(Order_Item__c item : [Select o.Type__c, o.Total_Price__c, o.Table_Number__c, 
                                     o.SystemModstamp, o.Status__c, o.Quantity__c, o.Price__c, 
-                                    o.Name, o.LastViewedDate, o.LastReferencedDate, o.LastModifiedDate, 
+                                    o.Name, o.LastModifiedDate, 
                                     o.LastModifiedById, o.IsDeleted, o.Id, o.Food_Order__c, 
                                     o.Food_Item__c, o.CreatedDate, o.CreatedById, o.Tax__c 
                                     From Order_Item__c o
@@ -114,30 +128,20 @@ global class Bill{
                                     order by o.Status__c]){
             if(item.Status__c != 'New'){
                     DisplayCart displayCart = new DisplayCart(item);
-                    System.debug('Map-----------------------------------');
-                    System.debug(itemMap);
-                    System.debug('Cart-----------------------------------');
-                    System.debug(displayCart);
-                    System.debug('-----------------------------------');
                     if(itemMap.containsKey(displayCart.foodItemId)){
                         DisplayCart cart = itemMap.get(displayCart.foodItemId);
                         Decimal quantity = cart.quantity;
                         quantity += item.Quantity__c;
                         cart.quantity = quantity;
                         cart.totalPrice += item.Total_Price__c;
-                        System.debug('Updated Cart-----------------------------------');
-                        System.debug(cart);
                         itemMap.put(cart.foodItemId, cart);
-                        System.debug('Inside****');
 
                     }
                     else{                        
                        itemMap.put(displayCart.foodItemId, displayCart);
-                       System.debug('Else****');
                     }
                 }
         }
-        //fo = getFoodOrder();
         for(DisplayCart displayCart: itemMap .values()){
             orderItemsList.add(displayCart);
             
@@ -147,42 +151,31 @@ global class Bill{
         return orderItemsList;
     }
     
+    //method to add tip
     public void inserttip()
     {
          Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, FinalPrice__c,TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
          if(String.isBlank(tip))
-         { System.Debug('tip'+'NULL');
+         { 
              foodOrder.Tip__c=0;}
         else{
          foodOrder.Tip__c =Decimal.valueOf(tip);}
          update foodOrder;
-         System.Debug('tip'+tip);
-         System.debug('price and tip'+foodOrder.FinalPrice__c);
     }
     
      public void insertfeedback()
     {
-    Feedback__c fb = new Feedback__c();
-    fb.Food_Quality__c=SelectedFQ;
-    fb.Overall_Experience__c=SelectedOAE;
-    fb.Service__c=SelectedService;
-    fb.What_I_liked__c=likes;
-    fb.What_must_have_been_there__c=unlikes;
-    insert fb;
-    finish();
-    
+        Feedback__c fb = new Feedback__c();
+        fb.Food_Quality__c=SelectedFQ;
+        fb.Overall_Experience__c=SelectedOAE;
+        fb.Service__c=SelectedService;
+        fb.What_I_liked__c=likes;
+        fb.What_must_have_been_there__c=unlikes;
+        insert fb;
+        finish();
     }
     
-    /*public static String getRestoId(){
-       User u  = [SELECT Restaurant_Id__c
-                  FROM   User
-                  WHERE  Id = :UserInfo.getUserId()];
-           
-       String rid = u.Restaurant_Id__c;
-       
-       return rid;
-    }*/
-    
+    //method to update the status of food order as PAID
      public void paidStatusUpdate(){
          Food_Order__c foodOrder = [SELECT status__c, TotalPrice__c, TableNumber__c, Tax__c, Name FROM Food_Order__c WHERE ID=:foodOrderId];
          foodOrder.status__c = PAID;
@@ -209,7 +202,6 @@ global class Bill{
             billItem.Quantity__c = displayCart.quantity;
             billItem.TotalPrice__c = displayCart.totalPrice;
             billItem.Bill__c = bill.Id;
-//            billItem.Tax__c = 3.4// TODO;
             insert billItem;   
             
             PriceBook__c priceBook = [SELECT NoItemsOrdered__c FROM PriceBook__c WHERE ID=:displayCart.priceBook];
@@ -227,7 +219,8 @@ global class Bill{
          pageRef.setRedirect(true);
          return pageRef;
      }
-
+    
+    
      public PageReference backToCart(){
          PageReference pageRef = Page.Menu;
          pageRef.getParameters().put('reqlocation', selLocation);

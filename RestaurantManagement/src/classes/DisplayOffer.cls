@@ -26,7 +26,6 @@ public class DisplayOffer{
         }
         
         public String getimgurl(){
-           System.debug(imgurl);
            
            String s = availableOffers.Offer_Image__c+'';
            Integer st = s.indexOf('src');
@@ -34,8 +33,6 @@ public class DisplayOffer{
            Integer last = s.indexOf('\"');
            s = s.mid(0,last).replace('&amp;','&');
            imgurl = s;
-           
-           System.debug('Offer: '+imgurl);
            return imgurl;                       
                                 
        }

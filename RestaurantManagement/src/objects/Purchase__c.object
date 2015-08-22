@@ -113,6 +113,18 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Purchases</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Date_of_Purchase__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RawMaterial__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Quantity__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Price__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Date_of_Purchase__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RawMaterial__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Quantity__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Date_of_Purchase__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RawMaterial__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Quantity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Price__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

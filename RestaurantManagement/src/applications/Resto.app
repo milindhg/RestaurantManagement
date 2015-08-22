@@ -8,7 +8,6 @@
     <tab>Food_Item__c</tab>
     <tab>standard-Pricebook2</tab>
     <tab>Food_Order__c</tab>
-    <tab>Order_Item__c</tab>
     <tab>standard-report</tab>
     <tab>standard-Dashboard</tab>
     <tab>Table__c</tab>
@@ -17,12 +16,13 @@
     <tab>Purchase__c</tab>
     <tab>Feedback__c</tab>
     <tab>Offers__c</tab>
-    <tab>PriceBook__c</tab>
-    <tab>BIll_Item__c</tab>
     <tab>Chef__c</tab>
     <tab>Chef_Page</tab>
     <tab>Restaurant__c</tab>
     <tab>Bill__c</tab>
     <tab>Waiter_Page</tab>
     <tab>Frontdesk</tab>
+    <tab>Category_Level_1__c</tab>
+    <tab>Category_Level_2__c</tab>
+    <tab>Grocery__c</tab>
 </CustomApplication>

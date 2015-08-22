@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -68,16 +68,17 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Name__c</fullName>
-        <caseSensitive>false</caseSensitive>
+        <fullName>Grocery__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Name</label>
-        <length>20</length>
-        <required>true</required>
+        <label>Grocery</label>
+        <referenceTo>Grocery__c</referenceTo>
+        <relationshipLabel>Raw Materials</relationshipLabel>
+        <relationshipName>Raw_Materials</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>true</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>QuantityRollup__c</fullName>
@@ -92,16 +93,17 @@
     </fields>
     <fields>
         <fullName>Restaurant__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Restaurant</label>
         <referenceTo>Restaurant__c</referenceTo>
         <relationshipLabel>Raw Materials</relationshipLabel>
         <relationshipName>Raw_Materials</relationshipName>
-        <required>false</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Used__c</fullName>
@@ -159,6 +161,15 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Raw Materials</pluralLabel>
-    <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <searchLayouts>
+        <customTabListAdditionalFields xsi:nil="true"/>
+        <customTabListAdditionalFields>Restaurant__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>QuantityRollup__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Used_till_now__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Grocery__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Restaurant__c</lookupDialogsAdditionalFields>
+        <searchFilterFields xsi:nil="true"/>
+        <searchFilterFields>Available__c</searchFilterFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

@@ -55,17 +55,16 @@
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
         <fullName>Food_Item__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Food Item</label>
         <referenceTo>Food_Item__c</referenceTo>
         <relationshipLabel>PriceBooks</relationshipLabel>
         <relationshipName>PriceBooks</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Location__c</fullName>
@@ -125,7 +124,7 @@
     </fields>
     <fields>
         <fullName>Restaurant_Branch__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <description>Restaurant Branch</description>
         <externalId>false</externalId>
         <inlineHelpText>Restaurant Branch</inlineHelpText>
@@ -139,27 +138,6 @@
         <type>Lookup</type>
     </fields>
     <label>PriceBook</label>
-    <listViews>
-        <fullName>All</fullName>
-        <columns>NAME</columns>
-        <columns>Food_Item__c</columns>
-        <columns>Location__c</columns>
-        <columns>Price__c</columns>
-        <columns>NoItemsOrdered__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
-    <listViews>
-        <fullName>Pricebook</fullName>
-        <columns>NAME</columns>
-        <columns>Food_Item__c</columns>
-        <columns>Location__c</columns>
-        <columns>NoItemsOrdered__c</columns>
-        <columns>Price__c</columns>
-        <columns>OBJECT_ID</columns>
-        <filterScope>Everything</filterScope>
-        <label>Pricebook</label>
-    </listViews>
     <nameField>
         <label>PriceBook Name</label>
         <trackHistory>false</trackHistory>
@@ -182,7 +160,7 @@
         <searchResultsAdditionalFields>Price__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Restaurant_Branch__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>Private</sharingModel>
     <validationRules>
         <fullName>Validate_Location</fullName>
         <active>false</active>

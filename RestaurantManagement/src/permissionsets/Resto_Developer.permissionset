@@ -85,6 +85,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MenuItemListControllerCustom</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RestoTestUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -615,6 +619,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Category_Level_2__c.CategoryFirstLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Chef__c.Location__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -885,6 +894,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Food_Item__c.CategoryChildLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Food_Item__c.CategoryParentLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Food_Item__c.Category__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -991,6 +1010,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Food_Order__c.TotalPrice__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Grocery__c.Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1410,6 +1434,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Order_Item__c.Food_Item__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Order_Item__c.Item_Prep_Time__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1455,6 +1484,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PriceBook__c.Food_Item__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PriceBook__c.Location__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1495,12 +1529,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>RawMaterial__c.QuantityRollup__c</field>
+        <field>RawMaterial__c.Grocery__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>RawMaterial__c.Restaurant__c</field>
+        <field>RawMaterial__c.QuantityRollup__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1565,11 +1599,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Table__c.Restaurant_Branch__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Table__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1604,15 +1633,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <label>Resto Developer</label>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Resto__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
@@ -1666,7 +1686,11 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>Menu_Demo</apexPage>
+        <apexPage>MenuPankaj</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>MenuSample</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1675,10 +1699,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>Menu_Off</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>Menu_Shek</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1738,14 +1758,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>menu_megha</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>menu_shruthi</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>testtables</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -1758,11 +1770,15 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <tabSettings>
-        <tab>BIll_Item__c</tab>
+        <tab>Bill__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Bill__c</tab>
+        <tab>Category_Level_1__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Category_Level_2__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
@@ -1790,15 +1806,11 @@
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Grocery__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Offers__c</tab>
-        <visibility>None</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Order_Item__c</tab>
-        <visibility>None</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>PriceBook__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
@@ -1811,10 +1823,6 @@
     </tabSettings>
     <tabSettings>
         <tab>Restaurant__c</tab>
-        <visibility>None</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Resto__c</tab>
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>

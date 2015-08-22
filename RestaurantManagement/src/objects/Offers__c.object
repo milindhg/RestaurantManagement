@@ -110,7 +110,16 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Offers</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Food_Item__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Description__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Discount__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Discount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Food_Item__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Food_Item__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Discount__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
 </CustomObject>

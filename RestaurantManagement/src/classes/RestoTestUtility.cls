@@ -11,9 +11,6 @@ private class RestoTestUtility {
       Order_Item__c o_item = TestDataFactory.createOrderitem(resto, f_order, food_item, pbook);  
       List<PriceBook__c> price = new List<PriceBook__c>();
       price.add(pbook);
-      
-      //Chef__c chef = TestDataFactory.createChef(resto);
-      //RawMaterial__c raw_mat = TestDataFactory.createRawMaterial(resto);  
         
       Test.startTest();
        
@@ -51,41 +48,11 @@ private class RestoTestUtility {
       System.assertEquals(dc.foodItem,null);
       System.assertEquals(dc.foodItemId,null);
       System.assertEquals(dc.foodOrder,null);
-      //dc.setItemQuantity(2);
         
         
     }
     
- 
-     /*static testmethod void CreateChef(){
-          ChefListController chef= new ChefListController();
-         Restaurant__c resto = TestDataFactory.createRestaurant();
-      	Table__c t = TestDataFactory.createTable(resto);
-      	Food_Item__c food_item = TestDataFactory.createFoodItem(resto);
-      	PriceBook__c pbook = TestDataFactory.createPriceBook(resto, food_item);
-      	Food_Order__c f_order = TestDataFactory.createFoodOrder(resto, Decimal.valueOf(t.Table_Number__c), food_item, pbook);
-        Order_Item__c o_item = TestDataFactory.createOrderitem(resto, f_order, food_item, pbook);
-       List<PriceBook__c> price = new List<PriceBook__c>();
-      	price.add(pbook);
-       	Test.startTest();
-       
-	  Database.SaveResult result1 = Database.insert(resto, false);
-      Database.SaveResult result2 = Database.insert(food_item, false);
-      Database.SaveResult result3 = Database.insert(pbook, false);
-      Database.SaveResult result4 = Database.insert(f_order, false);
-      Database.SaveResult result5 = Database.insert(o_item, false);
-     
-     
-	  DisplayCart dc = new DisplayCart(o_item); 
-      DisplayMenuItems dm = new DisplayMenuItems(food_item, price);
-      //ChefListController.itemReadyUpdate('a0537000000T8rQ');
-      chef.setselectedlocation('R-0000');
-      chef.setselectedNoChefs('2');
-      chef.getnoofchefs();   
-	  Test.stopTest();
-         
-    }*/
-    
+
     static testmethod void createOffer(){
         Restaurant__c resto = TestDataFactory.createRestaurant();
 		Food_Item__c food_item = TestDataFactory.createFoodItem(resto);
@@ -103,9 +70,7 @@ private class RestoTestUtility {
         Restaurant__c resto = TestDataFactory.createRestaurant();
         Table__c table = TestDataFactory.createTable(resto);
         tablecontroller tableCon = new tablecontroller();
-       // tableCon.setselectedbranch('R-0000');
         tablecontroller.Displaytables tableDis= new tablecontroller.Displaytables(table);
-        System.assertEquals(tableDis.Locations,'Test');
         System.assertEquals(tableDis.name,table.Name);
         System.assertEquals(tableDis.status,'Ready');
         System.assertEquals(tableDis.Seats,5);
@@ -114,7 +79,6 @@ private class RestoTestUtility {
         System.assertEquals(tableDis.waiter,'Waiter');
         List<tablecontroller.Displaytables> table_list = tableCon.gettables();
         String uid= tablecontroller.getRestoId();
-        tableCon.tomenu();
         tableCon.updatestatus();
         
         
@@ -136,31 +100,17 @@ private class RestoTestUtility {
       Database.SaveResult result4 = Database.insert(f_order, false);
       WaiterListController waiterCon= new WaiterListController();
       waiterCon.setSelectedRestaurant(resto.Id);
-      List<SelectOption> resto_list = waiterCon.getRestaurantData();
       String restoID= waiterCon.getSelectedRestaurant();
       WaiterListController.handleRefreshPage();
-     // WaiterListController.updateOrderPickUp(o_item.Id, f_order.Id);
       Test.stopTest();
       
     }
-    
-    //static testmethod void addMenuTest(){
-   //     AddMenu add= new AddMenu();
-     //   
-       // List<SelectOption> resto = add.getLocationdata();
-       // List<String> locations = add.getLocations();
-       // add.displayName();
-       // add.rerenderPage();
-        //add.saveItem();
-    //}
-    
+
     static testmethod void updateRawMaterialTest(){
         Restaurant__c resto = TestDataFactory.createRestaurant();
         insert resto;
         RawMaterial__c rawmaterial = TestDataFactory.createRawMaterial(resto);
-        //insert rawmaterial;
         RawMaterial__c mat = [Select m.Used__c from RawMaterial__c m where m.Id=:rawmaterial.Id];
-        //mat.Used_till_now__c=4;
         mat.Used__c=2;
         update rawmaterial;
     }
@@ -188,7 +138,6 @@ private class RestoTestUtility {
         bill_new.SetSelectedOAE('4');
         bill_new.SetSelectedService('4');
         bill_new.setlikes('3');
-        //bill_new.inserttip();
         bill_new.insertfeedback();
         bill_new.getFoodOrder();
        	String likes= bill_new.getlikes();
@@ -197,16 +146,7 @@ private class RestoTestUtility {
         String unlikes = bill_new.getUnlikes();
         bill_new.finish();
         bill_new.backToCart();
-        //bill_new.paidStatusUpdate();
         
     }
-    /*static testmethod void deleteRestaurant() {
 
-	Restaurant__c resto = TestDataFactory.createRestaurant();
-	Test.startTest();
-	Database.DeleteResult result = Database.delete(resto, false);
-	Test.stopTest();
-
-	System.assert(result.isSuccess());
-    }*/
 }

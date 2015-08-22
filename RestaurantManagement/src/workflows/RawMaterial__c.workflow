@@ -64,8 +64,17 @@
         <senderType>CurrentUser</senderType>
         <template>unfiled$public/Inventory_Alert</template>
     </alerts>
+    <fieldUpdates>
+        <fullName>Update_USED_TILL_NOW_field</fullName>
+        <field>Used_till_now__c</field>
+        <formula>Used_till_now__c  +  Used__c</formula>
+        <name>Update USED TILL NOW field</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <rules>
-        <fullName>Inventory Alert</fullName>
+        <fullName>Raw Material Alert</fullName>
         <actions>
             <name>Inventory_Alert</name>
             <type>Alert</type>
@@ -82,5 +91,15 @@
             <timeLength>0</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Update USED TILL NOW</fullName>
+        <actions>
+            <name>Update_USED_TILL_NOW_field</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>Used__c &gt;0</formula>
+        <triggerType>onAllChanges</triggerType>
     </rules>
 </Workflow>

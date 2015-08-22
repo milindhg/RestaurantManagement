@@ -98,11 +98,6 @@
         <type>Currency</type>
     </fields>
     <label>BIll Item</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>BIll Item Name</label>
         <type>Text</type>
@@ -116,6 +111,9 @@
         <lookupDialogsAdditionalFields>Bill__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>CREATED_DATE</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>LAST_UPDATE</lookupDialogsAdditionalFields>
+        <searchFilterFields>Bill__c</searchFilterFields>
+        <searchFilterFields>Quantity__c</searchFilterFields>
+        <searchFilterFields>Tax__c</searchFilterFields>
         <searchResultsAdditionalFields>TotalPrice__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>OBJECT_ID</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Bill__c</searchResultsAdditionalFields>

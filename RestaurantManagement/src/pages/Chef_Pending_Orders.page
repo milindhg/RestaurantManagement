@@ -23,8 +23,6 @@
         
         var hash = new Object();
        
-        // Below method required to fetch orders in case the page is refreshed. 
-        // Push notifications can only handle current records in processing
         function getOrdersOnRefresh(){
            var result = sforce.apex.execute("ChefListController",
                                              "handleRefreshPage",
@@ -74,8 +72,6 @@
         }
         
         function accept(orderItemId, foodOrderId, oid){
-           //alert('Order Item Id: ' + orderItemId+ ', Food Order: ' + foodOrderId);
-        
            var result = sforce.apex.execute("ChefListController",
                                              "itemAcceptUpdate",
                                              {orderItemId, foodOrderId
@@ -87,7 +83,6 @@
        }
         
         function ready(orderItemId, oid){
-             //alert('Order Item Id: ' + orderItemId);
              var result  = sforce.apex.execute("ChefListController",
                                                "itemReadyUpdate",
                                                {orderItemId
@@ -106,22 +101,18 @@
            });
         
            $.cometd.subscribe('/topic/PushOrderToChef', function(message) {
-                //var result = 10;
                 var user_resto_id = '{!$User.Restaurant_Id__c}';
                  
                 var oid = JSON.stringify(message.data.sobject.Id).replace(/\"/g, "");
-                removeOldIds(oid); // Removes the old order item. Required when the customer modifies the order
+                removeOldIds(oid); 
                 
-                //alert(oid);
                 var item_name = JSON.stringify(message.data.sobject.Food_Item_Name__c).replace(/\"/g, "");
                 var del_status = JSON.stringify(message.data.sobject.Delete_Status__c).replace(/\"/g, "");
                 var item_qty = parseInt(JSON.stringify(message.data.sobject.Quantity__c).replace(/\"/g, ""));
                 var item_resto_id = JSON.stringify(message.data.sobject.Restaurant_Id__c).replace(/\"/g, "");
                 
-                //result = updateQty(item_name, item_qty);
-                
                 if(user_resto_id == item_resto_id){
-                    if(del_status == 'No'){  // This condition checkes if the food item is available.
+                    if(del_status == 'No'){
                         
                         $('#tbody').append(
                         '<tr class=\"fontStyleTr border\" id=\"' + oid + '\"><td class=\"text-center border\">' + JSON.stringify(message.data.sobject.Table_Number__c).replace(/\"/g, "") + 
@@ -152,48 +143,6 @@
         $.cometd.disconnect();
         }
         
-        /*function updateQty(item_name, item_qty){
-            
-            var result = 0;
-            var table = $("#chef_table");
-            //alert(item_qty);
-           
-            table.find('tr').each(function (i) {
-                var $tds = $(this).find('td'),
-                    table_no = $tds.eq(0).text(),
-                    dish_name = $tds.eq(2).text();
-                   
-                //alert('Table No: '+table_no);
-                //  alert('Dish Name: '+dish_name);
-                   
-                    var hash_qty = hash[table_no+item_name];
-                    
-                //  alert('Hash Qty: '+hash_qty);
-                    if(typeof hash_qty !== 'undefined')
-                      { hash[table_no+item_name] = item_qty;
-                        if(hash_qty < item_qty){
-                            //        alert('Excess Qty: '+ (item_qty - hash_qty));
-                          
-                          result = item_qty - hash_qty;
-                          return false;
-                         }
-                        else{
-                           result = 0;
-                           return false;
-                         }
-                      }
-                    else
-                    {//alert('In else');
-                      hash[table_no+item_name] =  item_qty;   
-                        //alert('Value: '+hash[table_no+dish_name]);  
-                      result = 0; 
-                      return false;
-                     }
-               
-            });
-            
-            return result;
-         }*/
          
          function removeOldIds(old_id){
               var table = $("#chef_table");

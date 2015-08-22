@@ -97,6 +97,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MenuItemListControllerCustom</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RestoTestUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -627,6 +631,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Category_Level_2__c.CategoryFirstLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Chef__c.Location__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -897,6 +906,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Food_Item__c.CategoryChildLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Food_Item__c.CategoryParentLevel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Food_Item__c.Category__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1003,6 +1022,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Food_Order__c.TotalPrice__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Grocery__c.Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1421,6 +1445,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Order_Item__c.Food_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Order_Item__c.Item_Prep_Time__c</field>
         <readable>false</readable>
@@ -1466,6 +1495,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>PriceBook__c.Food_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>PriceBook__c.Location__c</field>
         <readable>false</readable>
@@ -1476,9 +1510,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>PriceBook__c.Restaurant_Branch__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -1507,12 +1541,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>RawMaterial__c.QuantityRollup__c</field>
+        <field>RawMaterial__c.Grocery__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>RawMaterial__c.Restaurant__c</field>
+        <field>RawMaterial__c.QuantityRollup__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1577,11 +1611,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Table__c.Restaurant_Branch__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Table__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1640,6 +1669,12 @@
         <layout>CaseClose-Close Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Category_Level_1__c-Category Level-1 Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Category_Level_2__c-Category Level-2 Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Chef__c-Chef Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1679,7 +1714,13 @@
         <layout>Global-Global Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Grocery__c-Grocery Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Idea-Idea Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Ingredient__c-Ingredient Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>JobTracker-Job Tracker Layout</layout>
@@ -1728,9 +1769,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Restaurant__c-Restaurant Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Resto__c-Resto Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SocialPersona-Social Persona Layout</layout>
@@ -1845,7 +1883,11 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>Menu_Demo</apexPage>
+        <apexPage>MenuPankaj</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>MenuSample</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1854,10 +1896,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>Menu_Off</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>Menu_Shek</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -1914,14 +1952,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>frontdesk</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>menu_megha</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>menu_shruthi</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

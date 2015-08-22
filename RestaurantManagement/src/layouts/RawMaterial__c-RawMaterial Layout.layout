@@ -11,10 +11,6 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Name__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Used__c</field>
             </layoutItems>
@@ -27,7 +23,7 @@
                 <field>Available__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Restaurant__c</field>
             </layoutItems>
             <layoutItems>
@@ -38,13 +34,12 @@
                 <behavior>Edit</behavior>
                 <field>Used_till_now__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>OwnerId</field>
+                <field>Grocery__c</field>
             </layoutItems>
         </layoutColumns>
+        <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -99,6 +94,9 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Date_of_Purchase__c</fields>
+        <fields>Quantity__c</fields>
+        <fields>Price__c</fields>
         <relatedList>Purchase__c.RawMaterial__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

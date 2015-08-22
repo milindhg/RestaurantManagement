@@ -124,18 +124,17 @@
     </fields>
     <fields>
         <fullName>Food_Item__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>The food item ordered</description>
         <externalId>false</externalId>
         <label>Food Item</label>
         <referenceTo>Food_Item__c</referenceTo>
         <relationshipLabel>Order Items</relationshipLabel>
         <relationshipName>Order_Items</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Food_Order__c</fullName>
@@ -144,7 +143,7 @@
         <referenceTo>Food_Order__c</referenceTo>
         <relationshipLabel>Order Items</relationshipLabel>
         <relationshipName>Order_Items</relationshipName>
-        <relationshipOrder>1</relationshipOrder>
+        <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -309,25 +308,6 @@
         <unique>false</unique>
     </fields>
     <label>Order Item</label>
-    <listViews>
-        <fullName>All</fullName>
-        <columns>NAME</columns>
-        <columns>Delete_Status__c</columns>
-        <columns>Delivered_Time__c</columns>
-        <columns>Food_Item__c</columns>
-        <columns>Food_Item_Name__c</columns>
-        <columns>Food_Order__c</columns>
-        <columns>Item_Prep_Time__c</columns>
-        <columns>Picked_Up_Time__c</columns>
-        <columns>Price__c</columns>
-        <columns>Quantity__c</columns>
-        <columns>Status__c</columns>
-        <columns>Table_Number__c</columns>
-        <columns>Total_Price__c</columns>
-        <columns>Type__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>Order Item Name</label>
         <trackHistory>false</trackHistory>

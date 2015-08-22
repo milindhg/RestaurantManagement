@@ -65,6 +65,39 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>CategoryChildLevel__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Category Level-2</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Category_Level_2__c.CategoryFirstLevel__c</field>
+                <operation>equals</operation>
+                <valueField>$Source.CategoryParentLevel__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Category_Level_2__c</referenceTo>
+        <relationshipLabel>Food Items</relationshipLabel>
+        <relationshipName>Food_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CategoryParentLevel__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Category Level-1</label>
+        <referenceTo>Category_Level_1__c</referenceTo>
+        <relationshipLabel>Food Items</relationshipLabel>
+        <relationshipName>Food_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Category__c</fullName>
         <description>The category of dish - Appetizer, Entree or Dessert</description>
         <externalId>false</externalId>
@@ -204,6 +237,24 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Food Items</pluralLabel>
-    <searchLayouts/>
-    <sharingModel>Private</sharingModel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Prep_Time__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Category__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Description__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Spice_Level__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Special__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Type__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Spice_Level__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Type__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Item_Image__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Category__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Prep_Time__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Spice_Level__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Read</sharingModel>
 </CustomObject>

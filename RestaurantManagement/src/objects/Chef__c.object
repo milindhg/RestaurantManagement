@@ -265,15 +265,16 @@
     </fields>
     <fields>
         <fullName>Restaurant_Id__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Restaurant Id</label>
         <referenceTo>Restaurant__c</referenceTo>
         <relationshipLabel>Chefs</relationshipLabel>
         <relationshipName>Chefs</relationshipName>
-        <required>true</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Total_Chefs__c</fullName>
@@ -304,6 +305,16 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Chefs</pluralLabel>
-    <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Total_Chefs__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Location__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Restaurant_Id__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Total_Chefs__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Location__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Restaurant_Id__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Total_Chefs__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Restaurant_Id__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Location__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

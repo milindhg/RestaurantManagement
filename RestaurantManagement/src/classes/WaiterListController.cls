@@ -1,4 +1,4 @@
-global class WaiterListController{
+global with sharing class WaiterListController{
     
     public static final String DELIVERED = 'Delivered';
     public static final String PICKED_UP = 'Picked Up'; 
@@ -13,35 +13,27 @@ global class WaiterListController{
        this.selectedRestaurant= recType;
     }
     
-    /*public List<SelectOption> getRestaurantData()
-    {                   
-        List<Table__c> tb= [Select f.Location__c from Table__c f];
-        
-        Map<String,String> mp = new Map<String,String>();
-        Integer count=1;
-        for(Table__c loc:tb){
-            mp.put(loc.Location__c,loc.Location__c);
-            count++;            
-        }
-        List<SelectOption> RestaurantList= new List<SelectOption>();
-        RestaurantList.add(new SelectOption('Select','Select'));
-        for(String key: mp.keySet()){
-            
-            RestaurantList.add(new SelectOption(mp.get(key),mp.get(key)));
-            
-        }
+
+    
+    public static String getRestoId(){
+       User u  = [SELECT Restaurant_Id__c
+                  FROM   User
+                  WHERE  Id = :UserInfo.getUserId()];
+           
+       String rid = u.Restaurant_Id__c;
        
-        return RestaurantList;
-    }*/
+       return rid;
+    }
     
     WebService static List<Order_Item__c> handleRefreshPage(){
-        String Resto_Id = ApexPages.currentPage().getParameters().get('userAssociatedRestoId');
+        String rid = WaiterListController.getRestoId();
+        
         List<Order_Item__c> oitems = [SELECT Table_Number__c, Type__c, Delete_Status__c,
                                              Food_Item_Name__c, Quantity__c, Food_Order__c
                                       FROM   Order_Item__c
                                       WHERE  Status__c = 'Ready'
                                       AND    Delete_Status__c = 'No' 
-                                      AND    Restaurant_Id__c = :Resto_Id 
+                                      AND    Restaurant_Id__c = :rid
                                       ORDER BY CreatedDate];
         return oitems;
     }

@@ -13,6 +13,16 @@
         <name>Calories__c</name>
     </fields>
     <fields>
+        <label><!-- Category Level-2 --></label>
+        <name>CategoryChildLevel__c</name>
+        <relationshipLabel><!-- Food Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Category Level-1 --></label>
+        <name>CategoryParentLevel__c</name>
+        <relationshipLabel><!-- Food Items --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Category --></label>
         <name>Category__c</name>
         <picklistValues>
