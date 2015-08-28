@@ -809,7 +809,8 @@
     }   
           
       //Dummy function to rerender the cart
-      function sayHello(){}
+      function sayHello(){
+      }
                                           
                                           </script>
     <body onLoad="init('{!$CurrentPage.parameters.reqlocation}','{!$CurrentPage.parameters.tableid}');">
@@ -1076,7 +1077,7 @@
                             <div data-role="navbar"  data-iconpos="bottom" id="global_nav" data-mini="true" style="height:20px;margin-left:auto;margin-right:auto;position:fixed;z-index:1000">
                                 <ul><apex:variable value="{!0}" var="CatgIndex" />
                                     <apex:repeat value="{!categoryLevelOneMap}" id="Menu_CategoryFood" var="catg">
-                                    <li><a href="#category{!CatgIndex}" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="{!IF(CatgIndex == 0,'ui-btn-active',false)}" id="Tab{!catg}">{!categoryLevelOneMap[catg].Name}</a></li>
+                                    <li><a href="#category{!CatgIndex}" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="{!IF(CatgIndex == 0,'ui-btn-active',false)}" id="Tab{!catg}"> {!categoryLevelOneMap[catg].Name}</a></li>
                                     <apex:variable value="{!CatgIndex + 1}" var="CatgIndex" /> 
                                     </apex:repeat>
                                  <!--   <li><a href="#one" data-role="tab" data-icon="grid" data-theme="b" onClick="onClickTab(event);" data-ajax="false" class="ui-btn-active" id="appTab">Appetizers</a></li>
@@ -1707,7 +1708,7 @@ var OrderedItems = function (){
     }
     this.changedOrderItemsMap = {};
     this.initChangedOrderItemsMap = function(){
-        this.changedOrderItemsMap = {};
+    	 this.changedOrderItemsMap = {};
     }
     this.changedOrderItems=new Array();
     this.changedOrderItemsMapSize = function(){
@@ -1729,11 +1730,27 @@ var o = new OrderedItems();
 o.populateOrigItemListMaps();
 
 function btn_save_click(obj, tableid, location){
-    console.log('Changes saved');
+	alert('Original Item List >>>>>>>>>>'+o.populateOrigItemListMaps());
+    console.log('Changes saved >>>>>>>>>>>'+obj);
+    alert('object >>>>>>>>>'+obj);
+    alert('Convert To Array = '+o.convertToArray());
     o.convertToArray();
     console.log(o.changedOrderItems);
+    
+    var orderItemList = o.changedOrderItems;
+    alert('orderItemList >>>>>>>>'+orderItemList);
+    alert('Changed Order Items :>>>>>>>>>> '+o.changedOrderItems);
+    
+    
+  //  sforce.apex.execute("MenuItemListController",
+  //                      "getFoodItemInfo",
+  //                      {orderItemList,tableid,location}
+  //                     );
+  
+    
     var result = sforce.connection.update(o.changedOrderItems);
     console.log(result);
+    alert('result >>>>>>>>>'+result);
 
     for(key in o.changedOrderItemsMap){
         if(o.origOrderedItemsMap[key]){
@@ -1763,6 +1780,7 @@ function btn_save_click(obj, tableid, location){
 }
 
 function btn_edit_click(){
+	alert("In Side EDit Click");
     sayHello();
     //call the function to initialize the changedOrderItemsMap to new blank map
     o.initChangedOrderItemsMap();

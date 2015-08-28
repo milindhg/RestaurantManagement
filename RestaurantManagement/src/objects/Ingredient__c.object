@@ -81,6 +81,7 @@
     </fields>
     <fields>
         <fullName>Quantity__c</fullName>
+        <defaultValue>0</defaultValue>
         <description>Quantity of the Grocery required in the specific recipe</description>
         <externalId>false</externalId>
         <label>Quantity</label>

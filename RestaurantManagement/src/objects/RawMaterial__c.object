@@ -107,7 +107,7 @@
     </fields>
     <fields>
         <fullName>Used__c</fullName>
-        <defaultValue>0</defaultValue>
+        <defaultValue>0.00</defaultValue>
         <externalId>false</externalId>
         <label>Used now</label>
         <precision>18</precision>
@@ -120,7 +120,7 @@
     </fields>
     <fields>
         <fullName>Used_till_now__c</fullName>
-        <defaultValue>0</defaultValue>
+        <defaultValue>0.00</defaultValue>
         <externalId>false</externalId>
         <label>Used till now</label>
         <precision>18</precision>

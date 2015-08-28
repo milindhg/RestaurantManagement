@@ -89,6 +89,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MenuItemListControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RestoTestUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -115,6 +119,10 @@
     <classAccesses>
         <apexClass>tablecontroller</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>tablecontrollerTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <fieldPermissions>
         <editable>false</editable>

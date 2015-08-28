@@ -194,8 +194,49 @@ global class MenuItemListController {
      
     //webservice method called from javascript from the menu page on click of the Place order button
     //this moves the items ordered by the customer to the chef's queue
-     WebService static String placeOrder(String order_id, String location, String tableid) {
+     WebService static String placeOrder(String order_id, String location, String tableid){
+     	
+     	/*
+     	system.debug('In Side placeOrder Method >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+order_id);
+     	
+     	List<Order_Item__c> orderedItemList = [SELECT status__c, Food_Item__c FROM Order_Item__c WHERE Food_Order__c = :order_id AND Status__c =:NAVA AND Delete_Status__c = 'No'];
         
+        for(Order_Item__c orderedItem :orderedItemList){
+        	
+        	system.debug(' Food Item List  >>>>>>>>>>  '+orderedItem.Food_Item__c);
+        	String foodItemId = orderedItem.Food_Item__c;
+        	
+        	Food_Item__c foodItems = [SELECT Name FROM Food_Item__c WHERE ID= :foodItemId];
+        	system.debug('Food Item List >>> '+foodItems.Name);
+        	
+        	Ingredient__c ingredients = [select Grocery__c, Quantity__c from Ingredient__c where FoodItem__c = :foodItemId];	
+        	
+        	if(ingredients != null){
+        		system.debug('ingredients >>>>>>> '+ingredients.Grocery__c);
+				system.debug(' Restaurant Id >>>>>>>> '+ChefListController.getRestoId());
+				
+				String rid = ChefListController.getRestoId();
+				Restaurant__c resto = [SELECT Id
+                               FROM   Restaurant__c
+                               WHERE  Restaurant_Id__c = :rid];
+        
+	        	Id resto_id = resto.id;
+				system.debug('Restaurant Id >>>>>>>>>>>>>>>>> '+resto_id);
+				
+				RawMaterial__c rawMaterial = [select Name,Available__c,Used_till_now__c from RawMaterial__c where Grocery__c = :ingredients.Grocery__c and Restaurant__c = :resto_id ];
+				
+				system.debug('rawMaterial >>>>>>> '+rawMaterial.Name+''+rawMaterial.Available__c);
+				system.debug('set Values >>>>>>>>>>'+ingredients.Quantity__c+'   '+rawMaterial.Used_till_now__c);
+			
+				rawMaterial.Used__c = ingredients.Quantity__c;
+				
+			//	rawMaterial.Used_till_now__c = rawMaterial.Used_till_now__c + rawMaterial.Used__c;
+			
+				system.debug(' Values Set >>>>>>>>>> '+rawMaterial);
+				update rawMaterial;
+			}
+        } */
+        	
         if(order_id == null || order_id == ''){
             return '';
          }            
@@ -216,6 +257,8 @@ global class MenuItemListController {
             update fo;
             
             List<Order_Item__c> orderItems = [SELECT oi.Status__c FROM Order_Item__c oi where oi.Food_Order__c=:order_id AND oi.Status__c =:NAVA AND oi.Delete_Status__c = 'No'];
+            system.debug(' orderItems >>>>>>>>>>>>>> '+orderItems);
+            
             for(Order_Item__c o : orderItems){
                 o.Status__c = PENDING;            
             }
@@ -442,6 +485,69 @@ global class MenuItemListController {
       return result_list;                   
     
     }
+    /*
+    Webservice static void getFoodItemInfo(List<Order_Item__c> orderItemList,String tableid, String location){
+    	system.debug('In side Get Food Item Info >>>>>>>>>>>>>>>>>'+orderItemList);
+    	system.debug('>>>>>>>>>>>>>> '+tableid+'  '+location);
+    	
+    	for(Order_Item__c orderItem :orderItemList){
+    		 
+    		system.debug('orderItem &&&&&&&&&&&&& '+orderItem);     		   		
+    		
+    		Order_Item__c orderedItemObject = [SELECT Food_Item__c ,Quantity__c FROM Order_Item__c WHERE ID= :orderItem.Id];
+    		system.debug('food items : >>>>>>>>>>>>> '+orderedItemObject.Food_Item__c);
+    		system.debug('food items  Quantity : >>>>>>>>>>>>> '+orderedItemObject.Quantity__c);
+    		
+    		
+    		Food_Item__c foodItem =[select Name from  Food_Item__c where id = :orderedItemObject.Food_Item__c];
+    		system.debug('Food Item List : >>>>>>>>>>>>>> '+foodItem.Name+'  '+foodItem);
+    		
+    		Ingredient__c ingredients = [select Grocery__c, Quantity__c from Ingredient__c where FoodItem__c = :foodItem.id];
+    		system.debug('ingredients >>>>>>>>>>>> '+ingredients);
+    		system.debug('ingredients Quantity  >>>>>>>>>'+ingredients.Quantity__c);
+    		
+    		if(ingredients != null){
+    		
+	    		Restaurant__c r = [SELECT Id
+	                         FROM Restaurant__c
+	                         WHERE Restaurant_Id__c = :location];
+	      
+	 		     Id resto_id = r.Id;
+	 		     system.debug('resto_id >>>>>>>>>>>> '+resto_id);
+	 		     
+	 		     RawMaterial__c rawMaterial = [select Name,Available__c,Used_till_now__c from RawMaterial__c where Grocery__c = :ingredients.Grocery__c and Restaurant__c = :resto_id ];
+					
+				 system.debug('rawMaterial >>>>>>> '+rawMaterial.Name+''+rawMaterial.Available__c);
+				 system.debug('set Values >>>>>>>>>>'+rawMaterial.Used_till_now__c);
+				 
+				 Decimal revisedQuantity =  orderItem.Quantity__c - orderedItemObject.Quantity__c ;
+				 system.debug('>>>>>>>>>>>>>>>>>>revisedQuantity '+revisedQuantity); 
+				 
+				 if(revisedQuantity > 0){
+				 	if(rawMaterial.Available__c > (revisedQuantity * ingredients.Quantity__c) ){
+				 		system.debug('In side IFF >>>>>>>>>>>>>');
+				 		
+						rawMaterial.Used__c = revisedQuantity * ingredients.Quantity__c ;
+						system.debug('rawMaterial.Used__c &&&&&&&&&&&&&&&&  '+rawMaterial.Used__c);
+						update rawMaterial; 			
+						//rawMaterial.Used_till_now__c = rawMaterial.Used_till_now__c + rawMaterial.Used__c;				 			
+				 	}
+				 }else if(revisedQuantity < 0){
+				 		revisedQuantity = revisedQuantity.abs();
+				 		rawMaterial.Used__c = revisedQuantity * ingredients.Quantity__c ;
+				 		system.debug('rawMaterial.Used_till_now__c >>>>>>>>> '+rawMaterial.Used_till_now__c);
+				 		system.debug('rawMaterial.Used__c >>>>>>>>> '+rawMaterial.Used__c);
+				 		system.debug('rawMaterial.Available__c  >>>>> '+rawMaterial.Available__c );
+				 		
+				 		rawMaterial.Used_till_now__c = rawMaterial.Available__c - rawMaterial.Used__c;
+				 		system.debug('rawMaterial.Used__c &&&&&&&&&&&&&&&&  '+rawMaterial.Used_till_now__c);
+						update rawMaterial; 
+				 }
+    		}  
+    	}
+    } 
+       */
+    
     
     // Below method calculates the estimated delivery time of the first item ordered by the customer.
     // Once the waiter delivers all the ordered items to the customer, the estimated delivery time will be rendered invisible. This handling is done in javascript. 

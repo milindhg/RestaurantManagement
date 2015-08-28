@@ -89,6 +89,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MenuItemListControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RestoTestUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -114,6 +118,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>tablecontroller</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>tablecontrollerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <description>A standard user permission set for the Resto app</description>

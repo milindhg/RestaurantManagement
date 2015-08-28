@@ -78,6 +78,9 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Category Level-2</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>CategoryFirstLevel__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>CategoryFirstLevel__c</lookupDialogsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

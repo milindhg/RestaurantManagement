@@ -58,7 +58,7 @@
     <applicationVisibilities>
         <application>standard__Work</application>
         <default>false</default>
-        <visible>false</visible>
+        <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
         <apexClass>Bill</apexClass>
@@ -101,6 +101,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MenuItemListControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RestoTestUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -126,6 +130,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>tablecontroller</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>tablecontrollerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -1714,6 +1722,12 @@
         <layout>Global-Global Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Goal-Goal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>GoalLink-Goal Link Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Grocery__c-Grocery Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -1730,6 +1744,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Metric-Metric Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>MetricDataLink-Metric Data Link Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Offers__c-Offer Layout</layout>
@@ -1817,15 +1837,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>WorkFeedbackTemplate-Feedback Template Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkGoal-Goal Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkGoalCollaborator-Goal Collaborator Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkGoalLink-Goal Link Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WorkPerformanceCycle-Performance Cycle Layout - Summer %2715</layout>

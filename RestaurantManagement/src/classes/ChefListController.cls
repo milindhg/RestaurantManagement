@@ -109,15 +109,49 @@ global with sharing class ChefListController{
         
    
     WebService static String itemAcceptUpdate(String orderItemId,String foodOrderId){
-        Order_Item__c orderedItem = [SELECT status__c FROM Order_Item__c WHERE ID= :orderItemId];
+        Order_Item__c orderedItem = [SELECT status__c, Food_Item__c FROM Order_Item__c WHERE ID= :orderItemId];
         orderedItem.status__c = ACCEPTED;
         update orderedItem;
         
-        system.debug(orderedItem.id);
+        /*
+		system.debug(' Food Item List  >>>>>>>>>>  '+orderedItem.Food_Item__c); 
+		String foodItemId = orderedItem.Food_Item__c;
+		
+		Food_Item__c foodItems = [SELECT Name FROM Food_Item__c WHERE ID= :foodItemId];
+		
+		system.debug('Food Item List >>> '+foodItems.Name);
+		
+		Ingredient__c ingredients = [select Grocery__c,Quantity__c from Ingredient__c where FoodItem__c = :foodItemId];
+		
+		system.debug('ingredients >>>>>>> '+ingredients.Grocery__c);
+		system.debug(' Restaurant Id >>>>>>>> '+ChefListController.getRestoId());
+		
+		String rid = ChefListController.getRestoId();
+		Restaurant__c resto = [SELECT Id
+                               FROM   Restaurant__c
+                               WHERE  Restaurant_Id__c = :rid];
+        
+        Id resto_id = resto.id;
+		system.debug('Restaurant Id >>>>>>>>>>>>>>>>> '+resto_id);
+		RawMaterial__c rawMaterial = [select Name,Available__c,Used_till_now__c from RawMaterial__c where Grocery__c = :ingredients.Grocery__c and Restaurant__c = :resto_id ];
+		system.debug('rawMaterial >>>>>>> '+rawMaterial.Name+'   '+rawMaterial.Available__c);
+		
+		if(rawMaterial.Available__c > (1* ingredients.Quantity__c)){
+			system.debug('set Values >>>>>>>>>>'+ingredients.Quantity__c+'   '+rawMaterial.Used_till_now__c);
+			
+			// Set two number of Items * quantity required  
+			rawMaterial.Used__c = 1* ingredients.Quantity__c;
+			
+		//	rawMaterial.Used_till_now__c = rawMaterial.Used_till_now__c + rawMaterial.Used__c;
+			
+			system.debug(' Values Set >>>>>>>>>> '+rawMaterial);
+			update rawMaterial;
+		} */
+						
+		system.debug(orderedItem.id);
         Food_Order__c foodOrder = [SELECT status__c FROM Food_Order__c WHERE Id= :foodOrderId ];
         foodOrder.status__c = PENDING;
         update foodOrder;
-       
         return 'success';
     }
     

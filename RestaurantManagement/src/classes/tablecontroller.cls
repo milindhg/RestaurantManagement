@@ -23,7 +23,8 @@ public with sharing class tablecontroller {
       public void updatestatus()
     {        
             List<Table__c> tb= [SELECT Name,Status__c FROM Table__c where Name=:tablename];
-            System.debug(tablename);
+            System.debug('>>>>>>>>>>>>>>>> '+tablename);
+            System.debug('>>>>>>>>>>>>>>>> '+tb);
              for( Table__c t : tb )
              {if (t.Status__c=='Ready')
                 {
@@ -48,9 +49,7 @@ public with sharing class tablecontroller {
             tables.add(new Displaytables(t));
           
         }    
-        
         return tables;
-        
     }    
 
     public class Displaytables {
